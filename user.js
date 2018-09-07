@@ -36,8 +36,7 @@ exports.queryUser=function(user){
         console.log(value)
     })
 }
-d
-exports.getUser=function(id){
+exports.getUser=function(id,callback){
     var sqltext=`select * from user where id=${id}`
     sql.query(sqltext,(value)=>{
         console.log(value)
