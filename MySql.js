@@ -7,8 +7,8 @@ var connection = mysql.createConnection({
   database : 'Blog'
 });
 connection.connect();
-exports.query=function(sql,callback){
-		connection.query(sql, function (error, results, fields) {
+exports.query=function(sqltext,callback){
+		connection.query(sqltext, function (error, results, fields) {
     if (error) 
       throw error;
 		callback(results);
