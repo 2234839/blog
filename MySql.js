@@ -7,10 +7,25 @@ var connection = mysql.createConnection({
   database : 'Blog'
 });
 connection.connect();
-exports.query=function(sqltext,callback){
-		connection.query(sqltext, function (error, results, fields) {
-    if (error) 
-      throw error;
-		callback(results);
-	});
+/**
+ * 提供对sql语句的编码，防范sql注入
+ * @param {string} sqltext 要进行编码的sql语句
+ */
+exports.escape=function(sqltext){
+  return mysql.escape(sqltext)
 }
+/**
+ * 基础的sql查询方法
+ * @param {sqltext} sqltext
+ * @param {array} sql语句中的参数数组
+ * @param {Function} callback 返回查询结果
+ */
+exports.query=function(sqltext,array,callback){
+  connection.query(sqltext,array,function(err, results) {
+    if(err)
+      console.log(err)
+    callback(results)
+  });
+} 
+
+

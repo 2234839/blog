@@ -11,7 +11,14 @@ var log=console.log
 // sql.query("select * from user",(d)=>{
 //     console.log(d)
 // })
-
-user.getUser(1,(d)=>{
-    log("用户",d)
+user.addUser({
+    id:1,
+    name:"666",
+    password:"kkk",
+    data:{
+        a:"ddd"
+    },
+    msg:{
+        a:9999
+    }
 })
