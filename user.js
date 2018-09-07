@@ -16,13 +16,8 @@ var user={
  * @param {user}} user 
  */
 exports.addUser=function(user){
-    var sqltext=`INSERT INTO user VALUES (0, 
-        "${user.name}",
-        "${user.password}",
-        "{}",
-        "{}");`;
-        //`INSERT INTO user VALUES (?,?,?,?,?);`,[0,user.name, user.password,{},{}]
-    sql.query('select * from user where id=? ', [1],(results)=>{
+    //模块会将json直接转为 “a=0” 这种形式的 ，所以需要将他们序列化一下
+    sql.query('INSERT INTO user VALUES (?,?,?,?,?)',[0,user.name, user.password,JSON.stringify(user.data),JSON.stringify(user.msg)],(results)=>{
         console.log(results)
     })
 }
@@ -31,9 +26,8 @@ exports.addUser=function(user){
  * @param {number} id
  */
 exports.removeUser=function(id){
-    var sqltext=`DELETE FROM user WHERE id="${id}"`
-    basicsSqlOperation(sqltext,(value)=>{
-        console.log(value)
+    sql.query('DELETE FROM user WHERE id=?', [id],(results)=>{
+        console.log(results)
     })
 }
 /**

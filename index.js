@@ -11,14 +11,18 @@ var log=console.log
 // sql.query("select * from user",(d)=>{
 //     console.log(d)
 // })
-user.addUser({
-    id:1,
-    name:"666",
-    password:"kkk",
-    data:{
-        a:"ddd"
-    },
-    msg:{
-        a:9999
-    }
-})
+// user.addUser({
+//     id:1,
+//     name:"666",
+//     password:"kkk",
+//     data:{
+//         a:"ddd"
+//     },
+//     msg:{
+//         a:9999
+//     }
+// })
+for (let index = 30; index < 60; index++) {
+
+    user.removeUser(index)    
+}

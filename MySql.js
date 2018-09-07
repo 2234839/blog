@@ -19,11 +19,13 @@ exports.escape=function(sqltext){
  * @param {sqltext} sqltext
  * @param {array} sql语句中的参数数组
  * @param {Function} callback 返回查询结果
+ * //这里不可以直接将connection传过去给其他程序使用，
+ * //貌似是因为它内部的一些this的指向有些问题，所以最好在这里直接处理，由其他函数传参数
  */
 exports.query=function(sqltext,array,callback){
   connection.query(sqltext,array,function(err, results) {
     if(err)
-      console.log(err)
+      console.error(err)
     callback(results)
   });
 } 
