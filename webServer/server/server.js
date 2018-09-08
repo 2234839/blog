@@ -16,22 +16,21 @@ var server = http.createServer(function (request, response) {
     if (sPath === "/" || /^\/*\/$/.test(sPath)) {
         sPath = serverConfig.config.welcome_page;
     }
-
     // Read server resource content and output to browser
     fs.readFile(sRoot + sPath, "utf-8", function (err, data) {
         if(err) {
             console.log(err);
             response.writeHead(404);
             // Redirect to 404 page
+            console.log(sRoot + sPath)
             fs.readFile(sRoot + serverConfig.config.error_page['404'], "utf-8", function(err,data){
                 response.end(data);
             });
             return;
         }
-
         response.end(data);
     })
-
 });
 
 server.listen(serverConfig.config.port);
+exports.server=server
