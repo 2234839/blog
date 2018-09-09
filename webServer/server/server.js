@@ -51,9 +51,10 @@ exports.server = server
  */
 function cookieParse(cookies) {
     var obj = {}
-    cookies.split(';').map(cookie => {
-        var cookie = cookie.split('=')
-        obj[cookie[0]] = cookie[1]
-    })
+    if (cookies)
+        cookies.split(';').map(cookie => {
+            var cookie = cookie.split('=')
+            obj[cookie[0]] = cookie[1]
+        })
     return obj
 }
