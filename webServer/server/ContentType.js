@@ -187,5 +187,8 @@ for (let index = 0; index < res.length; index++) {
 //     if(str==res[index])
 //         console.log(res[index+1])
 // }
-
+/**
+ * 通过查表提供相应的文件后缀的 content-type
+ * @param {string} str 文件的后缀
+ */
 exports.query=str=>obj[str]
