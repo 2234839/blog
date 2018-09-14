@@ -10,6 +10,8 @@ var contentType = require("./ContentType")
 var memoryFile = {}
 // Create a server and start
 var server = http.createServer(function (request, response) {
+    var start = new Date().getTime();
+
     var oUrl = url.parse(request.url);
     var sPath = oUrl.pathname;
     var sRoot = serverConfig.config.web_root;
@@ -31,19 +33,19 @@ var server = http.createServer(function (request, response) {
     }
     /**
      * 查询内存中是否已经存储了该文件，存在则直接发送该文件，否则读取文件再发送
+     * 使用了这种方法之后减少了对磁盘的io，提高了反应速度
      */
      //设置文件头以便浏览器识别文件类型
     response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))) });
-    if (memoryFile.hasOwnProperty(sPath))
+    if (memoryFile.hasOwnProperty(sPath)){
         response.end(memoryFile[sPath]);
-    else
+    }else{
         // Read server resource content and output to browser
         fs.readFile(sRoot + sPath, function (err, data) {
             if (err) {
-                console.log(err);
                 // Redirect to 404 page
                 fs.readFile(sRoot + serverConfig.config.error_page['404'], "utf-8", function (err, data) {
-                    response.writeHead(301, { 'Location': '' });
+                    //response.writeHead(301, { 'Location': '' });
                     response.end(data);
                 });
                 return;
@@ -52,6 +54,8 @@ var server = http.createServer(function (request, response) {
             memoryFile[sPath]=data;
             response.end(data);
         })
+    }
+    console.log("本次请求用时"+(new Date().getTime() - start)+"ms",sPath);
 });
 
 server.listen(serverConfig.config.port);
