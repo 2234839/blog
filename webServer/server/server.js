@@ -11,9 +11,8 @@ var memoryFile = {}
 // Create a server and start
 var server = http.createServer(function (request, response) {
     var start = new Date().getTime();
-
-    var oUrl = url.parse(request.url);
-    var sPath = oUrl.pathname;
+    //转换url编码
+    var sPath =decodeURI(request.url);
     var sRoot = serverConfig.config.web_root;
 
     var cookie = cookieParse(request.headers.cookie)
