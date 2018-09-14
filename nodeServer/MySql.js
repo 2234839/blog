@@ -3,7 +3,6 @@ var mysql=require('mysql')
 const config=require('./nodeServerConfig').config
 
 var connection = mysql.createConnection(config.mysql);
-
 connection.connect();
 /**
  * 提供对sql语句的编码，防范sql注入
