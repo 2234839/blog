@@ -35,7 +35,7 @@ var server = http.createServer(function (request, response) {
      * 查询内存中是否已经存储了该文件，存在则直接发送该文件，否则读取文件再发送
      * 使用了这种方法之后减少了对磁盘的io，提高了反应速度
      */
-     //设置文件头以便浏览器识别文件类型
+    //设置文件头以便浏览器识别文件类型
     response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))) });
     if (memoryFile.hasOwnProperty(sPath)){
         response.end(memoryFile[sPath]);
