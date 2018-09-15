@@ -4,41 +4,50 @@ var url = require("url");
 var fs = require("fs");
 var contentType = require("./ContentType")
 
-/**
- * 用于存储经常被访问的文件
- */
-var memoryFile = {}
+var sRoot = serverConfig.config.web_root;
+//路由表
+var routeTable = serverConfig.config.routeTable
 // Create a server and start
 var server = http.createServer(function (request, response) {
-    var start = new Date().getTime();
-    //转换url编码
-    var sPath =decodeURI(request.url);
-    var sRoot = serverConfig.config.web_root;
-
+    start = new Date().getTime();
     var cookie = cookieParse(request.headers.cookie)
-
-    //请求文件
-    //console.log(request.url,oUrl.pathname,sRoot + sPath)
-    // If request the home directory, redirect to welcome page
-    if (sPath === "/" || /^\/*\/$/.test(sPath)) {
-        if (cookie.init) {
-            sPath = serverConfig.config.index_page;
-        } else {
-            sPath = serverConfig.config.welcome_page;
-            //此处cookie的设置详见   https://blog.csdn.net/helloliuhai/article/details/18351439 https://www.cnblogs.com/ajianbeyourself/p/4900140.html
-            //设置cookie有效期到世界末日,不允许js读取cookie
-            response.setHeader('Set-Cookie', "init=true; expires= Fri, 31 Dec 9999 23:59:59 GMT;");
+    //转换url编码
+    var path = decodeURI(request.url);
+    //简易的路由表实现
+    if (routeTable.hasOwnProperty(path)) {
+        switch (typeof routeTable[path]) {
+            case "string":
+                path=routeTable[path];
+            case "function"://这里一般是各种服务的路径
+                routeTable[path](request, response, cookie,sendFiles);
+                break;
         }
+    }else{
+        sendFiles(path,response);
     }
+    
+});
+
+server.listen(serverConfig.config.port);
+exports.server = server
+
+//存储热门文件
+var memoryFile={}
+/**
+ * 对客户端发送一个文件
+ * @param {string} path 文件路径
+ * @param {res} res 
+ */
+function sendFiles(sPath, response) {
     /**
      * 查询内存中是否已经存储了该文件，存在则直接发送该文件，否则读取文件再发送
      * 使用了这种方法之后减少了对磁盘的io，提高了反应速度
      */
     //设置文件头以便浏览器识别文件类型
     response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))) });
-    if (memoryFile.hasOwnProperty(sPath)){
+    if (memoryFile.hasOwnProperty(sPath)) {
         response.end(memoryFile[sPath]);
-    }else{
+    } else {
         // Read server resource content and output to browser
         fs.readFile(sRoot + sPath, function (err, data) {
             if (err) {
@@ -50,15 +59,12 @@ var server = http.createServer(function (request, response) {
                 return;
             }
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
-            memoryFile[sPath]=data;
+            memoryFile[sPath] = data;
             response.end(data);
         })
     }
-    console.log("本次请求用时"+(new Date().getTime() - start)+"ms",sPath);
-});
-
-server.listen(serverConfig.config.port);
-exports.server = server
+    console.log("本次请求用时" + (new Date().getTime() - start) + "ms", sPath);
+};
 /**
  * 将cookie序列化为一个对象
  * 方法十分简单,对于复杂的cookie可能不适用
