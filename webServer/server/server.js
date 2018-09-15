@@ -9,23 +9,39 @@ var sRoot = serverConfig.config.web_root;
 var routeTable = serverConfig.config.routeTable
 // Create a server and start
 var server = http.createServer(function (request, response) {
-    start = new Date().getTime();
+    startTime = new Date().getTime();
     var cookie = cookieParse(request.headers.cookie)
     //转换url编码
     var path = decodeURI(request.url);
-    //简易的路由表实现
-    if (routeTable.hasOwnProperty(path)) {
-        switch (typeof routeTable[path]) {
-            case "string":
-                path=routeTable[path];
-            case "function"://这里一般是各种服务的路径
-                routeTable[path](request, response, cookie,sendFiles);
-                break;
+    //收集客户端发来的数据
+    var postdata;
+    if(request.method==="POST"){
+        request.on('data', (chunk) => {
+            if(!body)
+                postdata=chunk;
+            else
+                postdata+=chunk;
+        });
+        request.on('end', () => {
+            if (routeTable.hasOwnProperty(path) && typeof routeTable[path]=="function") {
+                routeTable[path](request, response, cookie,sendFiles,postdata);
+            }else{
+            }
+        });
+    }else{//这里基本上就是get请求
+        //简易的路由表实现
+        if (routeTable.hasOwnProperty(path)) {
+            switch (typeof routeTable[path]) {
+                case "string":
+                    path=routeTable[path];
+                case "function"://这里一般是各种服务的路径
+                    routeTable[path](request, response, cookie,sendFiles);
+                    break;
+            }
+        }else{
+            sendFiles(path,response);
         }
-    }else{
-        sendFiles(path,response);
     }
-    
 });
 
 server.listen(serverConfig.config.port);
@@ -34,7 +50,7 @@ exports.server = server
 //存储热门文件
 var memoryFile={}
 /**
- * 对客户端发送一个文件
+ * 向客户端发送一个文件，注意此方法内部指定了文件头
  * @param {string} path 文件路径
  * @param {res} res 
  */
@@ -47,6 +63,7 @@ function sendFiles(sPath, response) {
     response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))) });
     if (memoryFile.hasOwnProperty(sPath)) {
         response.end(memoryFile[sPath]);
+        console.log("本次请求用时" + (new Date().getTime() - startTime) + "ms", sPath,"==>内存");
     } else {
         // Read server resource content and output to browser
         fs.readFile(sRoot + sPath, function (err, data) {
@@ -61,9 +78,9 @@ function sendFiles(sPath, response) {
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
             memoryFile[sPath] = data;
             response.end(data);
+            console.log("本次请求用时" + (new Date().getTime() - startTime) + "ms", sPath,"===>磁盘");
         })
     }
-    console.log("本次请求用时" + (new Date().getTime() - start) + "ms", sPath);
 };
 /**
  * 将cookie序列化为一个对象

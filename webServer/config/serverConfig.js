@@ -21,6 +21,9 @@ var serverConfig = {
                 res.setHeader('Set-Cookie', "init=true; expires= Fri, 31 Dec 9999 23:59:59 GMT;");
             }
             sendFiles(path,res)
+        },
+        '/post':(request, response, cookie,sendFiles,postdata)=>{
+            console.log("接收到一个post请求")
         }
     }
 };
