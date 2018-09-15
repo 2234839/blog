@@ -14,15 +14,13 @@ var server = http.createServer(function (request, response) {
     //转换url编码
     var path = decodeURI(request.url);
     //收集客户端发来的数据
-    var postdata;
+    var postdata=[];
     if(request.method==="POST"){
         request.on('data', (chunk) => {
-            if(!body)
-                postdata=chunk;
-            else
-                postdata+=chunk;
+           postdata.push(chunk);
         });
-        request.on('end', () => {
+        request.on('end', ()=> {
+            postdata=Buffer.concat(postdata)
             if (routeTable.hasOwnProperty(path) && typeof routeTable[path]=="function") {
                 routeTable[path](request, response, cookie,sendFiles,postdata);
             }else{
