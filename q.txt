@@ -1,0 +1,35 @@
+create table qquser
+(id int auto_increment not null primary key,
+name varchar(20),
+sex varchar(10),
+mailbox varchar(100),
+json text,
+telephone varchar(20),
+title varchar(20),
+password varchar(100),
+cookie varchar(30),
+key(id)
+);
+自增使用的是auto_increment
+
+INSERT INTO qquser VALUES (0,"蛮吉","男","110@jingcha.com","神圣兽国游尾郡窝窝乡","110","魁拔","password","cookie");
+
+select * from qquser;
+
+//查看数据库内所有表
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '数据库名'
+//删除表
+drop table qquser;
+//删除数据
+DELETE FROM 表名 WHERE 字段1 ="具体值" and .......
+//通过主键删除数据
+DELETE FROM 表名 WHERE 主键 = ‘具体值’
+
+//修改数据的方式
+update qquser set title = '计算机应用基础' where name = '蛮吉';
+
+//多种登录方式
+select * from qquser where name='蛮吉' and password='未知人物'
+union
+select * from qquser where mailbox='25689789@ddd.cn' and password='张三';
+

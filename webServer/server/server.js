@@ -12,7 +12,6 @@ var routeTable = serverConfig.config.routeTable
 var server = http.createServer(function (request, response) {
     startTime = new Date().getTime();
     var cookie = fun.cookieParse(request.headers.cookie)
-    console.log(cookie)
     //转换url编码
     var path = decodeURI(request.url);
     //收集客户端发来的数据

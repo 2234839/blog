@@ -30,13 +30,15 @@ var serverConfig = {
             sendFiles(this.config.index_page, response);
         },
         '/file': (request, response, cookie, sendFiles, entireData) => {
-            var file=fun.formFile(entireData)
-            console.log(file,fun.cookieParse(file.describe))
-            sendFiles(this.config.index_page, response);
             //保存文件
-            // fs.writeFile("a.png", file.data, 'binary', function (err) {
-            //     console.log(err)
-            // });
+            fun.formFile(entireData).forEach(element => {
+                console.log(__dirname)
+                //理论上来说如果有人构造恶意数据这里的filename直接拼接是一个严重的漏洞 比如将name 构造为 ../之类的
+                fs.writeFile(__dirname+"/file/"+element.describe.filename, entireData.slice(element.start,element.end), 'binary', ()=>{
+                    console.log("保存成功",element.describe.filename)
+                });
+            });
+            sendFiles(this.config.index_page, response);
         }
     }
 };
