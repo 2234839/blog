@@ -1,5 +1,6 @@
 var routeTable=require('./../webServer/config/serverConfig').config.routeTable
 var fun=require('./function')
+var user=require('./user')
 routeTable["/register"]=register
 /**
  * 
@@ -10,6 +11,15 @@ routeTable["/register"]=register
  * @param {object} postdata post提交的数据
  */
 function register(request, response, cookie, sendFiles, postdata){
-    var get=fun.stringParse(postdata.toString())
-    console.log(get)
+    var use=fun.stringParse(postdata.toString())
+    console.log(use)
+    user.addUser(use,(d)=>{
+        if(d instanceof Error)
+            sendFiles(d,response)//添加用户失败
+        else{
+            d.message+=",您的id："+d.id
+            sendFiles(d,response)
+        }
+    })
+    
 }

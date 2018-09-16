@@ -13,13 +13,19 @@ var sql = require('./MySql');
 
 /**
  * 添加一个用户到数据库中
- * @param {user} user 包含基本信息的user对象
+ * @param {object} user 包含基本信息的user对象
  * @param {Function} callback 操作成功则返回id否则返回数据库的返回信息
  */
 exports.addUser = function (user, callback) {
     //模块会将json对象直接转为 “a=0” 这种形式的 ，所以需要将他们序列化一下
-    sql.query('INSERT INTO user VALUES (?,?,?,?,?)', [0, user.name, user.password, JSON.stringify(user.data), JSON.stringify(user.msg)], (results) => {
-        querySuccess(results,callback,results.insertID,["添加账户失败", results])
+    exports.queryUser(user.name,(d)=>{
+        if(d.length!=0){
+            callback(new Error("用户已存在"))
+        }else{
+            sql.query('INSERT INTO user VALUES (?,?,?,?,?)', [0, user.name, user.password, JSON.stringify(user.data), JSON.stringify(user.msg)], (results) => {
+                querySuccess(results,callback,{id:results.insertId,message:"添加成功"},new Error("添加用户失败，原因未知"))
+            })
+        }
     })
 }
 /**
@@ -70,7 +76,12 @@ exports.getUser = function (id, callback) {
  * @param {array} failMsg 失败之后返回的数组
  */
 function querySuccess(results,callback,okMsg,failMsg) {
-    //console.log(results,callback,okMsg,failMsg)
+    if(results==undefined){
+        callback(failMsg)
+        return 
+    }
+    if(typeof callback!='function')
+        throw new Error("参数callback应当为一个函数")
     if (results.affectedRows == 1)
         callback(okMsg)
     else

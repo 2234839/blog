@@ -22,8 +22,6 @@ var server = http.createServer(function (request, response) {
         });
         request.on('end', ()=> {
             postdata=Buffer.concat(postdata)
-            console.log(routeTable.hasOwnProperty(path), typeof routeTable[path]=="function")
-            console.log()
             if (routeTable.hasOwnProperty(path) && typeof routeTable[path]=="function") {
                 routeTable[path](request, response, cookie,sendFiles,postdata);
             }else{
@@ -38,7 +36,12 @@ var server = http.createServer(function (request, response) {
                 case "function"://这里一般是各种服务的路径
                     //客户端发来的get 请求的数据
                     var data=url.parse(request.url,true).query
-                    routeTable[path](request, response, cookie,sendFiles,data);
+                    try { //这里的报错现在是由于有些服务只支持post但这里却调用了它导致的错误
+                        routeTable[path](request, response, cookie,sendFiles,data);
+                    } catch (error) {
+                        console.error(error)
+                        sendFiles(path,response);
+                    }
                     break;
             }
         }else{
@@ -54,10 +57,15 @@ exports.server = server
 var memoryFile={}
 /**
  * 向客户端发送一个文件，注意此方法内部指定了文件头
- * @param {string} path 文件路径
+ * @param {string} path 文件路径,也可以为Erroe的错误，此方法将会将错误消息发送出去
  * @param {res} res 
  */
-function sendFiles(sPath, response) {
+function sendFiles(sPath, response,err) {
+    if(sPath instanceof Object){
+        response.writeHead(200, { 'Content-Type':'text/html'});
+        response.end(sPath.message);
+        return 
+    }
     /**
      * 查询内存中是否已经存储了该文件，存在则直接发送该文件，否则读取文件再发送
      * 使用了这种方法之后减少了对磁盘的io，提高了反应速度
@@ -79,7 +87,8 @@ function sendFiles(sPath, response) {
                 'Server':'nodejs-v10.8.0_gs-webserver'
             });
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
-            memoryFile[sPath] = data;
+            //目前处于调试阶段故关闭此功能
+            //memoryFile[sPath] = data;
             response.end(data);
             console.log("本次请求用时" + (new Date().getTime() - startTime) + "ms", sPath,"===>磁盘");
         })
