@@ -29,7 +29,7 @@ exports.formFile = (entireData) => {
         var file= {
             start: start,//文件的开始位置
             end: end,//文件的结束位置
-            describe: exports.cookieParse(entireData.slice(slider, start).toString())
+            describe: exports.stringParse(entireData.slice(slider, start).toString())
         }
         files.push(file)
         slider = file.end + Boundary.length
@@ -44,12 +44,12 @@ exports.formFile = (entireData) => {
 * 适配了form提交文件的信息头
 * @param {string} cookies req.headers.cookie,从客户端获取到的cookie
 */
-exports.cookieParse = (cookies) => {
+exports.stringParse = (cookies) => {
     //g是匹配所有 i 就只匹配一次 替换所有双引号和空格为空
     cookies = cookies.replace(/"+| +/g, "")
     var obj = {}
     if (cookies)
-        cookies.split(/;|\r\n/).map(cookie => {
+        cookies.split(/;|\r\n|&/).map(cookie => {
             var cookie = cookie.split(/=|:/)
             if (cookie[0] != "")
                 obj[cookie[0]] = cookie[1]
@@ -63,7 +63,4 @@ exports.cookieParse = (cookies) => {
  */
 exports.Parse = (str, des) => {
     return str.split(des)
-}
-function a() {
-
 }

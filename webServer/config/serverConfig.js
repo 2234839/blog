@@ -3,7 +3,6 @@
  */
 const fs = require('fs');
 const fun = require('../../nodeServer/function')
-
 var serverConfig = {
     port: "80",
     web_root: "./webServer/web",//根据主要运行的js文件 index.js 来确定从哪里开始的,而不是webserver服务的server.js 的文件位置
@@ -34,13 +33,19 @@ var serverConfig = {
             fun.formFile(entireData).forEach(element => {
                 console.log(__dirname)
                 //理论上来说如果有人构造恶意数据这里的filename直接拼接是一个严重的漏洞 比如将name 构造为 ../之类的
-                fs.writeFile(__dirname+"/file/"+element.describe.filename, entireData.slice(element.start,element.end), 'binary', ()=>{
-                    console.log("保存成功",element.describe.filename)
+                fs.writeFile(process.cwd()+"/file/"+element.describe.filename, entireData.slice(element.start,element.end), 'binary', (err)=>{
+                    if(err)
+                        console.error(err)
+                    else
+                        console.log("保存成功",element.describe.filename)
                 });
             });
             sendFiles(this.config.index_page, response);
+        },
+        "/register":(request, response, cookie, sendFiles, postdata)=>{
+            var a=fun.stringParse(postdata.toString())
+            console.log(a)
         }
     }
 };
-
 module.exports.config = serverConfig;
