@@ -22,26 +22,28 @@ var server = http.createServer(function (request, response) {
         });
         request.on('end', ()=> {
             postdata=Buffer.concat(postdata)
+            console.log(routeTable.hasOwnProperty(path), typeof routeTable[path]=="function")
+            console.log()
             if (routeTable.hasOwnProperty(path) && typeof routeTable[path]=="function") {
                 routeTable[path](request, response, cookie,sendFiles,postdata);
             }else{
+                sendFiles("",response);//空路径触发报错到404界面
             }
         });
     }else{//这里基本上就是get请求
-        //客户端发来的get 请求的数据
-        var data=url.parse(request.url,true).query
-        console.log(data)
-        if (Object.keys(data).length!==0 && routeTable.hasOwnProperty(path)) {
+        if (routeTable.hasOwnProperty(path)) {
             switch (typeof routeTable[path]) {
                 case "string":
                     path=routeTable[path];
                 case "function"://这里一般是各种服务的路径
-                    routeTable[path](request, response, cookie,sendFiles);
+                    //客户端发来的get 请求的数据
+                    var data=url.parse(request.url,true).query
+                    routeTable[path](request, response, cookie,sendFiles,data);
                     break;
             }
         }else{
             sendFiles(path,response);
-        }   
+        }
     }
 });
 
@@ -73,7 +75,9 @@ function sendFiles(sPath, response) {
                 return;
             }
             //设置文件头以便浏览器识别文件类型
-    response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))) });
+    response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))),
+                'Server':'nodejs-v10.8.0_gs-webserver'
+            });
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
             memoryFile[sPath] = data;
             response.end(data);

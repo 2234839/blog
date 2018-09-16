@@ -41,11 +41,7 @@ var serverConfig = {
                 });
             });
             sendFiles(this.config.index_page, response);
-        },
-        "/register":(request, response, cookie, sendFiles, postdata)=>{
-            var a=fun.stringParse(postdata.toString())
-            console.log(a)
         }
     }
 };
-module.exports.config = serverConfig;
+exports.config = serverConfig;
