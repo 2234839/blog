@@ -1,7 +1,8 @@
 /**
- * Created by ccn1069 on 2015/5/4.
+ * web服务器的配置文件
  */
 const fs = require('fs');
+const fun = require('../../nodeServer/function')
 
 var serverConfig = {
     port: "80",
@@ -29,27 +30,13 @@ var serverConfig = {
             sendFiles(this.config.index_page, response);
         },
         '/file': (request, response, cookie, sendFiles, entireData) => {
-            var Boundary=entireData.slice(0,40);//分界数据行
-
-            //文件起始位置
-            var start=-1
-            var rn=Buffer.from("\r\n")
-            for (let i = 0; i <4; i++) {
-                start=entireData.indexOf(rn,start+1)
-            };
-            start+=2;//换行和回车
-
-            var end=entireData.indexOf(Boundary,start)
-            console.log(Boundary.toString())
-            console.log(start,end)
-            console.log(entireData.slice(0,start).toString())
-            //保存文件
-            fs.writeFile("a.png", entireData.slice(start,end), 'binary', function (err) {
-                console.log(err)
-            });
-
-            
+            var file=fun.formFile(entireData)
+            console.log(file,fun.cookieParse(file.describe))
             sendFiles(this.config.index_page, response);
+            //保存文件
+            // fs.writeFile("a.png", file.data, 'binary', function (err) {
+            //     console.log(err)
+            // });
         }
     }
 };

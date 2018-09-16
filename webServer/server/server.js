@@ -2,6 +2,7 @@ var serverConfig = require("../config/serverConfig.js");
 var http = require("http");
 var url = require("url");
 var fs = require("fs");
+const fun=require('../../nodeServer/function')
 var contentType = require("./ContentType")
 
 var sRoot = serverConfig.config.web_root;
@@ -10,7 +11,8 @@ var routeTable = serverConfig.config.routeTable
 // Create a server and start
 var server = http.createServer(function (request, response) {
     startTime = new Date().getTime();
-    var cookie = cookieParse(request.headers.cookie)
+    var cookie = fun.cookieParse(request.headers.cookie)
+    console.log(cookie)
     //转换url编码
     var path = decodeURI(request.url);
     //收集客户端发来的数据
@@ -80,17 +82,3 @@ function sendFiles(sPath, response) {
         })
     }
 };
-/**
- * 将cookie序列化为一个对象
- * 方法十分简单,对于复杂的cookie可能不适用
- * @param {string} cookies req.headers.cookie,从客户端获取到的cookie
- */
-function cookieParse(cookies) {
-    var obj = {}
-    if (cookies)
-        cookies.split(';').map(cookie => {
-            var cookie = cookie.split('=')
-            obj[cookie[0]] = cookie[1]
-        })
-    return obj
-}
