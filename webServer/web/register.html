@@ -28,7 +28,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'register', true);
         xhr.onload = function () {
-            aert(xhr.response)
+            alert(xhr.response)
         };
         var data=`name=${document.querySelector("#name").value}&password=${document.querySelector("#password").value}`
         xhr.send(data);

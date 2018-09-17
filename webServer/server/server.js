@@ -60,9 +60,9 @@ var memoryFile={}
  * @param {string} path 文件路径,也可以为Erroe的错误，此方法将会将错误消息发送出去
  * @param {res} res 
  */
-function sendFiles(sPath, response,err) {
+function sendFiles(sPath, response) {
     if(sPath instanceof Object){
-        response.writeHead(200, { 'Content-Type':'text/html'});
+        response.writeHead(200, { 'Content-Type': 'text/html'});
         response.end(sPath.message);
         return 
     }
@@ -83,8 +83,11 @@ function sendFiles(sPath, response,err) {
                 return;
             }
             //设置文件头以便浏览器识别文件类型
+            console.log(sPath);
+            
     response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))),
-                'Server':'nodejs-v10.8.0_gs-webserver'
+                'Server':'nodejs-v10.8.0_gs-webserver',
+                'Location': sPath
             });
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
             //目前处于调试阶段故关闭此功能

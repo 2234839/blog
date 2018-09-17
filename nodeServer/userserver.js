@@ -12,7 +12,6 @@ routeTable["/register"]=register
  */
 function register(request, response, cookie, sendFiles, postdata){
     var use=fun.stringParse(postdata.toString())
-    console.log(use)
     user.addUser(use,(d)=>{
         if(d instanceof Error)
             sendFiles(d,response)//添加用户失败
