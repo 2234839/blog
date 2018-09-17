@@ -83,8 +83,6 @@ function sendFiles(sPath, response) {
                 return;
             }
             //设置文件头以便浏览器识别文件类型
-            console.log(sPath);
-            
     response.writeHead(200, { 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))),
                 'Server':'nodejs-v10.8.0_gs-webserver',
                 'Location': sPath

@@ -27,8 +27,8 @@ exports.escape=function(sqltext){
 exports.query=function(sqltext,array,callback){
   connection.query(sqltext,array,function(err, results) {
     if(err)
-      console.log(err, results)
-    callback(results)
+      console.error(err, results)
+    callback(results?results:err)
   });
 } 
 

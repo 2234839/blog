@@ -2,6 +2,7 @@
  * 对用户的一些操作 如增删改查之类的
  */
 var sql = require('./MySql');
+exports.user=user
 /**
  * user对象的构造函数
  * @param {int} id id
@@ -10,15 +11,14 @@ var sql = require('./MySql');
  * @param {object} data data
  * @param {object} msg msg
  */
-exports.user=user
-function user(id=NaN,name="",password="",data={},msg={}){
+function user(id=NaN,name="",password="",data={},msg={},cookies=Math.random().toString(36).substr(2)){
     this.id=id
     this.name=name
     this.password=password
     this.data=data
     this.msg=msg
+    this.cookies=cookies
 }
-
 /**
  * 添加一个用户到数据库中
  * @param {object} user 包含基本信息的user对象
@@ -30,10 +30,19 @@ exports.addUser = function (user, callback) {
         if(d.length!=0){
             callback(new Error("用户已存在"))
         }else{
-            sql.query('INSERT INTO user VALUES (?,?,?,?,?)', [0, user.name, user.password, JSON.stringify(user.data), JSON.stringify(user.msg)], (results) => {
+            sql.query('INSERT INTO user VALUES (?,?,?,?,?,?)', [0,user.name,user.password,JSON.stringify(user.data),JSON.stringify(user.msg),user.cookies], (results) => {
                 querySuccess(results,callback,{id:results.insertId,message:"添加成功"},new Error("添加用户失败，原因未知"))
             })
         }
+    })
+}
+/**
+ * 登录功能
+ * @param {object} user 用户模型
+ */
+exports.login=(user)=>{
+    sql.query('select * from user where (name=? and password=?) or cookies=?', [user.name, user.password,user.cookies], (results) => {
+        querySuccess(results,callback,{id:results.insertId,message:"添加成功"},new Error("添加用户失败，原因未知"))
     })
 }
 /**
@@ -84,7 +93,7 @@ exports.getUser = function (id, callback) {
  * @param {array} failMsg 失败之后返回的数组
  */
 function querySuccess(results,callback,okMsg,failMsg) {
-    if(results==undefined){
+    if(results==undefined ||results instanceof Error){
         callback(failMsg)
         return 
     }

@@ -2,8 +2,10 @@ var routeTable=require('./../webServer/config/serverConfig').config.routeTable
 var fun=require('./function')
 var user=require('./user')
 routeTable["/register"]=register
+
+
+var cookie=Math.random().toString(36).substr(2);
 /**
- * 
  * @param {*} request 
  * @param {*} response 
  * @param {*} cookie 
@@ -16,7 +18,7 @@ function register(request, response, cookie, sendFiles, postdata){
     user.addUser(use,(d)=>{
         if(d instanceof Error)
             sendFiles(d,response)//添加用户失败
-        else{
+        else{//TODO:这里是保持登录状态的cookie持续时间不该设置的这么长
             d.message+=",您的id："+d.id
             sendFiles(d,response)
         }
@@ -27,5 +29,4 @@ function register(request, response, cookie, sendFiles, postdata){
  * @param {object} user 用户对象模型
  */
 function login(user){
-
 }
