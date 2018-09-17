@@ -1,6 +1,5 @@
-
-var a=1
-a+=2
-function d(){
-    return a
+function a(name){
+    this.name=name
 }
+var b=new a("阿珍")
+console.log(a.prototype)

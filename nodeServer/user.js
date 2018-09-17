@@ -2,14 +2,22 @@
  * 对用户的一些操作 如增删改查之类的
  */
 var sql = require('./MySql');
-// user对象的结构
-// var user={
-//     id:0,
-//     name:"ddd",
-//     password:"string",
-//     data:{},
-//     msg:{}
-// }
+/**
+ * user对象的构造函数
+ * @param {int} id id
+ * @param {string} name 用户名
+ * @param {string} password 密码
+ * @param {object} data data
+ * @param {object} msg msg
+ */
+exports.user=user
+function user(id=NaN,name="",password="",data={},msg={}){
+    this.id=id
+    this.name=name
+    this.password=password
+    this.data=data
+    this.msg=msg
+}
 
 /**
  * 添加一个用户到数据库中

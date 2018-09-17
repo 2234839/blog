@@ -11,7 +11,8 @@ routeTable["/register"]=register
  * @param {object} postdata post提交的数据
  */
 function register(request, response, cookie, sendFiles, postdata){
-    var use=fun.stringParse(postdata.toString())
+    var obj=fun.stringParse(postdata.toString())
+    var use=new user.user(obj.id,obj.name,obj.password,obj.data,obj.msg)
     user.addUser(use,(d)=>{
         if(d instanceof Error)
             sendFiles(d,response)//添加用户失败

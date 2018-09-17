@@ -37,7 +37,7 @@ var serverConfig = {
             //保存文件
             fun.formFile(entireData).forEach(element => {
                 console.log(__dirname)
-                //理论上来说如果有人构造恶意数据这里的filename直接拼接是一个严重的漏洞 比如将name 构造为 ../之类的
+                //TODO:理论上来说如果有人构造恶意数据这里的filename直接拼接是一个严重的漏洞 比如将name 构造为 ../之类的
                 fs.writeFile(process.cwd()+"/file/"+element.describe.filename, entireData.slice(element.start,element.end), 'binary', (err)=>{
                     if(err)
                         console.error(err)

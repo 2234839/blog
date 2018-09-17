@@ -90,7 +90,7 @@ function sendFiles(sPath, response) {
                 'Location': sPath
             });
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
-            //目前处于调试阶段故关闭此功能
+            //TODO:目前处于调试阶段故关闭此功能 
             //memoryFile[sPath] = data;
             response.end(data);
             console.log("本次请求用时" + (new Date().getTime() - startTime) + "ms", sPath,"===>磁盘");
