@@ -21,5 +21,11 @@ function register(request, response, cookie, sendFiles, postdata){
             sendFiles(d,response)
         }
     })
-    
+}
+/**
+ * 
+ * @param {object} user 用户对象模型
+ */
+function login(user){
+
 }

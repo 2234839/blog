@@ -42,14 +42,16 @@ exports.formFile = (entireData) => {
  * 将字符出串序列化为一个对象
  * 方法十分简单,对于复杂的数据可能不适用
  * 目前适配：form提交文件的信息头、cookie、get提交的参数
- * @param {string} cookies req.headers.cookie,从客户端获取到的cookie
+ * @param {string} str req.headers.cookie,从客户端获取到的cookie
 */
-exports.stringParse = (cookies) => {
+exports.stringParse = (str) => {
+    if(str==undefined)
+        return {}
     //g是匹配所有 i 就只匹配一次 替换所有双引号和空格为空
-    cookies = cookies.replace(/"+| +/g, "")
+    str = str.replace(/"+| +/g, "")
     var obj = {}
-    if (cookies)
-        cookies.split(/;|\r\n|&/).map(cookie => {
+    if (str)
+        str.split(/;|\r\n|&/).map(cookie => {
             var cookie = cookie.split(/=|:/)
             if (cookie[0] != "")
                 obj[cookie[0]] = cookie[1]

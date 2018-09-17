@@ -3,7 +3,12 @@ var mysql=require('mysql')
 const config=require('./nodeServerConfig').config
 
 var connection = mysql.createConnection(config.mysql);
-connection.connect();
+try {
+  connection.connect();
+} catch (error) {
+  console.error("致命性错误，无法连接数据库");
+}
+
 /**
  * 提供对sql语句的编码，防范sql注入
  * @param {string} sqltext 要进行编码的sql语句
