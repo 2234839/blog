@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="./js/angularJS.js"></script>
-    <script src="./index.js"></script>
+    <script src="./js/angular-sanitize.js"></script>
     <title>神行Blog</title>
 </head>
-<body>
+<body ng-app="state">
     <header>
         logo <br>
         <nav>
             链接
         </nav>
-        <input type="text" name="" id="">
+        <div ng-controller="register">
+            {{name}}
+            <div ng-bind-html="input"></div>
+        </div>
     </header>
 </body>
 </html>
+<script src="./index.js"></script>

@@ -40,9 +40,9 @@ exports.addUser = function (user, callback) {
  * 登录功能
  * @param {object} user 用户模型
  */
-exports.login=(user)=>{
+exports.login=(user,callback)=>{
     sql.query('select * from user where (name=? and password=?) or cookies=?', [user.name, user.password,user.cookies], (results) => {
-        querySuccess(results,callback,{id:results.insertId,message:"添加成功"},new Error("添加用户失败，原因未知"))
+        querySuccess(results,callback,{id:results.insertId,message:"登录成功"},new Error("登录失败，请检查账号密码"))
     })
 }
 /**
