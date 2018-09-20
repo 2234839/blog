@@ -46,9 +46,6 @@ var serverConfig = {
                 });
             });
             sendFiles(this.config.index_page, response);
-        },
-        '/login':(request, response, cookie, sendFiles, entireData) => {
-            
         }
     }
 };

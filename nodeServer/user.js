@@ -42,7 +42,9 @@ exports.addUser = function (user, callback) {
  */
 exports.login=(user,callback)=>{
     sql.query('select * from user where (name=? and password=?) or cookies=?', [user.name, user.password,user.cookies], (results) => {
-        querySuccess(results,callback,{id:results.insertId,message:"登录成功"},new Error("登录失败，请检查账号密码"))
+        if(typeof results[0]=="object")
+            results[0].message="登录成功";
+        querySuccess(results,callback,results[0],new Error("登录失败，请检查账号密码"))
     })
 }
 /**
@@ -101,6 +103,8 @@ function querySuccess(results,callback,okMsg,failMsg) {
         throw new Error("参数callback应当为一个函数")
     if (results.affectedRows == 1)
         callback(okMsg)
+    else if(results.length>=1)//TODO:这里是当数据来自纯粹的查询时他是没有affectendRows的，返回的是一个数组
+        callback(okMsg)//TODO:所以这里的逻辑不够清晰，对情况的照顾不够周全
     else
         callback(failMsg)
 }
