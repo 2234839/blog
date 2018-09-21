@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="./js/angularJS.js"></script>
+    <!--TODO: 这里可以改为cdn的文件来减轻负担 -->
     <link rel="stylesheet" href="./style/index.css">
     <!-- <script src="./js/angular-sanitize.js"></script> -->
     <title>神行Blog</title>
@@ -17,13 +18,17 @@
         <nav>
             链接
         </nav>
-        <div id="register" ng-controller="user">
+        <div ng-controller="user">
             <div ng-if="!user">
                 <button ng-click="addRegisterNode($event.target)">注册</button>
                 <button ng-click="addLoginNode($event.target)">登录</button>
             </div>
+            <div ng-if="user"><!-- 登录完毕之后显示的个人信息 -->
+                <h4 ng-bind="user.name"></h4>
+            </div>
         </div>
     </header>
+
 </body>
 
 </html>

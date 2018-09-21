@@ -70,8 +70,6 @@ function sendFiles(sPath, response) {
             }
         response.writeHead(200, { 'Content-Type': 'text/html'});
         response.end(JSON.stringify(sPath));
-        console.log(JSON.stringify(sPath))
-        console.log(querystring.stringify(sPath),sPath)
         return 
     }
     /**

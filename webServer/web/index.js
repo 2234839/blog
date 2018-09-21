@@ -2,9 +2,11 @@ var state = angular.module('state',[]);//, ['ngSanitize']
 /**
  * 注册控制器，用来注册？,需要添加一个标签来激活此模块
  */
+var aaa
 state.controller('user', function ($scope,$compile,) {
     $scope.name = "";
     $scope.password = "";
+    $scope.user=null
     var inputHtml=` <input type="text" ng-model="name"><br/>
                     <input type="password" ng-model="password"><br/>`
     //注册节点的生成
@@ -27,8 +29,9 @@ state.controller('user', function ($scope,$compile,) {
             alert(user.message)
             if(!user.hasOwnProperty("type")){
                 $scope.addNode.pop.hidden()
-                $scope.user=user
-                console.log($scope.user)
+                $scope.$apply(()=>{//angular的数据监听对于回调函数中的数据改变是存在问题的，所以我们需要自己调用apply
+                    $scope.user=user
+                });
             }
         })
     }
@@ -42,7 +45,6 @@ state.controller('user', function ($scope,$compile,) {
         addNode(element, loginHtml,$compile,$scope)
         $scope.addNode.pop.show()
     }
-    $scope.user=null
 });
 /**
  * 将html通过angular的编译生成node添加到element上去
@@ -84,7 +86,4 @@ function popup(){
     this.hidden=()=>{this.mask.remove()}
 }
 window.onload = () => {
-    // addLogin(document.getElementById('register'))
-    // document.getElementById('register').appendChild(document.createElement('br'))
-    // addRegister(document.getElementById('register'))
 }
