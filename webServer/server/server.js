@@ -2,6 +2,7 @@ var serverConfig = require("../config/serverConfig.js");
 var http = require("http");
 var url = require("url");
 var fs = require("fs");
+var querystring= require('querystring');
 const fun=require('../../nodeServer/function')
 var contentType = require("./ContentType")
 
@@ -62,8 +63,15 @@ var memoryFile={}
  */
 function sendFiles(sPath, response) {
     if(sPath instanceof Object){
+        if(sPath instanceof Error)
+            sPath={
+                type:'Error',
+                message:sPath.message
+            }
         response.writeHead(200, { 'Content-Type': 'text/html'});
-        response.end(sPath.message);
+        response.end(JSON.stringify(sPath));
+        console.log(JSON.stringify(sPath))
+        console.log(querystring.stringify(sPath),sPath)
         return 
     }
     /**

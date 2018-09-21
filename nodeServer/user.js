@@ -41,7 +41,7 @@ exports.addUser = function (user, callback) {
  * @param {object} user 用户模型
  */
 exports.login=(user,callback)=>{
-    sql.query('select * from user where (name=? and password=?) or cookies=?', [user.name, user.password,user.cookies], (results) => {
+    sql.query('select * from user where (name=? and password=?) or (name=? and cookies=?)', [user.name, user.password,user.name,user.cookies], (results) => {
         if(typeof results[0]=="object")
             results[0].message="登录成功";
         querySuccess(results,callback,results[0],new Error("登录失败，请检查账号密码"))

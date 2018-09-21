@@ -2,29 +2,47 @@ var state = angular.module('state',[]);//, ['ngSanitize']
 /**
  * 注册控制器，用来注册？,需要添加一个标签来激活此模块
  */
-state.controller('register', function ($scope,$compile,) {
+state.controller('user', function ($scope,$compile,) {
     $scope.name = "";
     $scope.password = "";
-    var inputHtml=` <input type="text" ng-model="name">
-                    <input type="password" ng-model="password">`
-    //注册节点的生成                
-    var registerHtml = inputHtml+`<button ng-click="register()">注册</button>`
+    var inputHtml=` <input type="text" ng-model="name"><br/>
+                    <input type="password" ng-model="password"><br/>`
+    //注册节点的生成
     $scope.register=()=>{
-        post(`name=${$scope.name}&password=${$scope.password}`,'register')
+        post(`name=${$scope.name}&password=${$scope.password}`,'register',(user)=>{
+            alert(user.message)
+            if(!user.hasOwnProperty("type")){
+                $scope.addNode.pop.hidden()
+                if(confirm("是否立即登录"))
+                    $scope.addLoginNode()
+            }
+        })
     }
-    $scope.addRegisterNode =(element)=>{
-        addNode(element, registerHtml,$compile,$scope)
+    $scope.addRegisterNode =()=>{
+        $scope.addNode(`<button ng-click="register()">注册</button>`)
     }
     //登录节点的生成
-    var loginHtml = inputHtml+`<button ng-click="login()">登录</button>`
     $scope.login=()=>{
-        post(`name=${$scope.name}&password=${$scope.password}`,'login')
+        post(`name=${$scope.name}&password=${$scope.password}`,'login',(user)=>{
+            alert(user.message)
+            if(!user.hasOwnProperty("type")){
+                $scope.addNode.pop.hidden()
+                $scope.user=user
+                console.log($scope.user)
+            }
+        })
     }
-    $scope.addLoginNode =(element)=>{
+    $scope.addLoginNode =()=>{
+        $scope.addNode(`<button ng-click="login()">登录</button>`)
+    }
+    $scope.addNode =(html)=>{
+        var loginHtml = inputHtml+html
+        $scope.addNode.pop=new popup()
+        element=$scope.addNode.pop.pop
         addNode(element, loginHtml,$compile,$scope)
-    } 
-    addLogin=$scope.addLoginNode
-    addRegister=$scope.addRegisterNode 
+        $scope.addNode.pop.show()
+    }
+    $scope.user=null
 });
 /**
  * 将html通过angular的编译生成node添加到element上去
@@ -46,16 +64,27 @@ var addNode=(element, html, $compile,$scope) => {
  * @param {string}} action 要提交到的地址
  * @param {function} callback 回调函数
  */
-var post=(data,action,callback = (response) => { alert(response) }) => {
+var post=(data,action,callback = (user) => { alert(user.message)}) => {
     var xhr = new XMLHttpRequest();
     xhr.open('POST',action, true);
     xhr.onload = function () {
-        callback(xhr.response)
+        callback(JSON.parse(xhr.response))
     }
     xhr.send(data);
 }
+/**
+ * 实现弹窗功能
+ */
+function popup(){
+    this.mask=document.createElement('div')
+    this.mask.id="mask"
+    this.pop=document.createElement('div')
+    this.mask.appendChild(this.pop)
+    this.show=()=>{document.body.appendChild(this.mask)}
+    this.hidden=()=>{this.mask.remove()}
+}
 window.onload = () => {
-    addLogin(document.getElementById('aaa'))
-    document.getElementById('aaa').appendChild(document.createElement('br'))
-    addRegister(document.getElementById('aaa'))
+    // addLogin(document.getElementById('register'))
+    // document.getElementById('register').appendChild(document.createElement('br'))
+    // addRegister(document.getElementById('register'))
 }
