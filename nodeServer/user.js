@@ -1,4 +1,5 @@
 /**
+ * 和数据的一些交互
  * 对用户的一些操作 如增删改查之类的
  */
 var sql = require('./MySql');
@@ -18,6 +19,12 @@ function user(id=NaN,name="",password="",data={},msg={},cookies=Math.random().to
     this.data=data
     this.msg=msg
     this.cookies=cookies
+}
+function article(id=0,textname="",des="",content=""){
+    this.id=id
+    this.des=des
+    this.content=content
+    this.textname=textname
 }
 /**
  * 添加一个用户到数据库中
@@ -88,6 +95,24 @@ exports.getUser = function (id, callback) {
     })
 }
 /**
+ * 发布文章的函数
+ * @param {*} article 文章对象
+ */
+exports.article = function (article,user,callback) {
+    sql.query('INSERT INTO article VALUES (0,?,?,?,?,?)',[user.id,user.name,article.textname,article.des,article.content], (results) => {
+        querySuccess(results,callback,{id:results.insertId,message:"发布成功"},new Error("发布文章失败，原因未知"))
+    })
+}
+/**
+ * 获取文章
+ */
+exports.getArticle = function (start,end,callback) {
+    sql.query(`select * from article limit ${start},${end};`,0,(results) => {
+        //results.message="获取文章成功"
+        querySuccess(results,callback,{results},new Error("获取文章失败，原因未知"))
+    })
+}
+/**
  * 对数据库返回的数据做一个简单的封装,简化其它地方的代码
  * @param {results} results 数据库返回的消息
  * @param {Function} callback 回调函数,会将后面的消息发送给这个回调函数
@@ -95,6 +120,7 @@ exports.getUser = function (id, callback) {
  * @param {array} failMsg 失败之后返回的数组
  */
 function querySuccess(results,callback,okMsg,failMsg) {
+    console.log(results)
     if(results==undefined ||results instanceof Error){
         callback(failMsg)
         return 

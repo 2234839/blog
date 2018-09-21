@@ -12,23 +12,28 @@
     <title>神行Blog</title>
 </head>
 
-<body ng-app="state">
+<body ng-app="state" ng-controller="user">
     <header>
         logo <br>
         <nav>
             链接
         </nav>
-        <div ng-controller="user">
+        <div>
             <div ng-if="!user">
                 <button ng-click="addRegisterNode($event.target)">注册</button>
                 <button ng-click="addLoginNode($event.target)">登录</button>
             </div>
-            <div ng-if="user"><!-- 登录完毕之后显示的个人信息 -->
+            <div ng-if="user">
+                <!-- 登录完毕之后显示的个人信息 -->
                 <h4 ng-bind="user.name"></h4>
             </div>
         </div>
     </header>
-
+    <a href="./article/edit.html">写文章</a>
+    标题<input id="a1" type="text" name="textname"><br>
+    描述<input id="a2" type="text" name="des"><br>
+    内容<textarea id="a3" name="content" cols="60" rows="20"></textarea><br>
+    <button onclick="aaa()">提交</button>
 </body>
 
 </html>

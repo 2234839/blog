@@ -3,6 +3,7 @@
  */
 const fs = require('fs');
 const fun = require('../../nodeServer/function')
+const userserver=require('./../../nodeServer/userserver').function
 var serverConfig = {
     port: "80",
     web_root: "./webServer/web",//根据主要运行的js文件 index.js 来确定从哪里开始的,而不是webserver服务的server.js 的文件位置
@@ -46,7 +47,12 @@ var serverConfig = {
                 });
             });
             sendFiles(this.config.index_page, response);
-        }
+        },
+        "/register":userserver["/register"],
+        "/login":userserver["/login"],
+        "/article":userserver["/article"],//发布文章
+        "/getArticle":userserver["/getArticle"]//获取文章
+        
     }
 };
 exports.config = serverConfig;

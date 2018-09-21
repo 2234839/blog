@@ -1,14 +1,19 @@
-var routeTable=require('./../webServer/config/serverConfig').config.routeTable
+/**
+ * 对user.js 的功能的一些封装
+ */
 var fun=require('./function')
 var user=require('./user')
-routeTable["/register"]=register
-routeTable["/login"]=login
+// var routeTable=require('./../webServer/config/serverConfig').config.routeTable
+// routeTable["/register"]=register
+// routeTable["/login"]=login
+exports.function={
+    "/register":register,
+    "/login":login,
+    "/article":article,
+    '/getArticle':getArticle
+}
 var userTable={}
 /**
- * @param {*} request 
- * @param {*} response 
- * @param {*} cookie 
- * @param {*} sendFiles 
  * @param {object} postdata post提交的数据
  */
 function register(request, response, cookie, sendFiles, postdata){
@@ -48,4 +53,31 @@ function login(request, response, cookie, sendFiles, postdata){
  */
 function isLogin(cookies){
     return userTable.hasOwnProperty(cookies)
+}
+/**
+ * 提交文章
+ */
+function article(request, response, cookie, sendFiles, postdata) {
+    if(!isLogin(cookie.loginCookie)){
+        sendFiles(new Error("请登录后在尝试发送"),response)//请登录后在尝试发送
+        return;
+    }
+    use=userTable[cookie.loginCookie]
+    var article=JSON.parse(postdata.toString())
+    // article.des=decodeURI(article.des);
+    // article.content=decodeURI(article.content);
+    user.article(article,use,(d)=>{
+        console.log(d)
+        sendFiles(d,response)
+    })
+}
+/**
+ * 获取文章
+ */
+function getArticle(request, response, cookie, sendFiles, postdata) {
+    user.getArticle(0,10,(d)=>{
+        d.type="results"
+        d.message="获取文章成功"
+        sendFiles(d,response)
+    })
 }

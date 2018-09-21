@@ -86,4 +86,33 @@ function popup(){
     this.hidden=()=>{this.mask.remove()}
 }
 window.onload = () => {
+    post("",'getArticle',(d)=>{
+        console.log(d)
+        var table=document.createElement('table')
+        d.results.forEach(article => {
+            var tr=document.createElement('tr')  
+            tr.innerHTML=`<tr>
+                <td>${article.num}</td>
+                <td>${article.id}</td>
+                <td>${article.name}</td>
+                <td>${article.textname}</td>
+                <td>${article.des}</td>
+                <td>${article.content}</td></tr>`
+            table.appendChild(tr)
+        });
+        document.body.appendChild(table)
+    })
+}
+function aaa(){
+    var textname=document.getElementById('a1').value
+    var des= document.getElementById('a2').value
+    var content =document.getElementById('a3').value
+    var data={
+        textname:textname,
+        des:des,
+        content:content
+    }
+    post(JSON.stringify(data),'article',(d)=>{
+        console.log(d)
+    })
 }

@@ -13,7 +13,10 @@ var sqltext =[ `create table user
 				);`,
 // 创建文章表  describe 这tm是关键字....不能用这个为名字
 				`create table article
-				(id int auto_increment not null primary key,
+				(num int auto_increment not null primary key,
+				id int not null,
+				name varchar(20),
+				textname varchar(100),
 				des LONGTEXT,
 				content LONGTEXT
 				);`]
@@ -23,11 +26,3 @@ sqltext.forEach(element => {
 		console.log(value);
 	});
 });
-`create table article(id int auto_increment not null primary key,describe LONGTEXT,content LONGTEXT);`
-// sql.query(`create table article
-// (id int auto_increment not null primary key,
-// des LONGTEXT,
-// content LONGTEXT
-// );`, function (value) {
-// 	console.log(value);
-// });
