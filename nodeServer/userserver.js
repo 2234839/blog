@@ -59,7 +59,7 @@ function isLogin(cookies){
  */
 function article(request, response, cookie, sendFiles, postdata) {
     if(!isLogin(cookie.loginCookie)){
-        sendFiles(new Error("请登录后在尝试发送"),response)//请登录后在尝试发送
+        sendFiles(new Error("请登录后再尝试发送"),response)//请登录后在尝试发送
         return;
     }
     use=userTable[cookie.loginCookie]

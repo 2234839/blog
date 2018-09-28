@@ -30,56 +30,49 @@
         </div>
     </header>
     <div ng-controller='article'>
-        <section>
-            <h4 ng-bind='articleTable[0].textname'></h4>
-            <div ng-bind='articleTable[0].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[1].textname'></h4>
-            <div ng-bind='articleTable[1].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[2].textname'></h4>
-            <div ng-bind='articleTable[2].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[3].textname'></h4>
-            <div ng-bind='articleTable[3].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[4].textname'></h4>
-            <div ng-bind='articleTable[4].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[5].textname'></h4>
-            <div ng-bind='articleTable[5].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[6].textname'></h4>
-            <div ng-bind='articleTable[6].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[7].textname'></h4>
-            <div ng-bind='articleTable[7].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[8].textname'></h4>
-            <div ng-bind='articleTable[8].content'></div>
-        </section>
-        <section>
-            <h4 ng-bind='articleTable[9].textname'></h4>
-            <div ng-bind='articleTable[9].content'></div>
-        </section>
-        <br>
-        <tr ng-repeat="x in articleTable">
-            {{x.name}}
-            <td>{{x.name}}</td>
-            <!-- <td>{{x.content}}</td> -->
-        </tr>
-        标题<input id="a1" type="text" name="textname"><br>
-        描述<input id="a2" type="text" name="des"><br>
-        内容<textarea id="a3" name="content" cols="60" rows="20"></textarea><br>
-        <button onclick="aaa()">提交</button>
+        <button ng-click="popup.show()">编辑文章</button>
+        <div>
+            <section>
+                <h4 ng-bind='articleTable[0].textname'></h4>
+                <div ng-bind='articleTable[0].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[1].textname'></h4>
+                <div ng-bind='articleTable[1].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[2].textname'></h4>
+                <div ng-bind='articleTable[2].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[3].textname'></h4>
+                <div ng-bind='articleTable[3].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[4].textname'></h4>
+                <div ng-bind='articleTable[4].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[5].textname'></h4>
+                <div ng-bind='articleTable[5].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[6].textname'></h4>
+                <div ng-bind='articleTable[6].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[7].textname'></h4>
+                <div ng-bind='articleTable[7].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[8].textname'></h4>
+                <div ng-bind='articleTable[8].content'></div>
+            </section>
+            <section>
+                <h4 ng-bind='articleTable[9].textname'></h4>
+                <div ng-bind='articleTable[9].content'></div>
+            </section>
+        </div>
     </div>
     <script src="./js/function.js"></script>
     <script src="./index.js"></script>

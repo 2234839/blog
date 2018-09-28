@@ -6,7 +6,7 @@ var aaa
 state.controller('user', function ($scope, $compile, ) {
     $scope.name = "";
     $scope.password = "";
-    $scope.user = null
+    $scope.user =JSON.parse(localStorage.getItem('user'))
     var inputHtml = ` <input type="text" ng-model="name"><br/>
                     <input type="password" ng-model="password"><br/>`
     //注册节点的生成
@@ -31,6 +31,8 @@ state.controller('user', function ($scope, $compile, ) {
                 $scope.addNode.pop.hidden()
                 $scope.$apply(() => {//angular的数据监听对于回调函数中的数据改变是存在问题的，所以我们需要自己调用apply
                     $scope.user = user
+                    //保存用户的基本信息到本地
+                    localStorage.setItem('user',JSON.stringify($scope.user))
                 });
             }
         })
@@ -47,32 +49,38 @@ state.controller('user', function ($scope, $compile, ) {
     }
     $scope.log = console.log
 });
-state.controller('article', function ($scope) {
+state.controller('article', function ($scope, $compile) {
     $scope.articleTable = []
-    post("", 'getArticle', (d) => {
+    post("", 'getArticle', (d) => {//获取文章
         d.results.forEach(element => {
             $scope.$apply(() => {
                 $scope.articleTable.push(element)
             });
         });
-        
-        console.log($scope.articleTable)
     })
-})
-
-window.onload = () => {
-    
-}
-function aaa() {
-    var textname = document.getElementById('a1').value
-    var des = document.getElementById('a2').value
-    var content = document.getElementById('a3').value
-    var data = {
-        textname: textname,
-        des: des,
-        content: content
+    $scope.popup=new popup();
+    $scope.article={
+        textname: '',
+        des: '',
+        content: ''
+    };//使用立即执行的匿名函数需要添加分号
+    (()=>{//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器
+        $scope.popup.mask.id="editArticle"
+        var html = `<input type="text" name="textname" ng-model="article.textname"><br>
+        <input type="text" name="des" ng-model="article.des"><br>
+        <textarea name="content" cols="60" rows="20" ng-model="article.content"></textarea><br>
+        <button ng-click="upArticle()">提交</button>`
+        element = $scope.popup.pop;
+        addNode(element,html, $compile, $scope)
+    })()
+    /**
+     * 上传文章
+     */
+    $scope.upArticle=()=>{
+        post(JSON.stringify($scope.article), 'article', (d) => {
+            alert(d.message)
+            if(d.hasOwnProperty('id'))//没有id属性说明没有发布成功
+                $scope.popup.hidden()
+        })
     }
-    post(JSON.stringify(data), 'article', (d) => {
-        console.log(d)
-    })
-}
+})
