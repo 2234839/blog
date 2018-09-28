@@ -11,25 +11,24 @@
     <!-- <script src="./js/angular-sanitize.js"></script> -->
     <title>神行Blog</title>
 </head>
-
+<!-- TODO:所有标签应当有合适的title来提供描述性信息以便无障碍功能及爬虫的索引 -->
 <body ng-app="state" ng-controller="user">
-    <header>
-        logo <br>
+    <header title="包含用户基本操作的导航栏">
+        <img src="" alt="" title="logo">
         <nav>
             链接
         </nav>
         <div>
-            <div ng-if="!user">
+            <div ng-if="!user" title="如果是游客则提供登录注册的功能">
                 <button ng-click="addRegisterNode($event.target)">注册</button>
                 <button ng-click="addLoginNode($event.target)">登录</button>
             </div>
-            <div ng-if="user">
-                <!-- 登录完毕之后显示的个人信息 -->
+            <div ng-if="user" title="显示用户信息的地方">
                 <h4 ng-bind="user.name"></h4>
             </div>
         </div>
     </header>
-    <div ng-controller='article'>
+    <div ng-controller='article' title="关于文章的一些基本操作">
         <button ng-click="popup.show()">编辑文章</button>
         <div>
             <section>
@@ -73,6 +72,7 @@
                 <div ng-bind='articleTable[9].content'></div>
             </section>
         </div>
+        <button ng-click="getArticle(1)">下一页</button>
     </div>
     <script src="./js/function.js"></script>
     <script src="./index.js"></script>

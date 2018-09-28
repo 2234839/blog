@@ -5,3 +5,7 @@ var log = console.log
 // user.getUser(60,(d)=>{
 //     console.log(d)
 // }
+
+// user.getArticle(0,10,(d)=>{
+//     console.log(d)
+// })

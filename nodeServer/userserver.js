@@ -75,9 +75,15 @@ function article(request, response, cookie, sendFiles, postdata) {
  * 获取文章
  */
 function getArticle(request, response, cookie, sendFiles, postdata) {
-    user.getArticle(0,10,(d)=>{
-        d.type="results"
-        d.message="获取文章成功"
+    // var post=fun.stringParse(postdata.toString) TODO:stringParse函数报错 TypeError: str.replace is not a function  找不到原因
+    var post=JSON.parse(postdata)
+    user.getArticle(post.start,post.end,(d)=>{
+        if(d instanceof Error){
+            d.message="获取文章失败，大概率是超出范围了"
+        }else{
+            d.type="results"
+            d.message="获取文章成功"
+        }
         sendFiles(d,response)
     })
 }

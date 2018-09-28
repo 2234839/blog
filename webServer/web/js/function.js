@@ -28,7 +28,7 @@ var post = (data, action, callback = (user) => { alert(user.message) }) => {
     xhr.onload = function () {
         callback(JSON.parse(xhr.response))
     }
-    xhr.send(data);
+    xhr.send(typeof data=="string"?data:JSON.stringify(data));
 }
 /**
  * 实现弹窗功能;

@@ -48,22 +48,51 @@ state.controller('user', function ($scope, $compile, ) {
         $scope.addNode.pop.show()
     }
     $scope.log = console.log
-});
+})
 state.controller('article', function ($scope, $compile) {
     $scope.articleTable = []
-    post("", 'getArticle', (d) => {//获取文章
-        d.results.forEach(element => {
-            $scope.$apply(() => {
-                $scope.articleTable.push(element)
+    //保存当前是第几页
+    $scope.page=1
+    /**
+     * 一般只需要 pageChange 参数 
+     * @param {int} pageChange 控制翻页  1 或者 -1
+     * @param {int} start 从第几行
+     * @param {int} end 到第几行
+     */
+    $scope.getArticle=(pageChange,start=0,end=10)=>{
+        let data={start:start,end:end}
+        if(typeof pageChange != 'undefined'){
+            if($scope.page+pageChange>=1)
+                $scope.page=$scope.page+pageChange
+            data.start=($scope.page-1)*10
+            data.end=$scope.page*10
+        }
+        post(data, 'getArticle', (d) => {//获取文章
+            if(d.type=="Error"){
+                if(pageChange>0)
+                    alert("这已经是最后面了哦！")
+                else
+                    alert("这已经是前后面了哦！")
+                return
+            }//console.log(`共有 ${d.num} 篇文章，计 ${d.num/10} 页`)
+            d.results.forEach(element => {
+                $scope.$apply(() => {
+                    if($scope.articleTable.length>=10){
+                        $scope.articleTable.unshift(element)
+                        $scope.articleTable.pop()
+                    }else
+                        $scope.articleTable.push(element)
+                });
             });
-        });
-    })
+        })
+    };
+    $scope.getArticle()//立即调用以加载数据
     $scope.popup=new popup();
     $scope.article={
         textname: '',
         des: '',
         content: ''
-    };//使用立即执行的匿名函数需要添加分号
+    };//因为下面那里使用了立即执行的匿名函数所以需要添加分号
     (()=>{//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器
         $scope.popup.mask.id="editArticle"
         var html = `<input type="text" name="textname" ng-model="article.textname"><br>

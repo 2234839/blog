@@ -3,11 +3,13 @@ var mysql=require('mysql')
 const config=require('./nodeServerConfig').config
 
 var connection = mysql.createConnection(config.mysql);
-try {
-  connection.connect();
-} catch (error) {
-  console.error("致命性错误，无法连接数据库");
-}
+
+connection.connect((err)=>{//断开连接的处理不正确
+  if(err)
+    console.log("连接数据库失败",err)
+  else
+    console.log("连接数据库成功")
+})
 
 /**
  * 提供对sql语句的编码，防范sql注入

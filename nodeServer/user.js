@@ -104,12 +104,23 @@ exports.article = function (article,user,callback) {
     })
 }
 /**
- * 获取文章
+ * 获取文章返回一个对象，里面包含results[数据库返回的列表]以及num->article的总行数,当数据库返回的是空数据组时query会自动返回error
  */
-exports.getArticle = function (start,end,callback) {
-    sql.query(`select * from article limit ${start},${end};`,0,(results) => {
-        //results.message="获取文章成功"
-        querySuccess(results,callback,{results},new Error("获取文章失败，原因未知"))
+exports.getArticle = function (start=0,end=10,callback) {
+    exports.getTableNum("article",(num)=>{//获取article 的总行数
+        // ORDER BY num desc 降序排列来从后面开始取
+        sql.query(`select * from article ORDER BY num desc limit ?,?`,[start,end],(results) => {
+            querySuccess(results,callback,{results,num},new Error("获取文章失败，原因未知"))
+        })
+    })
+}
+/**
+ * 获取一个表有多少行
+ * 向回调函数返回一个数值或者error
+ */
+exports.getTableNum=function(tableNum,callback){
+    sql.query(`select count(*) from ${tableNum};`,0,(results) => {
+        querySuccess(results,callback,results[0]["count(*)"],new Error("获取行数失败，原因未知"))
     })
 }
 /**
