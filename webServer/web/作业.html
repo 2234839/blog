@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./js/angularJS.js"></script>
+    <title>Document</title>
+    <style>
+        td,th{
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body ng-app="state" ng-controller="goods">
+    <table>
+        <tr>
+            <th>商品名称</th><th>数量</th><th>单价</th><th>小计</th><th>操作</th>
+        </tr>
+        <tr ng-repeat="x in goodsList">
+            <td>{{x.name}}</td>
+            <td><input type="number" ng-model="x.number"></td>
+            <td>{{x.price}}</td>
+            <td>{{x.number*x.price}}</td>
+            <td><button ng-click="del(x)">{{x.operating}}</button></td> 
+        </tr>
+    </table>
+</body>
+</html>
+<script>
+var state = angular.module('state', []);//, ['ngSanitize']
+/**
+ * 注册控制器，用来注册？,需要添加一个标签来激活此模块
+ */
+state.controller('goods', function ($scope) {
+    function add(name,number,price,operating){
+        $scope.goodsList.push({
+            name:name,
+            number:number,
+            price:price,
+            operating:operating
+        })
+    }
+    $scope.del=function(x){
+        var index=$scope.goodsList.indexOf(x)
+        $scope.goodsList.splice(index,1)
+    }
+    $scope.goodsList=[]
+    add("钢笔",1,20,"删除")
+    add("笔记本",1,5,"删除")
+    add("文具盒",1,40,"删除")
+})
+</script>

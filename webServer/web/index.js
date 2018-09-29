@@ -56,7 +56,7 @@ state.controller('article', function ($scope, $compile) {
     $scope.Math=Math//为了在angular表达式中使用Math
     //保存当前是第几页
     $scope.page = 1
-    $scope.num=0//文章总数目
+    $scope.num=0///
     /**
      * 一般只需要 pageChange 参数 
      * @param {int} pageChange 控制翻页  1 或者 -1
