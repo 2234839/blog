@@ -48,7 +48,7 @@ function popup() {
     this.mask.appendChild(this.pop)
     this.show = () => { document.body.appendChild(this.mask) }
     this.hidden = () => { this.mask.remove() }
-    //点击遮罩层关闭弹窗
+    //点击off关闭弹窗
     this.off.addEventListener('click', () => {
         this.hidden()
     })

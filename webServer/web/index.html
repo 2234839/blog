@@ -19,16 +19,16 @@
             链接
         </nav>
         <div>
-            <div ng-if="!user" title="如果是游客则提供登录注册的功能">
+            <div ng-if="!user" title="提供注册与登录">
                 <button ng-click="addRegisterNode($event.target)">注册</button>
                 <button ng-click="addLoginNode($event.target)">登录</button>
             </div>
-            <div ng-if="user" title="显示用户信息的地方">
+            <div ng-if="user" title="用户信息">
                 <h4 ng-bind="user.name"></h4>
             </div>
         </div>
     </header>
-    <div ng-controller='article' title="关于文章的一些基本操作">
+    <div ng-controller='article' title="文章列表">
         <button ng-click="popup.show()">编辑文章</button>
         <div>
             <section>
@@ -72,7 +72,13 @@
                 <div ng-bind='articleTable[9].content'></div>
             </section>
         </div>
-        <button ng-click="getArticle(1)">下一页</button>
+        <button ng-click="getArticle(-1)" title="上一页">上一页</button>
+        <button ng-if="page-1>0 && page-1<=Math.ceil(num/10)" ng-click="getArticle(-1)">{{page-1}}</button>
+        <button >{{page}}</button>
+        <button ng-if="page+1>0 && page+1<=Math.ceil(num/10)" ng-click="getArticle(+1)">{{page+1}}</button>
+        <button ng-if="page+2>0 && page+2<=Math.ceil(num/10)" ng-click="getArticle(+2)">{{page+2}}</button>
+        <button>...</button>
+        <button ng-click="getArticle(1) " title="下一页">下一页</button>
     </div>
     <script src="./js/function.js"></script>
     <script src="./index.js"></script>

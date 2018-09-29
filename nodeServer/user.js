@@ -108,6 +108,7 @@ exports.article = function (article,user,callback) {
  */
 exports.getArticle = function (start=0,end=10,callback) {
     exports.getTableNum("article",(num)=>{//获取article 的总行数
+        console.log(start,end)
         // ORDER BY num desc 降序排列来从后面开始取
         sql.query(`select * from article ORDER BY num desc limit ?,?`,[start,end],(results) => {
             querySuccess(results,callback,{results,num},new Error("获取文章失败，原因未知"))
