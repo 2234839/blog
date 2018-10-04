@@ -28,60 +28,25 @@
             </div>
         </div>
     </header>
-    <div ng-controller='article' title="文章列表">
+    <div ng-controller='article' >
         <button ng-click="popup.show()">编辑文章</button>
-        <div>
-            <section>
-                <h4 ng-bind='articleTable[0].textname'></h4>
-                <div ng-bind='articleTable[0].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[1].textname'></h4>
-                <div ng-bind='articleTable[1].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[2].textname'></h4>
-                <div ng-bind='articleTable[2].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[3].textname'></h4>
-                <div ng-bind='articleTable[3].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[4].textname'></h4>
-                <div ng-bind='articleTable[4].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[5].textname'></h4>
-                <div ng-bind='articleTable[5].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[6].textname'></h4>
-                <div ng-bind='articleTable[6].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[7].textname'></h4>
-                <div ng-bind='articleTable[7].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[8].textname'></h4>
-                <div ng-bind='articleTable[8].content'></div>
-            </section>
-            <section>
-                <h4 ng-bind='articleTable[9].textname'></h4>
-                <div ng-bind='articleTable[9].content'></div>
+        <div title="文章列表">
+            <section ng-repeat="x in articleTable">
+                <h4 ng-bind='x.textname'></h4>
+                <div ng-bind='x.content'></div>
             </section>
         </div>
-        <button ng-click="getArticle(-1)" title="上一页">上一页</button>
-        <button ng-if="page-1>0 && page-1<=Math.ceil(num/10)" ng-click="getArticle(-1)">{{page-1}}</button>
-        <button >{{page}}</button>
-        <button ng-if="page+1>0 && page+1<=Math.ceil(num/10)" ng-click="getArticle(+1)">{{page+1}}</button>
-        <button ng-if="page+2>0 && page+2<=Math.ceil(num/10)" ng-click="getArticle(+2)">{{page+2}}</button>
-        <button>...</button>
-        <button ng-click="getArticle(1) " title="下一页">下一页</button>
+        <div title="页面切换">
+            <button ng-click="getArticle(-1)" title="上一页">上一页</button>
+            <button ng-if="page-1>0 && page-1<=Math.ceil(num/10)" ng-click="getArticle(-1)">{{page-1}}</button>
+            <button >{{page}}</button>
+            <button ng-if="page+1>0 && page+1<=Math.ceil(num/10)" ng-click="getArticle(+1)">{{page+1}}</button>
+            <button ng-if="page+2>0 && page+2<=Math.ceil(num/10)" ng-click="getArticle(+2)">{{page+2}}</button>
+            <button>...</button>
+            <button ng-click="getArticle(1) " title="下一页">下一页</button>
+        </div>
     </div>
     <script src="./js/function.js"></script>
     <script src="./index.js"></script>
 </body>
-
 </html>
