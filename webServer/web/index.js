@@ -52,54 +52,60 @@ state.controller('user', function ($scope, $compile, ) {
  * 关于文章的一些操作
  */
 state.controller('article', function ($scope, $compile) {
-    $scope.articleTable = []
-    $scope.Math=Math//为了在angular表达式中使用Math
-    //保存当前是第几页
-    $scope.page = 1
-    $scope.num=0///
+    $scope.articleTable = []//存储获得的文章对象
+    $scope.Math = Math//为了在angular表达式中使用Math对象
+    $scope.num = 0//总共有多少篇文章
+    $scope.pageNum = []//存储页码，用于跳转的 select
+    $scope._page = 0//保存当前是第几页
+    Object.defineProperty($scope, "page", { 
+        set: (x) => {
+            console.log("page",x)
+            $scope._page = x
+            $scope.getArticle($scope._page)
+        }, 
+        get: () => {return $scope._page }
+    });
     /**
-     * 一般只需要 pageChange 参数 
-     * @param {int} pageChange 控制翻页  1 或者 -1
+     * 从服务器获取其他页的文章
+     * @param {int} i 前进i页或后退i页
+     */
+    $scope.jump=(i)=>{
+        if($scope.page+i<0){
+            alert("这已经是第一页了。")
+            return
+        }else if($scope.page+i>Math.ceil($scope.num/10)-1){
+            alert("这已经是最后一页了。")
+            return
+        }
+        $scope.page+=i
+    }
+    /**
+     * 从服务器获取文章加载到页面中，一般只需要 pageChange 参数 
+     * @param {int} pageChange 跳到第几页
      * @param {int} start 从第几行
      * @param {int} end 到第几行
      */
-    $scope.getArticle = (pageChange, start = 0, end = 10) => {
+    $scope.getArticle = (pageChange=0, start = 0, end = 10) => {
         let data = { start: start, end: end }
-        let pageTemp = $scope.page
-        if (typeof pageChange != 'undefined') {
-            if (pageTemp + pageChange >= 1)
-                pageTemp += pageChange
-            data.start = (pageTemp - 1) * 10
-            data.end = pageTemp * 10
-        }
+        data.start = pageChange  * 10
+        data.end = (pageChange+1) * 10
         post(data, 'getArticle', (d) => {//获取文章
             console.table(d.results)
-            if (d.type == "Error") {
-                if (pageChange > 0)
-                    alert("这已经是最后面了哦！")
-                return
-            }//console.log(`共有 ${d.num} 篇文章，计 ${d.num/10} 页`)
-            if ($scope.articleTable.length > 0 && d.results[0].num == $scope.articleTable[0].num) {
-                alert("这已经是最前面了哦！")
-                return
-            }
+            var _articleTable=[]
+            d.results.forEach(element => {
+                _articleTable.push(element)
+            });
             $scope.$apply(() => {
-                d.results.forEach(element => {
-                    if ($scope.articleTable.length >= 10 && pageChange > 0) {
-                        $scope.articleTable.unshift(element)
-                        $scope.articleTable.pop()
-                    } else if ($scope.articleTable.length >= 10 && pageChange < 0) {
-                        $scope.articleTable.shift()
-                        $scope.articleTable.push(element)
-                    } else
-                        $scope.articleTable.push(element)
-                });
-                $scope.page = pageTemp
-                $scope.num=d.num;
+                $scope.articleTable=_articleTable
+                $scope.num = d.num;
+                var pageCount=Math.ceil($scope.num / 10)
+                for (let index = 0; index < pageCount; index++) {
+                    if ($scope.pageNum[index] == undefined)
+                        $scope.pageNum[index] =index
+                }
             });
         })
     };
-    $scope.getArticle()//立即调用以加载数据
     $scope.popup = new popup();
     $scope.article = {
         textname: '',
@@ -120,9 +126,16 @@ state.controller('article', function ($scope, $compile) {
      */
     $scope.upArticle = () => {
         post(JSON.stringify($scope.article), 'article', (d) => {
-            alert(d.message)
-            if (d.hasOwnProperty('id'))//没有id属性说明没有发布成功
+            if (d.hasOwnProperty('id')){//没有id属性说明没有发布成功
                 $scope.popup.hidden()
+               
+                if($scope.page==0){
+                    $scope.page=0
+                }
+                alert(d.message)
+            }else{
+                alert("很遗憾，发布失败，可能是网络原因。")
+            }
         })
     }
 })
