@@ -41,6 +41,12 @@ state.controller('user', function ($scope, $compile, ) {
     $scope.addLoginNode = () => {
         $scope.addNode(`<button ng-click="login()">登录</button> <button ng-click="addRegisterNode()">去注册</button>`)
     }
+    /**
+     * 注销当前账号TODO:还没有和服务器对接
+     */
+    $scope.cancellation=()=>{
+        $scope.user = false
+    }
     $scope.addNode = (html) => {
         var loginHtml = inputHtml + html
         $scope.addNode.pop = new popup()
