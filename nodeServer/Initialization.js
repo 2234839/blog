@@ -5,11 +5,12 @@ var sql = require('./MySql.js');
 //创建用户表
 var sqltext =[ `create table user
 				(id int auto_increment not null primary key,
-				name varchar(20),
+				name varchar(20) not null,
 				password varchar(100),
 				data LONGTEXT,
 				msg LONGTEXT,
-				cookies varchar(40)
+				cookies varchar(40),
+				UNIQUE (name)
 				);`,
 // 创建文章表  describe 这tm是关键字....不能用这个为名字
 				`create table article

@@ -8,7 +8,7 @@ state.controller('user', function ($scope, $compile, ) {
     $scope.user = JSON.parse(localStorage.getItem('user'))
     var inputHtml = ` <input type="text" ng-model="name"><br/>
                     <input type="password" ng-model="password"><br/>`
-    //注册节点的生成
+    //注册
     $scope.register = () => {
         post(`name=${$scope.name}&password=${$scope.password}`, 'register', (user) => {
             alert(user.message)
@@ -22,22 +22,24 @@ state.controller('user', function ($scope, $compile, ) {
     $scope.addRegisterNode = () => {
         $scope.addNode(`<button ng-click="register()">注册</button>`)
     }
-    //登录节点的生成
-    $scope.login = () => {
-        post(`name=${$scope.name}&password=${$scope.password}`, 'login', (user) => {
+    //登录
+    $scope.login = (userLogin=`name=${$scope.name}&password=${$scope.password}`) => {
+        post(userLogin, 'login', (user) => {
             alert(user.message)
             if (!user.hasOwnProperty("type")) {
-                $scope.addNode.pop.hidden()
+                if($scope.addNode.hasOwnProperty('pop'))//当存在遮罩层的时候影藏遮罩层，若不存在则这是一次纯粹的登录（如自动登录不涉及用户操作）
+                    $scope.addNode.pop.hidden()
                 $scope.$apply(() => {//angular的数据监听对于回调函数中的数据改变是存在问题的，所以我们需要自己调用apply
                     $scope.user = user
                     //保存用户的基本信息到本地
-                    localStorage.setItem('user', JSON.stringify($scope.user))
                 });
+                localStorage.setItem('user', JSON.stringify($scope.user))
+                console.log("登录成功",user);
             }
         })
     }
     $scope.addLoginNode = () => {
-        $scope.addNode(`<button ng-click="login()">登录</button>`)
+        $scope.addNode(`<button ng-click="login()">登录</button> <button ng-click="addRegisterNode()">去注册</button>`)
     }
     $scope.addNode = (html) => {
         var loginHtml = inputHtml + html
@@ -47,6 +49,9 @@ state.controller('user', function ($scope, $compile, ) {
         $scope.addNode.pop.show()
     }
     $scope.log = console.log
+    //自动登录
+    if($scope.user && $scope.user.hasOwnProperty('name'))//由于浏览器会自动提供cookies故此处只需要提供name
+        $scope.login("name="+$scope.user.name)
 })
 /**
  * 关于文章的一些操作
@@ -57,9 +62,9 @@ state.controller('article', function ($scope, $compile) {
     $scope.num = 0//总共有多少篇文章
     $scope.pageNum = []//存储页码，用于跳转的 select
     $scope._page = 0//保存当前是第几页
-    Object.defineProperty($scope, "page", { 
+    Object.defineProperty($scope, "page", { //强化page的功能，设置page则直接跳转
         set: (x) => {
-            console.log("page",x)
+            //console.log("page",x)
             $scope._page = x
             $scope.getArticle($scope._page)
         }, 
@@ -113,7 +118,7 @@ state.controller('article', function ($scope, $compile) {
         content: ''
     };//因为下面那里使用了立即执行的匿名函数所以需要添加分号
     (() => {//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器
-        $scope.popup.mask.id = "editArticle"
+        $scope.popup.pop.className = "editArticle"
         var html = `<input type="text" name="textname" ng-model="article.textname"><br>
         <input type="text" name="des" ng-model="article.des"><br>
         <textarea name="content" cols="60" rows="20" ng-model="article.content"></textarea><br>
@@ -125,16 +130,13 @@ state.controller('article', function ($scope, $compile) {
      * 上传文章
      */
     $scope.upArticle = () => {
-        post(JSON.stringify($scope.article), 'article', (d) => {
+        post(JSON.stringify($scope.article), 'article', (d) => {console.log(d);
+            alert(d.message)//打印返回的消息
             if (d.hasOwnProperty('id')){//没有id属性说明没有发布成功
                 $scope.popup.hidden()
-               
-                if($scope.page==0){
+                if($scope.page==0){//如果当前在第一页则自动刷新
                     $scope.page=0
                 }
-                alert(d.message)
-            }else{
-                alert("很遗憾，发布失败，可能是网络原因。")
             }
         })
     }

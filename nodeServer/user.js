@@ -3,7 +3,7 @@
  * 对用户的一些操作 如增删改查之类的
  */
 var sql = require('./MySql');
-exports.user=user
+exports.user = user
 /**
  * user对象的构造函数
  * @param {int} id id
@@ -12,19 +12,19 @@ exports.user=user
  * @param {object} data data
  * @param {object} msg msg
  */
-function user(id=NaN,name="",password="",data={},msg={},cookies=Math.random().toString(36).substr(2)){
-    this.id=id
-    this.name=name
-    this.password=password
-    this.data=data
-    this.msg=msg
-    this.cookies=cookies
+function user(id = NaN, name = null, password = null, data = {}, msg = {}, cookies = Math.random().toString(36).substr(2)) {
+    this.id = id
+    this.name = name
+    this.password = password
+    this.data = data
+    this.msg = msg
+    this.cookies = cookies
 }
-function article(id=0,textname="",des="",content=""){
-    this.id=id
-    this.des=des
-    this.content=content
-    this.textname=textname
+function article(id = 0, textname = "", des = "", content = "") {
+    this.id = id
+    this.des = des
+    this.content = content
+    this.textname = textname
 }
 /**
  * 添加一个用户到数据库中
@@ -33,25 +33,24 @@ function article(id=0,textname="",des="",content=""){
  */
 exports.addUser = function (user, callback) {
     //模块会将json对象直接转为 “a=0” 这种形式的 ，所以需要将他们序列化一下
-    exports.queryUser(user.name,(d)=>{
-        if(d.length!=0){
-            callback(new Error("用户已存在"))
-        }else{
-            sql.query('INSERT INTO user VALUES (?,?,?,?,?,?)', [0,user.name,user.password,JSON.stringify(user.data),JSON.stringify(user.msg),user.cookies], (results) => {
-                querySuccess(results,callback,{id:results.insertId,message:"添加成功"},new Error("添加用户失败，原因未知"))
-            })
+    sql.query('INSERT INTO user VALUES (?,?,?,?,?,?)', [0, user.name, user.password, JSON.stringify(user.data), JSON.stringify(user.msg), user.cookies], (results) => {
+        let err= new Error("添加用户失败，原因未知")
+        if(results instanceof Error){
+            if(results.errno==1062)
+                err=new Error("注册失败，此用户名已存在！")
         }
+        querySuccess(results, callback, { id: results.insertId, message: "添加成功" },err)
     })
 }
 /**
  * 登录功能
  * @param {object} user 用户模型
  */
-exports.login=(user,callback)=>{
-    sql.query('select * from user where (name=? and password=?) or (name=? and cookies=?)', [user.name, user.password,user.name,user.cookies], (results) => {
-        if(typeof results[0]=="object")
-            results[0].message="登录成功";
-        querySuccess(results,callback,results[0],new Error("登录失败，请检查账号密码"))
+exports.login = (user, callback) => {
+    sql.query('select * from user where (name=? and password=?) or (name=? and cookies=?)', [user.name, user.password, user.name, user.cookies], (results) => {
+        if (typeof results[0] == "object")
+            results[0].message = "登录成功";
+        querySuccess(results, callback, results[0], new Error("登录失败，请检查账号密码"))
     })
 }
 /**
@@ -61,7 +60,7 @@ exports.login=(user,callback)=>{
  */
 exports.removeUser = function (id, callback) {
     sql.query('DELETE FROM user WHERE id=?', [id], (results) => {
-        querySuccess(results,callback,"注销成功",["注销失败", results])
+        querySuccess(results, callback, "注销成功", ["注销失败", results])
     })
 }
 /**
@@ -69,9 +68,9 @@ exports.removeUser = function (id, callback) {
  * @param {objiect}} user 完整的用户对象需要包含id属性
  * @param {Function} callback 回调函数
  */
-exports.updateUser = function (user,callback) {
+exports.updateUser = function (user, callback) {
     sql.query('UPDATE user SET name=?,password=?,data=?,msg=? where id=?', [user.name, user.password, JSON.stringify(user.data), JSON.stringify(user.msg), user.id], (results) => {
-        querySuccess(results,callback,"修改成功",["修改失败", results])
+        querySuccess(results, callback, "修改成功", ["修改失败", results])
     })
 }
 /**
@@ -79,7 +78,7 @@ exports.updateUser = function (user,callback) {
  * @param {string} name 要查询的用户名字
  * @param {Function} callback 回调函数
  */
-exports.queryUser = function (name,callback) {
+exports.queryUser = function (name, callback) {
     sql.query('select * from user where name=?', [name], (results) => {
         callback(results)
     })
@@ -90,7 +89,7 @@ exports.queryUser = function (name,callback) {
  * @param {Function} callback 回调函数
  */
 exports.getUser = function (id, callback) {
-    sql.query('select * from user where id=?',id, (value) => {
+    sql.query('select * from user where id=?', id, (value) => {
         callback(value[0])
     })
 }
@@ -98,20 +97,20 @@ exports.getUser = function (id, callback) {
  * 发布文章的函数
  * @param {*} article 文章对象
  */
-exports.article = function (article,user,callback) {
-    sql.query('INSERT INTO article VALUES (0,?,?,?,?,?)',[user.id,user.name,article.textname,article.des,article.content], (results) => {
-        querySuccess(results,callback,{id:results.insertId,message:"发布成功"},new Error("发布文章失败，原因未知"))
+exports.article = function (article, user, callback) {
+    sql.query('INSERT INTO article VALUES (0,?,?,?,?,?)', [user.id, user.name, article.textname, article.des, article.content], (results) => {
+        querySuccess(results, callback, { id: results.insertId, message: "发布成功" }, new Error("发布文章失败，原因未知"))
     })
 }
 /**
  * 获取文章返回一个对象，里面包含results[数据库返回的列表]以及num->article的总行数,当数据库返回的是空数据组时query会自动返回error
  */
-exports.getArticle = function (start=0,end=10,callback) {
-    exports.getTableNum("article",(num)=>{//获取article 的总行数
-        console.log(start,end)
+exports.getArticle = function (start = 0, end = 10, callback) {
+    exports.getTableNum("article", (num) => {//获取article 的总行数
+        console.log(start, end)
         // ORDER BY num desc 降序排列来从后面开始取
-        sql.query(`select * from article ORDER BY num desc limit ?,?`,[start,end],(results) => {
-            querySuccess(results,callback,{results,num},new Error("获取文章失败，原因未知"))
+        sql.query(`select * from article ORDER BY num desc limit ?,?`, [start, end], (results) => {
+            querySuccess(results, callback, { results, num }, new Error("获取文章失败，原因未知"))
         })
     })
 }
@@ -119,9 +118,9 @@ exports.getArticle = function (start=0,end=10,callback) {
  * 获取一个表有多少行
  * 向回调函数返回一个数值或者error
  */
-exports.getTableNum=function(tableNum,callback){
-    sql.query(`select count(*) from ${tableNum};`,0,(results) => {
-        querySuccess(results,callback,results[0]["count(*)"],new Error("获取行数失败，原因未知"))
+exports.getTableNum = function (tableNum, callback) {
+    sql.query(`select count(*) from ${tableNum};`, 0, (results) => {
+        querySuccess(results, callback, results[0]["count(*)"], new Error("获取行数失败，原因未知"))
     })
 }
 /**
@@ -131,17 +130,17 @@ exports.getTableNum=function(tableNum,callback){
  * @param {any} okMsg 成功之后返回的消息
  * @param {array} failMsg 失败之后返回的数组
  */
-function querySuccess(results,callback,okMsg,failMsg) {
+function querySuccess(results, callback, okMsg, failMsg) {
     console.log(results)
-    if(results==undefined ||results instanceof Error){
+    if (results == undefined || results instanceof Error) {
         callback(failMsg)
-        return 
+        return
     }
-    if(typeof callback!='function')
+    if (typeof callback != 'function')
         throw new Error("参数callback应当为一个函数")
     if (results.affectedRows == 1)
         callback(okMsg)
-    else if(results.length>=1)//TODO:这里是当数据来自纯粹的查询时他是没有affectendRows的，返回的是一个数组
+    else if (results.length >= 1)//TODO:这里是当数据来自纯粹的查询时他是没有affectendRows的，返回的是一个数组
         callback(okMsg)//TODO:所以这里的逻辑不够清晰，对情况的照顾不够周全
     else
         callback(failMsg)

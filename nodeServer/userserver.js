@@ -19,6 +19,8 @@ var userTable={}
 function register(request, response, cookie, sendFiles, postdata){
     var obj=fun.stringParse(postdata.toString())
     var use=new user.user(obj.id,obj.name,obj.password,obj.data,obj.msg)
+    console.log(use);
+    
     user.addUser(use,(d)=>{
         if(d instanceof Error)
             sendFiles(d,response)//添加用户失败
@@ -43,12 +45,12 @@ function login(request, response, cookie, sendFiles, postdata){
             response.setHeader('Set-Cookie', "loginCookie="+d.cookies+"; expires= Fri, 31 Dec 9999 23:59:59 GMT;");
             delete d.password
             sendFiles(d,response)
-            userTable[d.cookies]=d
+            userTable[d.cookies]=d//将此用户的cookie及个人信息记入内存
         }
     })
 }
 /**
- * 判断用户是否已登录
+ * 判断用户是否已登录，此处仅判断了用户是否在服务器开启期间登录
  * @param {string} cookies cookies
  */
 function isLogin(cookies){

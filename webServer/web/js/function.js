@@ -38,11 +38,14 @@ var post = (data, action, callback = (user) => { alert(user.message) }) => {
  * 一切样式最好另行添加
  */
 function popup() {
+    //背景
     this.mask = document.createElement('div')
-    this.mask.id = "mask"
     this.mask.className = "popupMask"
+    //内容主体
     this.pop = document.createElement('div')
-    this.off=document.createElement('div')
+    this.pop.className = "popupPop"
+    //关闭按钮
+    this.off=document.createElement('button')
     this.off.className = "popupOff"
     this.mask.appendChild(this.off)
     this.mask.appendChild(this.pop)
@@ -51,6 +54,11 @@ function popup() {
     //点击off关闭弹窗
     this.off.addEventListener('click', () => {
         this.hidden()
+    })
+    //点击背景关闭弹窗
+    this.mask.addEventListener('click', (e) => {
+        if(e.target==this.mask)
+            this.hidden()
     })
 }
 /**
