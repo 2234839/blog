@@ -117,7 +117,10 @@ state.controller('article', function ($scope, $compile) {
             });
         })
     };
+    //编辑文章
     $scope.popup = new popup();
+    $scope.editSate=false//是否处于修改文章的状态
+    $scope.editArticle
     $scope.article = {
         textname: '',
         des: '',
@@ -125,18 +128,31 @@ state.controller('article', function ($scope, $compile) {
     };//因为下面那里使用了立即执行的匿名函数所以需要添加分号
     (() => {//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器
         $scope.popup.pop.className = "editArticle"
-        var html = `<input type="text" name="textname" ng-model="article.textname"><br>
-        <input type="text" name="des" ng-model="article.des"><br>
-        <textarea name="content" cols="60" rows="20" ng-model="article.content"></textarea><br>
-        <button ng-click="upArticle()">提交</button>`
+        var html = `
+        <div ng-if="editSate" title="修改文章">
+            <input type="text" name="textname" ng-model="editArticle.textname"><br>
+            <input type="text" name="des" ng-model="editArticle.des"><br>
+            <textarea name="content" cols="60" rows="20" ng-model="editArticle.content"></textarea><br>
+            <button ng-click="updateArticle()">修改</button>
+            <button ng-click="cancel()">取消</button>
+        </div>
+        <div ng-if="!editSate" title="编辑文章">
+            <input type="text" name="textname" ng-model="article.textname"><br>
+            <input type="text" name="des" ng-model="article.des"><br>
+            <textarea name="content" cols="60" rows="20" ng-model="article.content"></textarea><br>
+            <button ng-click="upArticle()">提交</button>
+        </div>
+        `
         element = $scope.popup.pop;
         addNode(element, html, $compile, $scope)
     })()
     /**
      * 上传文章
+     * @param {string} path 
+     * @param {article} article 文章对象
      */
-    $scope.upArticle = () => {
-        post(JSON.stringify($scope.article), 'article', (d) => {console.log(d);
+    $scope.upArticle = (path='article',article=$scope.article) => {
+        post(JSON.stringify(article),path, (d) => {
             alert(d.message)//打印返回的消息
             if (d.hasOwnProperty('id')){//没有id属性说明没有发布成功
                 $scope.popup.hidden()
@@ -146,18 +162,48 @@ state.controller('article', function ($scope, $compile) {
             }
         })
     }
+    //修改文章
+    $scope.updateArticle=()=>{
+        $scope.upArticle("updateArticle",$scope.editArticle)
+        $scope.editSate=false
+        $scope.popup.hidden()
+    }
+    //取消修改文章
+    $scope.cancel=()=>{
+        $scope.popup.hidden()
+        $scope.editSate=false
+    } 
+    $scope.openEdit=(article)=>{
+        if(!confirm("确认修改 《"+article.textname+"》？"))
+            return
+        $scope.editSate=true
+        $scope.editArticle=article
+        $scope.popup.show()
+    }
     /**
      * 删除文章
      * @param {int} num 文章编号
      */
     $scope.deleteArticle = (num) => {
+        if(!confirm("确定删除？"))
+            return
         if(isNaN(num))
             throw new Error("文章编号错误")
         var user=JSON.parse(localStorage.getItem('user'))
         post(JSON.stringify({user:user,article:{num:num}}), 'deleteArticle', (d) => {
-            console.log(d)
+            for (let index = 0; index < $scope.articleTable.length; index++) {
+                const element = $scope.articleTable[index];
+                if(element.num==num){//移除文章数组中的这条数据
+                    $scope.$apply(()=>{
+                        $scope.num-=1
+                        const article=$scope.articleTable.splice(index, 1);
+                        console.log("删除文章成功",article[0]);                        
+                    })
+                    break
+                }
+            }
             alert(d.message)
         })
+
     }
-    $scope.deleteArticle(42)
 })

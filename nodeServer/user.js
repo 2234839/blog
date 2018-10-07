@@ -175,3 +175,9 @@ exports.deleteArticle =async function (num) {
         return "删除成功"
     return "删除失败"
 }
+
+exports.updateArticle=async (article)=>{
+    return await sql.query('UPDATE article SET num=?,id=?,name=?,textname=?,des=?,content=? where num=?',
+        [article.num,article.id,article.name,article.textname,article.des,article.content,article.num])
+    
+}

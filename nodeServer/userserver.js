@@ -11,7 +11,8 @@ exports.function={//还需要在serverConfig 中添加路径
     "/login":login,
     "/article":article,
     '/getArticle':getArticle,
-    '/deleteArticle':deleteArticle
+    '/deleteArticle':deleteArticle,
+    '/updateArticle':updateArticle
 }
 var userTable={}
 /**
@@ -90,6 +91,21 @@ async function deleteArticle(request, response, cookie, sendFiles, postdata) {
         var message=await user.deleteArticle(post.article.num)
     }else{
         var message="您未拥有该文章的管理权"
+    }
+    sendFiles({message},response)
+}
+/**
+ * 修改文章的功能函数，要求postdata是article格式的json，TODO:此处未进行验证，存在安全隐患
+ */
+async function updateArticle(request, response, cookie, sendFiles, postdata){
+    article=JSON.parse(postdata)
+    const results=await user.updateArticle(article)
+    let message=""
+    if(results.affectedRows==1)
+        message="修改成功！"
+    else{
+        message="修改失败！"
+        console.error("修改失败",results);
     }
     sendFiles({message},response)
 }
