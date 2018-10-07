@@ -5,7 +5,9 @@ var log = console.log
 // user.getUser(60,(d)=>{
 //     console.log(d)
 // }
-
-// user.getArticle(0,10,(d)=>{
-//     console.log(d)
-// })
+setTimeout(()=>{
+    user.getArticle().then((a)=>{
+        console.log(a);
+        
+    })
+},1000)

@@ -3,7 +3,7 @@
  * 实际使用时可直接将密钥写在此处
  */
 var sql=require('./../../sql').config.mysql
-
+ 
 exports.config = {
     mysql:sql
     // mysql:{
