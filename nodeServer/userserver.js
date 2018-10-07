@@ -80,6 +80,11 @@ async function getArticle(request, response, cookie, sendFiles, postdata) {
  */
 async function deleteArticle(request, response, cookie, sendFiles, postdata) {
     var post=JSON.parse(postdata)
+    if(isNaN(post.article.num)){
+        var message="没有文章的编号或者该编号错误"
+        sendFiles({message},response)
+        return
+    }
     var articleResults=await user.getArticleNum(post.article.num)
     if(articleResults.name==userTable[post.user.cookies].name){//TODO:应该写一个更完善的管理机制
         var message=await user.deleteArticle(post.article.num)

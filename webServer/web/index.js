@@ -151,11 +151,13 @@ state.controller('article', function ($scope, $compile) {
      * @param {int} num 文章编号
      */
     $scope.deleteArticle = (num) => {
+        if(isNaN(num))
+            throw new Error("文章编号错误")
         var user=JSON.parse(localStorage.getItem('user'))
         post(JSON.stringify({user:user,article:{num:num}}), 'deleteArticle', (d) => {
             console.log(d)
             alert(d.message)
         })
     }
-    $scope.deleteArticle()
+    $scope.deleteArticle(42)
 })
