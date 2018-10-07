@@ -155,8 +155,6 @@ state.controller('article', function ($scope, $compile) {
         post(JSON.stringify({user:user,article:{num:num}}), 'deleteArticle', (d) => {
             console.log(d)
             alert(d.message)
-            是股份的公司
-            
         })
     }
     $scope.deleteArticle()
