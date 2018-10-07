@@ -148,6 +148,14 @@ exports.getArticle =async function (start = 0, end = 10) {
     return {results,num}
 }
 /**
+ * 获取指定编号的文章
+ * @param {int} num 文章编号
+ */
+exports.getArticleNum =async function (num) {
+    var results=await sql.query(`select * from article where num=?`, num)
+    return results[0]
+}
+/**
  * 获取一张表有多少行
  * @param {string} tableNum 表名
  * @returns {Promise} Promise对象,resolve返回行数
@@ -155,4 +163,15 @@ exports.getArticle =async function (start = 0, end = 10) {
 exports.getTableNum =async function (tableNum) {
     var results=await sql.query(`select count(*) from ${tableNum};`, 0)
     return results[0]["count(*)"]
+}
+/**
+ * 删除指定文章
+ * @param {int} num 文章编号
+ * @returns 返回是否成功
+ */
+exports.deleteArticle =async function (num) {
+    var results=await sql.query(`DELETE FROM article WHERE (num=?)`, num)
+    if(results.affectedRows==1)
+        return "删除成功"
+    return "删除失败"
 }

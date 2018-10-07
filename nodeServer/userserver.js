@@ -6,11 +6,12 @@ var user=require('./user')
 // var routeTable=require('./../webServer/config/serverConfig').config.routeTable
 // routeTable["/register"]=register
 // routeTable["/login"]=login
-exports.function={
+exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
     "/article":article,
-    '/getArticle':getArticle
+    '/getArticle':getArticle,
+    '/deleteArticle':deleteArticle
 }
 var userTable={}
 /**
@@ -73,4 +74,17 @@ async function getArticle(request, response, cookie, sendFiles, postdata) {
     results.type="results"
     results.message="获取文章成功"
     sendFiles(results,response)
+}
+/**
+ * 删除文章，提交的对象格式应为{article，user}
+ */
+async function deleteArticle(request, response, cookie, sendFiles, postdata) {
+    var post=JSON.parse(postdata)
+    var articleResults=await user.getArticleNum(post.article.num)
+    if(articleResults.name==userTable[post.user.cookies].name){//TODO:应该写一个更完善的管理机制
+        var message=await user.deleteArticle(post.article.num)
+    }else{
+        var message="您未拥有该文章的管理权"
+    }
+    sendFiles({message},response)
 }

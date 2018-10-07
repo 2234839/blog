@@ -51,7 +51,8 @@ var serverConfig = {
         "/register":userserver["/register"],
         "/login":userserver["/login"],
         "/article":userserver["/article"],//发布文章
-        "/getArticle":userserver["/getArticle"]//获取文章
+        "/getArticle":userserver["/getArticle"],//获取文章
+        "/deleteArticle":userserver["/deleteArticle"]//删除文章
         
     }
 };

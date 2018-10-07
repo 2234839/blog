@@ -79,7 +79,6 @@ function sendFiles(sPath, response) {
      */
     if (memoryFile.hasOwnProperty(sPath)) {
         response.end(memoryFile[sPath]);
-        console.timeEnd('request耗时')
     } else {
         fs.readFile(sRoot + sPath, function (err, data) {
             if (err) {// Redirect to 404 page
@@ -100,7 +99,6 @@ function sendFiles(sPath, response) {
             //TODO:目前处于调试阶段故关闭此功能 
             //memoryFile[sPath] = data;
             response.end(data);
-            console.timeEnd('request耗时')
         })
     }
 };
