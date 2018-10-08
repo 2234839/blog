@@ -160,7 +160,7 @@ exports.getArticleNum =async function (num) {
  * @param {string} tableNum 表名
  * @returns {Promise} Promise对象,resolve返回行数
  */
-exports.getTableNum =async function (tableNum) {
+exports.getTableNum =async function (tableNum) {//TODO: await 会将错误的结果直接抛出，这里曾经偶发过,故应该弄一个更完善的catch机制
     var results=await sql.query(`select count(*) from ${tableNum};`, 0)
     return results[0]["count(*)"]
 }

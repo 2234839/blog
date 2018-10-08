@@ -2,8 +2,7 @@
     transition: 1s;
 }
 body{
-    background-color: #008cff;
-    background-image: url("../image/山水.jpg")
+    background-color: #ec7c30;
 }
 header nav { /*导航栏*/
     margin-left: 0px;
@@ -18,7 +17,8 @@ h4{
 }
 section{
     position: relative;
-    height: 80px;
+    height: 100px;
+    width: 96%;
     padding-left: 10px;
     border: 0px #1f5bff solid;
     border-left-width: 9px;
@@ -28,18 +28,25 @@ section{
 
     margin-bottom: 18px;
     background-color: antiquewhite;
-    box-shadow:5px 5px 0px #443f3f87;
-    /* 动画 */
-    animation-duration: 3s;
-    animation-name: slidein;
+    box-shadow:9px 10px 0px #443f3f87;
+    /* 去除元素被选中时浏览器自动添加的丑的要死的灰色边框 */
+    outline:none;
 }
 section:focus{
+    border-color: #a93c00;  
     height: 300px;
     overflow: auto;
 }
 section h4{
     width: 60%;
+    /* 设置标题的下划线的样式 */
+    border: 0px #1f5bff solid;
+    border-bottom-width: 3px;
     float: left;
+}
+section:focus h4{
+    width: 80%;
+    border-color: #ff5a00;
 }
 section details{
     z-index: 2;
@@ -47,36 +54,43 @@ section details{
     right: 10px;
     position:absolute;
 }
+/* 管理按钮的css */
 section details summary{
     float: right;
     margin-right: 20px;
     margin-top: 10px;
 }
 section pre{
+    padding: 3px;
     position: absolute;
-    margin-top: 35px;
-    width: 96%;
+    margin-top: 40px;
+    width: 94%;
+    height:46px ;
+    overflow: hidden;
+    /* 文本溢出则显示省略号，但只能在横排截断上有用而如果是高度超出则无效 */
+    text-overflow:ellipsis;
+    border: #a93c00 solid 1px;
 }
-@keyframes slidein {
-    from {
-    }
-    to {
-    }
-  }
+/* 获得焦点后展开pre */
+section:focus pre{
+    overflow: auto;
+    text-overflow: clip;
+    height:81%;
+}
 
-  /* 滚动条的设置 */
-  ::-webkit-scrollbar-track-piece {
+/* 滚动条的设置,仅支持谷歌类的浏览器 */
+::-webkit-scrollbar-track-piece {
     background-color:#f8f8f8;
-    }
-    ::-webkit-scrollbar {
+}
+::-webkit-scrollbar {
     width:9px;
     height:9px;
-    }
-    ::-webkit-scrollbar-thumb {
+}
+::-webkit-scrollbar-thumb {
     background-color:#dddddd;
     background-clip:padding-box;
     min-height:28px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
+}
+::-webkit-scrollbar-thumb:hover {
     background-color:#bbb;
-    }
+}
