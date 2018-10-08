@@ -20,7 +20,7 @@ var server = http.createServer(function (request, response) {
     //转换url编码
     var path = decodeURI(request.url);
     //打印用户的请求路径与用户
-    console.log('用户:\x1b[34m',userTable.hasOwnProperty(cookie.loginCookie)?userTable[cookie.loginCookie].name:"[[游客]]",'\t\x1b[0m请求路径:\x1b[36m',path)
+    console.log('用户:\x1b[34m',userTable.hasOwnProperty(cookie.loginCookie)?userTable[cookie.loginCookie].name:'__\x1b[33m游客__','\t\x1b[0m请求路径:\x1b[36m',path)
     //收集客户端发来的数据
     var postdata = [];
     if (request.method === "POST") {
