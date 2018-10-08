@@ -6,6 +6,7 @@ var querystring = require('querystring');
 const fun = require('../../nodeServer/function')
 var contentType = require("./ContentType")
 var userTable = require('../../nodeServer/userserver').userTable//输出信息的调试用
+const log=require('./log').log//打印日志
 
 var sRoot = serverConfig.config.web_root;
 //路由表
@@ -30,19 +31,19 @@ var server = http.createServer(function (request, response) {
             if (routeTable.hasOwnProperty(path) && (typeof routeTable[path]) == "function") {
                 routeTable[path](request, response, cookie, sendFiles, postdata);
                 //打印用户的请求路径与用户
-                console.log('用户:\x1b[34m', userTable.hasOwnProperty(cookie.loginCookie) ? userTable[cookie.loginCookie].name : '__\x1b[33m游客__',
-                    "\t\x1b[0m请求方式:\x1b[31m","POST",
-                    "\t\x1b[0m请求时间:\x1b[32m",new Date().toLocaleString( ),
-                    '\t\x1b[0m请求路径:\x1b[36m', path)
+                log('用户',userTable.hasOwnProperty(cookie.loginCookie) ? userTable[cookie.loginCookie].name : '__游客__',
+                    '方法',"POST",
+                    '时间',new Date().toLocaleString( ),
+                    '路径',path)
             } else {
                 sendFiles("", response);//空路径触发报错到404界面
             }
         });
     } else {//这里基本上就是get请求
-        console.log('用户:\x1b[34m', userTable.hasOwnProperty(cookie.loginCookie) ? userTable[cookie.loginCookie].name : '__\x1b[33m游客__',
-            "\t\x1b[0m请求方式:\x1b[31m","GET",
-            "\t\x1b[0m请求时间:\x1b[32m",new Date().toLocaleString( ),
-            '\t\x1b[0m请求路径:\x1b[36m', path)
+        log('用户',userTable.hasOwnProperty(cookie.loginCookie) ? userTable[cookie.loginCookie].name : '__游客__',
+                    '方法',"GET",
+                    '时间',new Date().toLocaleString( ),
+                    '路径',path)
         if (routeTable.hasOwnProperty(path)) {
             switch (typeof routeTable[path]) {
                 case "string"://这个存在的目的是使路由表可以指定纯粹的字符串路径
