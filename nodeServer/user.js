@@ -179,5 +179,4 @@ exports.deleteArticle =async function (num) {
 exports.updateArticle=async (article)=>{
     return await sql.query('UPDATE article SET num=?,id=?,name=?,textname=?,des=?,content=? where num=?',
         [article.num,article.id,article.name,article.textname,article.des,article.content,article.num])
-    
 }

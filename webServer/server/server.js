@@ -5,16 +5,22 @@ var fs = require("fs");
 var querystring = require('querystring');
 const fun = require('../../nodeServer/function')
 var contentType = require("./ContentType")
+var userTable=require('../../nodeServer/userserver').userTable//调试用
 
 var sRoot = serverConfig.config.web_root;
 //路由表
 var routeTable = serverConfig.config.routeTable
 // Create a server and start
 var server = http.createServer(function (request, response) {
-    var cookie = fun.stringParse(request.headers.cookie)
+    var cookie =fun.stringParse(request.headers.cookie)
+    /*cookie 目前的格式
+    init:true
+    loginCookie:""
+    */
     //转换url编码
     var path = decodeURI(request.url);
-    console.log('客户请求：', path)
+    //打印用户的请求路径与用户
+    console.log('用户:\x1b[34m',userTable.hasOwnProperty(cookie.loginCookie)?userTable[cookie.loginCookie].name:"[[游客]]",'\t\x1b[0m请求路径:\x1b[36m',path)
     //收集客户端发来的数据
     var postdata = [];
     if (request.method === "POST") {

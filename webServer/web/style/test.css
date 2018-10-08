@@ -39,10 +39,16 @@ section:focus{
 }
 section h4{
     width: 60%;
+    height: 24px;
     /* 设置标题的下划线的样式 */
     border: 0px #1f5bff solid;
     border-bottom-width: 3px;
     float: left;
+    
+    /* 防止标题溢出 */
+    display: block;
+    overflow: hidden;
+    text-overflow:ellipsis;
 }
 section:focus h4{
     width: 80%;

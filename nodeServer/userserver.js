@@ -15,6 +15,7 @@ exports.function={//还需要在serverConfig 中添加路径
     '/updateArticle':updateArticle
 }
 var userTable={}
+exports.userTable=userTable
 /**
  * @param {object} postdata post提交的数据
  */
@@ -95,11 +96,20 @@ async function deleteArticle(request, response, cookie, sendFiles, postdata) {
     sendFiles({message},response)
 }
 /**
- * 修改文章的功能函数，要求postdata是article格式的json，TODO:此处未进行验证，存在安全隐患
+ * 修改文章的功能函数，要求postdata是article格式的json，TODO:此处未进行验证，存在安全隐患,权限验证不够完善
  */
 async function updateArticle(request, response, cookie, sendFiles, postdata){
     article=JSON.parse(postdata)
-    const results=await user.updateArticle(article)
+    const results=null
+    try {
+        results=await user.updateArticle(article)
+    } catch (error) {
+        if(error.errno==1406){//内容过长
+            sendFiles(error,response)
+            return
+        }
+        throw error
+    }
     let message=""
     if(results.affectedRows==1)
         message="修改成功！"
