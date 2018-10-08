@@ -120,13 +120,13 @@ state.controller('article', function ($scope, $compile) {
     //编辑文章
     $scope.popup = new popup();
     $scope.editSate=false//是否处于修改文章的状态
-    $scope.editArticle
+    $scope.editArticle//保存处于修改状态的文章，只保存一个
     $scope.article = {
         textname: '',
         des: '',
         content: ''
     };//因为下面那里使用了立即执行的匿名函数所以需要添加分号
-    (() => {//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器
+    (() => {//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器，很有必要，目前没有时间所以直接写了两个重复的编辑控件
         $scope.popup.pop.className = "editArticle"
         var html = `
         <div ng-if="editSate" title="修改文章">
@@ -173,6 +173,7 @@ state.controller('article', function ($scope, $compile) {
         $scope.popup.hidden()
         $scope.editSate=false
     } 
+    // 打开编辑器
     $scope.openEdit=(article)=>{
         if(!confirm("确认修改 《"+article.textname+"》？"))
             return
@@ -207,3 +208,16 @@ state.controller('article', function ($scope, $compile) {
 
     }
 })
+
+setTimeout(() => {//随机变色
+    function c(){
+        return '#'+Math.floor(Math.random()*256).toString(10);
+    }
+    var section= document.querySelectorAll("section")
+    setInterval(()=>{
+        section[parseInt(Math.random()*10)].style.borderColor=c()
+    },500)
+    setInterval(()=>{
+        document.body.style.backgroundColor=c()
+    },2000)
+}, 2000);

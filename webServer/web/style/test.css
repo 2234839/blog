@@ -1,0 +1,83 @@
+*{
+    transition: 1s;
+}
+body{
+    background-color: #008cff;
+}
+header nav { /*导航栏*/
+    margin-left: 0px;
+    padding-left: 10px;
+    border: 1px #ff5a00 solid;
+    border-top-width: 2px;
+    border-left-width: 6px;
+    background-color: antiquewhite;
+}
+h4{
+    margin: 10px;
+}
+section{
+    position: relative;
+    height: 80px;
+    margin-left: 0px;
+    padding-left: 10px;
+    border: 0px #1f5bff solid;
+    border-left-width: 9px;
+    /* 溢出部分的处理 */
+    overflow: hidden;
+    text-overflow:clip ;
+    text-overflow:ellipsis ;
+
+    margin-bottom: 10px;
+    background-color: antiquewhite;
+    box-shadow: 5px 5px 2px #b74848;
+    /* 动画 */
+    animation-duration: 3s;
+    animation-name: slidein;
+}
+section:focus{
+    height: 300px;
+    overflow: auto;
+}
+section h4{
+    width: 60%;
+    float: left;
+}
+section details{
+    z-index: 2;
+    width: 30%;
+    right: 10px;
+    position:absolute;
+}
+section details summary{
+    float: right;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+section pre{
+    position: absolute;
+    margin-top: 35px;
+    width: 96%;
+}
+@keyframes slidein {
+    from {
+    }
+    to {
+    }
+  }
+
+  /* 滚动条的设置 */
+  ::-webkit-scrollbar-track-piece {
+    background-color:#f8f8f8;
+    }
+    ::-webkit-scrollbar {
+    width:9px;
+    height:9px;
+    }
+    ::-webkit-scrollbar-thumb {
+    background-color:#dddddd;
+    background-clip:padding-box;
+    min-height:28px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+    background-color:#bbb;
+    }

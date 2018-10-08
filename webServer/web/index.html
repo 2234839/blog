@@ -8,6 +8,7 @@
     <script src="./js/function.js"></script>
     <script src="./index.js"></script>
     <link rel="stylesheet" href="./style/index.css">
+    <link rel="stylesheet" href="./style/test.css">
     <title>神行Blog</title>
 </head>
 <!-- TODO:所有标签应当有合适的title来提供描述性信息以便无障碍功能及爬虫的索引 -->
@@ -30,15 +31,15 @@
     </header>
     <div ng-controller='article'>
         <button ng-click="popup.show()">编辑文章</button>
-        <div title="文章列表">
-            <section ng-repeat="x in articleTable">
+        <div title="文章列表" >
+            <section ng-repeat="x in articleTable" tabindex="x.num">
                 <h4 ng-bind='x.textname'></h4>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
                     <button ng-click="openEdit(x)">修改</button>
                 </details>
-                <div ng-bind='x.content'></div>
+                <pre ng-bind='x.content' ></pre>
             </section>
         </div>
         <div title="页面切换">
