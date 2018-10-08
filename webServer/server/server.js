@@ -5,41 +5,50 @@ var fs = require("fs");
 var querystring = require('querystring');
 const fun = require('../../nodeServer/function')
 var contentType = require("./ContentType")
-var userTable=require('../../nodeServer/userserver').userTable//调试用
+var userTable = require('../../nodeServer/userserver').userTable//输出信息的调试用
 
 var sRoot = serverConfig.config.web_root;
 //路由表
 var routeTable = serverConfig.config.routeTable
 // Create a server and start
 var server = http.createServer(function (request, response) {
-    var cookie =fun.stringParse(request.headers.cookie)
+    var cookie = fun.stringParse(request.headers.cookie)
     /*cookie 目前的格式
     init:true
     loginCookie:""
     */
     //转换url编码
-    var path = decodeURI(request.url);
-    //打印用户的请求路径与用户
-    console.log('用户:\x1b[34m',userTable.hasOwnProperty(cookie.loginCookie)?userTable[cookie.loginCookie].name:'__\x1b[33m游客__','\t\x1b[0m请求路径:\x1b[36m',path)
+    let path = decodeURI(request.url);
     //收集客户端发来的数据
     var postdata = [];
     if (request.method === "POST") {
         request.on('data', (chunk) => {
             postdata.push(chunk);
         });
-        request.on('end', () => {
+        request.on('end', () => {//将data合并起来发送给对应的服务
             postdata = Buffer.concat(postdata)
-            if (routeTable.hasOwnProperty(path) && typeof routeTable[path] == "function") {
+            if (routeTable.hasOwnProperty(path) && (typeof routeTable[path]) == "function") {
                 routeTable[path](request, response, cookie, sendFiles, postdata);
+                //打印用户的请求路径与用户
+                console.log('用户:\x1b[34m', userTable.hasOwnProperty(cookie.loginCookie) ? userTable[cookie.loginCookie].name : '__\x1b[33m游客__',
+                    "\t\x1b[0m请求方式:\x1b[31m","POST",
+                    "\t\x1b[0m请求时间:\x1b[32m",new Date().toLocaleString( ),
+                    '\t\x1b[0m请求路径:\x1b[36m', path)
             } else {
                 sendFiles("", response);//空路径触发报错到404界面
             }
         });
     } else {//这里基本上就是get请求
+        console.log('用户:\x1b[34m', userTable.hasOwnProperty(cookie.loginCookie) ? userTable[cookie.loginCookie].name : '__\x1b[33m游客__',
+            "\t\x1b[0m请求方式:\x1b[31m","GET",
+            "\t\x1b[0m请求时间:\x1b[32m",new Date().toLocaleString( ),
+            '\t\x1b[0m请求路径:\x1b[36m', path)
         if (routeTable.hasOwnProperty(path)) {
             switch (typeof routeTable[path]) {
-                case "string":
+                case "string"://这个存在的目的是使路由表可以指定纯粹的字符串路径
                     path = routeTable[path];
+                    sendFiles(path, response);
+                    return
                 case "function"://这里一般是各种服务的路径
                     //客户端发来的get 请求的数据
                     var data = url.parse(request.url, true).query
@@ -49,7 +58,7 @@ var server = http.createServer(function (request, response) {
                         console.error(error)
                         sendFiles(path, response);
                     }
-                    break;
+                break;
             }
         } else {
             sendFiles(path, response);
@@ -61,7 +70,7 @@ server.listen(serverConfig.config.port);
 exports.server = server
 
 //存储热门文件
-var memoryFile = {}
+let memoryFile = {}
 /**
  * 向客户端发送一个文件，注意此方法内部指定了文件头
  * @param {string} path 文件路径,也可以为Erroe的错误，此方法将会将错误消息发送出去

@@ -1,5 +1,8 @@
 //先在服务器上创建一个数据库    create database Blog;
 // mysql 的中文文档 https://www.oschina.net/translate/node-mysql-tutorial?print
+
+//  mysqladmin -uroot -p密码 processlist   终端使用这个命令可以查看连接数及活动状态
+
 var mysql = require('mysql')
 const config = require('./nodeServerConfig').config
 //练手的话只使用一个也没什么问题
