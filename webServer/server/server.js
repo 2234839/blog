@@ -90,8 +90,8 @@ function sendFiles(sPath, response) {
             //设置文件头以便浏览器识别文件类型
             response.writeHead(200, {
                 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))),
-                'Server': 'nodejs-v10.8.0_gs-webserver',
-                'Location': sPath,
+                'Server': 'nodejs-v10.8.0_Blog_webserver',
+                'Location': encodeURI(sPath),//这里必须转码，否则路径为中文时_http_server会报错
                 'charset': 'utf-8'
             });
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制

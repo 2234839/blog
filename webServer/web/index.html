@@ -32,7 +32,7 @@
     <div ng-controller='article'>
         <button ng-click="popup.show()">编辑文章</button>
         <div title="文章列表" >
-            <section ng-repeat="x in articleTable" tabindex="x.num">
+            <section ng-repeat="x in articleTable" tabindex="0">
                 <h4 ng-bind='x.textname'></h4>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>

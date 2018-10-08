@@ -208,16 +208,3 @@ state.controller('article', function ($scope, $compile) {
 
     }
 })
-
-setTimeout(() => {//随机变色
-    function c(){
-        return '#'+Math.floor(Math.random()*256).toString(10);
-    }
-    var section= document.querySelectorAll("section")
-    setInterval(()=>{
-        section[parseInt(Math.random()*10)].style.borderColor=c()
-    },500)
-    setInterval(()=>{
-        document.body.style.backgroundColor=c()
-    },2000)
-}, 2000);
