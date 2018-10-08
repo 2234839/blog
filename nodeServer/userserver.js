@@ -72,7 +72,13 @@ async function article(request, response, cookie, sendFiles, postdata) {
 async function getArticle(request, response, cookie, sendFiles, postdata) {
     // var post=fun.stringParse(postdata.toString) TODO:stringParse函数报错 TypeError: str.replace is not a function  找不到原因
     var post=JSON.parse(postdata)
-    var results=await user.getArticle(post.start,post.end)
+    var results=null
+    try {
+        results=await user.getArticle(post.start,post.end)
+    } catch (error) {
+        sendFiles(new Error("获取文章失败"),response)
+        return
+    }
     results.type="results"
     results.message="获取文章成功"
     sendFiles(results,response)

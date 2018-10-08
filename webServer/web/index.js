@@ -101,6 +101,11 @@ state.controller('article', function ($scope, $compile) {
         data.start = pageChange  * 10
         data.end = (pageChange+1) * 10
         post(data, 'getArticle', (d) => {//获取文章
+            if(d.type=="Error"){//错误处理
+                console.log(d);
+                alert(d.message)
+                return
+            }
             console.table(d.results)
             var _articleTable=[]
             d.results.forEach(element => {

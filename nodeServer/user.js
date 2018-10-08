@@ -144,7 +144,7 @@ exports.article = function (article, user) {
 exports.getArticle =async function (start = 0, end = 10) {
     var num=await exports.getTableNum("article")
     // ORDER BY num desc 降序排列来从后面开始取
-    var results=await sql.query(`select * from article ORDER BY num desc limit ?,?`, [start, end])
+    var results=results=await sql.query(`select * from article ORDER BY num desc limit ?,?`, [start, end])
     return {results,num}
 }
 /**

@@ -4,7 +4,7 @@ var mysql = require('mysql')
 const config = require('./nodeServerConfig').config
 //练手的话只使用一个也没什么问题
 //var connection = mysql.createConnection(config.mysql);
-//使用连接池可以更好的发挥mysql 的能力
+//使用连接池可以更好的发挥mysql 的能力，并且使用连接池会自动连接
 const pool = mysql.createPool(config.mysql)
 /**
  * 提供对sql语句的编码，防范sql注入
