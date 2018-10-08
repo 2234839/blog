@@ -12,7 +12,8 @@ exports.function={//还需要在serverConfig 中添加路径
     "/article":article,
     '/getArticle':getArticle,
     '/deleteArticle':deleteArticle,
-    '/updateArticle':updateArticle
+    '/updateArticle':updateArticle,
+    '/searchArticle':searchArticle
 }
 var userTable={}
 exports.userTable=userTable
@@ -124,4 +125,20 @@ async function updateArticle(request, response, cookie, sendFiles, postdata){
         console.error("修改失败",results);
     }
     sendFiles({message},response)
+}
+
+async function searchArticle(request, response, cookie, sendFiles, postdata){
+    const post=JSON.parse(postdata)
+    if(post.start<0 || post.end<0){
+        sendFiles(new Error("用于分页的数值是错误的"),response)
+        return
+    }
+    try {
+        const num= await user.searchArticle(post.serchStr,true)
+        const res= await user.searchArticle(post.serchStr,false,post.start,post.end)
+    } catch (error) {
+        sendFiles(error,response)
+        return
+    }
+    sendFiles({num,res},response)
 }

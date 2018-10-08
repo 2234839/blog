@@ -175,16 +175,25 @@ exports.deleteArticle =async function (num) {
         return "删除成功"
     return "删除失败"
 }
-
+/**
+ * 修改文章
+ * @param {object} article 文章对象
+ */
 exports.updateArticle=async (article)=>{
     return await sql.query('UPDATE article SET num=?,id=?,name=?,textname=?,des=?,content=? where num=?',
         [article.num,article.id,article.name,article.textname,article.des,article.content,article.num])
 }
+/**
+ * 模糊搜索article表的textname des content字段
+ * @param {string} str 要查询的关键字 可以用空格隔开
+ * @param {boolen} isnum 如果为true则函数返回符合条件的文章数量，否则返回查询结果集
+ * @param {int} start 分页的开始
+ * @param {int} end 分页的结束
+ */
 exports.searchArticle=async (str,isnum,start=0,end=9)=>{
     const array=str.split(' ').filter(x=>{//关键词数据
         return x.length>0 //过滤空数组
     }) 
-
     const field=['textname','content','des']//允许查询的字段数组
     let sqlText='select * from article where  '
     let par=[]//存放sql语句中 ？代表的值，防止sql注入

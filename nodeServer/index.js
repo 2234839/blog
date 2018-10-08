@@ -9,12 +9,9 @@ var log = console.log
 // },1000)
 
 async function test(){
-    let res
-    try {
-        res= await user.searchArticle("  地丢  至 ")
-    } catch (error) {
-        console.log(error);
-    }
-    console.log(res);
+    //post.serchStr,false,post.start,post.end)
+    // res= await userServer.function['/searchArticle'](0, 0, 0, 0, JSON.stringify({serchStr:"广",end:3}))
+    // console.log(res)
+    
 }
 test()
