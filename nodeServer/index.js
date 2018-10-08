@@ -7,3 +7,14 @@ var log = console.log
 //     console.log(await user.deleteArticle(20));
 //     '/deleteArticle'
 // },1000)
+
+async function test(){
+    let res
+    try {
+        res= await user.searchArticle("  地丢  至 ")
+    } catch (error) {
+        console.log(error);
+    }
+    console.log(res);
+}
+test()

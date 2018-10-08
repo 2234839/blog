@@ -180,3 +180,30 @@ exports.updateArticle=async (article)=>{
     return await sql.query('UPDATE article SET num=?,id=?,name=?,textname=?,des=?,content=? where num=?',
         [article.num,article.id,article.name,article.textname,article.des,article.content,article.num])
 }
+exports.searchArticle=async (str,isnum,start=0,end=9)=>{
+    const array=str.split(' ').filter(x=>{//关键词数据
+        return x.length>0 //过滤空数组
+    }) 
+
+    const field=['textname','content','des']//允许查询的字段数组
+    let sqlText='select * from article where  '
+    let par=[]//存放sql语句中 ？代表的值，防止sql注入
+    if(isnum){
+        sqlText='select count(*) from article where '
+    }
+    for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < field.length; j++) {
+            if(i==0 && j==0)//where 后面不能直接接or
+                sqlText+=`${field[j]} like ?`
+            else
+                sqlText+=` or ${field[j]} like ?`
+            par.push("%"+array[i]+"%")//这个%不会被过滤，放前面也不知道怎么放
+        }
+    }
+    if(isnum){//返回符合条件的有多少条
+        return (await sql.query(sqlText,par))[0]['count(*)']
+    }//返回结果集
+    par.push(start)
+    par.push(end)
+    return await sql.query(sqlText+" limit ?,?",par)
+}
