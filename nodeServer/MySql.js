@@ -26,7 +26,12 @@ exports.query = function (sqltext, array) {
 		//方便 但每次随机取connection
 		pool.query(sqltext, array, function (err, rows, fields) {
 			if (err)
-				reject(err)
+				switch (err.errno) {
+					case 'EHOSTUNREACH':
+						console.error('连接数据库失败',err.message)
+					default:
+						reject(err)
+				}
 			resolve(rows)
 		});
 		//下面这种方法如果愿意的话 可以让查询在同一conn中执行
