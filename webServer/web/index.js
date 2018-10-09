@@ -118,24 +118,23 @@ state.controller('article', function ($scope,$rootScope,$compile) {
         })
     };
     //先前在导航栏处写了一个控制器结果同样的控制器作用域也是不共享的......一直加载不出来
-    $rootScope.serchStr=""//用于搜索的关键词,绑定到搜索框上
-    $rootScope.isSearch=false
+    $scope.serchStr=""//用于搜索的关键词,绑定到搜索框上
+    $scope.isSearch=false
     /**
      * 搜索含有指定关键词的文章
      * @param {string} serchStr 关键词,可以用空格隔开
      */
-    $rootScope.searchArticle=(serchStr)=>{
+    $scope.searchArticle=(serchStr)=>{
         if(/\s\S+|S+\s|\S/.test(serchStr)){
-            $rootScope.isSearch=true
+            $scope.isSearch=true
             $scope.getArticle(0,"searchArticle",{serchStr})
         }else{
             alert('可以用空格来分隔关键字但不能全为空!')
         }
-       
     }
     //退出搜索
-    $rootScope.exitSearch=()=>{
-        $rootScope.isSearch=false
+    $scope.exitSearch=()=>{
+        $scope.isSearch=false
         $scope.getArticle()
     }
     //编辑文章

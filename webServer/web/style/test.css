@@ -1,8 +1,24 @@
 *{
     transition: 1s;
+    font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", 
+"Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", 
+"Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
 }
 body{
     background-color: #ec7c30;
+}
+button,input,textarea,select{
+    border: #1f5bff 1px solid;
+    margin-bottom: 5px;
+}
+button,select{
+    background: #ffffff;
+    padding: 5px 10px;
+    border: #ff5a00 1px solid;
+}
+select{
+    height: 27px;
+    padding: 5px 4px;
 }
 header nav { /*导航栏*/
     margin-left: 0px;
@@ -25,7 +41,6 @@ section{
     /* 溢出部分的处理 */
     overflow: hidden;
     text-overflow:ellipsis ;
-
     margin-bottom: 18px;
     background-color: antiquewhite;
     box-shadow:9px 10px 0px #443f3f87;
@@ -33,18 +48,20 @@ section{
     outline:none;
 }
 section:focus{
+    /* 原本左边的宽度为9px,现在让其边框则应用margin左移相同的距离 */
+    border-left-width: 14px;
+    margin-left: -5px;
     border-color: #a93c00;  
     height: 300px;
     overflow: auto;
 }
 section h4{
     width: 60%;
-    height: 24px;
+    height: 20px;
     /* 设置标题的下划线的样式 */
     border: 0px #1f5bff solid;
     border-bottom-width: 3px;
     float: left;
-    
     /* 防止标题溢出 */
     display: block;
     overflow: hidden;

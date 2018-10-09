@@ -16,26 +16,24 @@
     <header title="包含用户基本操作的导航栏">
         <img src="" alt="" title="logo">
         <nav>
-            链接
-            <div >
-                <input type="text" ng-model="serchStr">
-                <button ng-click='searchArticle(serchStr)'>搜索</button>
-                <button ng-if="isSearch" ng-click='exitSearch()'>返回文章浏览页</button>
+            首页
+            <div>
+                <div ng-if="!user" title="提供注册与登录">
+                    <button ng-click="addRegisterNode()">注册</button>
+                    <button ng-click="addLoginNode()">登录</button>
+                </div>
+                <div ng-if="user" title="用户信息">
+                    <button >{{user.name}}</button>
+                    <button ng-click="cancellation()">注销</button>
+                </div>
             </div>
         </nav>
-        <div>
-            <div ng-if="!user" title="提供注册与登录">
-                <button ng-click="addRegisterNode()">注册</button>
-                <button ng-click="addLoginNode()">登录</button>
-            </div>
-            <div ng-if="user" title="用户信息">
-                <h4 ng-bind="user.name"></h4>
-                <button ng-click="cancellation()">注销</button>
-            </div>
-        </div>
     </header>
     <div ng-controller='article'>
         <button ng-click="popup.show()">编辑文章</button>
+        <input type="text" ng-model="serchStr">
+        <button ng-click='searchArticle(serchStr)'>搜索</button>
+        <button ng-if="isSearch" ng-click='exitSearch()'>返回文章浏览页</button>
         <div title="文章列表" >
             <section ng-repeat="x in articleTable" tabindex="0">
                 <h4 ng-bind='x.textname'></h4>
