@@ -8,6 +8,7 @@ var contentType = require("./ContentType")
 var userTable = require('../../nodeServer/userserver').userTable//输出信息的调试用
 const log=require('./log').log//打印日志
 
+
 var sRoot = serverConfig.config.web_root;
 //路由表
 var routeTable = serverConfig.config.routeTable
@@ -36,7 +37,7 @@ var server = http.createServer(function (request, response) {
                     '时间',new Date().toLocaleString( ),
                     '路径',path)
             } else {
-                sendFiles("", response);//空路径触发报错到404界面
+                sendFiles(new Error("您请求的路径没有服务在监听,请检查路径或者联系管理员添加监听服务"), response);
             }
         });
     } else {//这里基本上就是get请求
@@ -77,7 +78,7 @@ let memoryFile = {}
  * @param {string} path 文件路径,也可以为Erroe的错误，此方法将会将错误消息发送出去
  * @param {res} res 
  */
-function sendFiles(sPath, response) {
+function sendFiles(sPath, response) {//TODO:应该增加一个浏览器缓存机制
     if (sPath instanceof Object) {
         if (sPath instanceof Error)
             sPath = {
@@ -108,7 +109,8 @@ function sendFiles(sPath, response) {
                 'Content-Type': contentType.query(sPath.substring(sPath.lastIndexOf('.'))),
                 'Server': 'nodejs-v10.8.0_Blog_webserver',
                 'Location': encodeURI(sPath),//这里必须转码，否则路径为中文时_http_server会报错
-                'charset': 'utf-8'
+                'charset': 'utf-8',
+
             });
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
             //TODO:目前处于调试阶段故关闭此功能 

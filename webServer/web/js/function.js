@@ -20,13 +20,19 @@ var addNode = (element, html, $compile, $scope) => {
  * 一个简单的post方法
  * @param {strin} data 要提交的数据
  * @param {string}} action 要提交到的地址
- * @param {function} callback 回调函数
+ * @param {function} callback 回调函数 返回服务器返回的值如果能够序列化的话就会将其序列化
  */
 var post = (data, action, callback = (user) => { alert(user.message) }) => {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', action, true);
     xhr.onload = function () {
-        callback(JSON.parse(xhr.response))
+        var res
+        try {
+            res=JSON.parse(xhr.response)
+        } catch (error) {
+            res=xhr.response
+        }
+        callback(res)
     }
     xhr.send(typeof data=="string"?data:JSON.stringify(data));
 }
@@ -65,7 +71,7 @@ function popup() {
  * 文章对象
  * @param {string} name 文章标题
  * @param {string} des 描述
- * @param {string} content 内容
+ * @param {string} content 内容 
  */
 function article(name, des, content) {
     if (typeof name == "object") {

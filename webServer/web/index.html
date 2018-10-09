@@ -12,11 +12,14 @@
     <title>神行Blog</title>
 </head>
 <!-- TODO:所有标签应当有合适的title来提供描述性信息以便无障碍功能及爬虫的索引 -->
-<body ng-app="state" ng-controller="user">
+<body ng-app="state" ng-controller="user" >
     <header title="包含用户基本操作的导航栏">
         <img src="" alt="" title="logo">
         <nav>
             链接
+            <div >
+                <input type="text" ng-model="serchStr"><button ng-click='searchArticle(serchStr)'>搜索</button>
+            </div>
         </nav>
         <div>
             <div ng-if="!user" title="提供注册与登录">

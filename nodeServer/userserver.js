@@ -6,15 +6,7 @@ var user=require('./user')
 // var routeTable=require('./../webServer/config/serverConfig').config.routeTable
 // routeTable["/register"]=register
 // routeTable["/login"]=login
-exports.function={//还需要在serverConfig 中添加路径
-    "/register":register,
-    "/login":login,
-    "/article":article,
-    '/getArticle':getArticle,
-    '/deleteArticle':deleteArticle,
-    '/updateArticle':updateArticle,
-    '/searchArticle':searchArticle
-}
+//最下方有一个服务监听路径的对象
 var userTable={}
 exports.userTable=userTable
 /**
@@ -126,19 +118,33 @@ async function updateArticle(request, response, cookie, sendFiles, postdata){
     }
     sendFiles({message},response)
 }
-
+/**
+ * 搜索文章,post应含有start end serchStr 字段 返回一个结果集或者错误
+ */
 async function searchArticle(request, response, cookie, sendFiles, postdata){
     const post=JSON.parse(postdata)
     if(post.start<0 || post.end<0){
         sendFiles(new Error("用于分页的数值是错误的"),response)
         return
     }
+    let num
+    let results
     try {
-        const num= await user.searchArticle(post.serchStr,true)
-        const res= await user.searchArticle(post.serchStr,false,post.start,post.end)
+        num= await user.searchArticle(post.serchStr,true)
+        results= await user.searchArticle(post.serchStr,false,post.start,post.end)
     } catch (error) {
         sendFiles(error,response)
         return
     }
-    sendFiles({num,res},response)
+    sendFiles({num,results,message:"共查询到"+num+"条结果"},response)
+}
+
+exports.function={//还需要在serverConfig 中添加路径
+    "/register":register,
+    "/login":login,
+    "/article":article,
+    '/getArticle':getArticle,
+    '/deleteArticle':deleteArticle,
+    '/updateArticle':updateArticle,
+    '/searchArticle':searchArticle
 }

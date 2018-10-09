@@ -62,7 +62,7 @@ state.controller('user', function ($scope, $compile, ) {
 /**
  * 关于文章的一些操作
  */
-state.controller('article', function ($scope, $compile) {
+state.controller('article', function ($scope,$rootScope,$compile) {
     $scope.articleTable = []//存储获得的文章对象
     $scope.Math = Math//为了在angular表达式中使用Math对象
     $scope.num = 0//总共有多少篇文章
@@ -93,26 +93,21 @@ state.controller('article', function ($scope, $compile) {
     /**
      * 从服务器获取文章加载到页面中，一般只需要 pageChange 参数 
      * @param {int} pageChange 跳到第几页
-     * @param {int} start 从第几行
-     * @param {int} end 到第几行
+     * @param {object} data 用来添加一些参数目前主要是用于搜索功能
+     * @param {string} path 可以控制直接获取文章还是去获取查询的文章结果
      */
-    $scope.getArticle = (pageChange=0, start = 0, end = 10) => {
-        let data = { start: start, end: end }
+    $scope.getArticle = (pageChange=0,path='getArticle',data={}) => {
         data.start = pageChange  * 10
         data.end = (pageChange+1) * 10
-        post(data, 'getArticle', (d) => {//获取文章
-            if(d.type=="Error"){//错误处理
+        post(data,path , (d) => {//获取文章
+            if(d.type=="Error" || !(d instanceof Object)){//错误处理
                 console.log(d);
                 alert(d.message)
                 return
             }
             console.table(d.results)
-            var _articleTable=[]
-            d.results.forEach(element => {
-                _articleTable.push(element)
-            });
             $scope.$apply(() => {
-                $scope.articleTable=_articleTable
+                $scope.articleTable=d.results
                 $scope.num = d.num;
                 var pageCount=Math.ceil($scope.num / 10)
                 for (let index = 0; index < pageCount; index++) {
@@ -122,6 +117,15 @@ state.controller('article', function ($scope, $compile) {
             });
         })
     };
+    //先前在导航栏处写了一个控制器结果同样的控制器作用域也是不共享的......一直加载不出来
+    $rootScope.serchStr=""//用于搜索的关键词,绑定到搜索框上
+    /**
+     * 搜索含有指定关键词的文章
+     * @param {string} serchStr 关键词,可以用空格隔开
+     */
+    $rootScope.searchArticle=(serchStr)=>{
+        $scope.getArticle(0,"searchArticle",{serchStr})
+    }
     //编辑文章
     $scope.popup = new popup();
     $scope.editSate=false//是否处于修改文章的状态
@@ -210,6 +214,5 @@ state.controller('article', function ($scope, $compile) {
             }
             alert(d.message)
         })
-
     }
 })
