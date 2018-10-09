@@ -227,4 +227,3 @@ state.controller('article', function ($scope,$rootScope,$compile) {
         })
     }
 })
-//创建了一个新的分支
