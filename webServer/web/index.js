@@ -1,4 +1,4 @@
-var state = angular.module('state', []);//, ['ngSanitize']
+var state = angular.module('state', ['ngSanitize']);//
 /**
  * 注册控制器，用来注册？,需要添加一个标签来激活此模块
  */
@@ -62,7 +62,7 @@ state.controller('user', function ($scope, $compile) {
 /**
  * 关于文章的一些操作
  */
-state.controller('article', function ($scope, $rootScope, $compile) {
+state.controller('article', function ($scope, $rootScope, $compile,) {
     $scope.articleTable = []//存储获得的文章对象
     $scope.Math = Math//为了在angular表达式中使用Math对象
     $scope.num = 0//总共有多少篇文章
@@ -140,7 +140,7 @@ state.controller('article', function ($scope, $rootScope, $compile) {
     //编辑文章
     $scope.popup = new popup();
     $scope.editSate = false//是否处于修改文章的状态
-    $scope.editArticle//保存处于修改状态的文章，只保存一个
+    $scope.editArticle={}//保存暂时被修改的
     $scope.article = {
         textname: '',
         des: '',
@@ -148,23 +148,28 @@ state.controller('article', function ($scope, $rootScope, $compile) {
     //  comment: '',
     //  commentList:null,
     };//因为下面那里使用了立即执行的匿名函数所以需要添加分号
+    //TODO:死也不要动下面的代码
     (() => {//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器，很有必要，目前没有时间所以直接写了两个重复的编辑控件
         $scope.popup.pop.className = "editArticle"
         var html = `
-        <div ng-if="editSate" title="修改文章">
+        <div ng-if="editSate">
             <input type="text" name="textname" ng-model="editArticle.textname"><br>
             <input type="text" name="des" ng-model="editArticle.des"><br>
-            <textarea name="content" cols="60" rows="20" ng-model="editArticle.content"></textarea><br>
-            <button ng-click="updateArticle()">修改</button>
+            <div id="edit2"></div>
+            
+            <button ng-click="updateArticle(editArticle)">修改</button>
             <button ng-click="cancel()">取消</button>
         </div>
-        <div ng-if="!editSate" title="编辑文章">
+        <div ng-if="!editSate">
             <input type="text" name="textname" ng-model="article.textname"><br>
             <input type="text" name="des" ng-model="article.des"><br>
-            <textarea name="content" cols="60" rows="20" ng-model="article.content"></textarea><br>
-            <button ng-click="upArticle()">提交</button>
+            <div id="edit1"></div>
+            
+            <button ng-click="upArticle('article',article)">提交</button>
         </div>
         `
+        // <textarea name="content" cols="60" rows="20" ng-model="editArticle.content"></textarea><br></br>
+        // <textarea name="content" cols="60" rows="20" ng-model="article.content"></textarea><br></br>
         element = $scope.popup.pop;
         addNode(element, html, $compile, $scope)
     })()
@@ -174,8 +179,12 @@ state.controller('article', function ($scope, $rootScope, $compile) {
      * @param {article} article 文章对象
      */
     $scope.upArticle = (path = 'article', article = $scope.article) => {
+        if(path =='article'){//修改文章有 updateArticle 函数从编辑器获取内容，而直接发布文章就需要再这里获取一下
+            article.content=editor1.txt.html()
+        }
         post(JSON.stringify(article), path, (d) => {
             alert(d.message)//打印返回的消息
+            console.log(d,path);
             if (d.hasOwnProperty('id')) {//没有id属性说明没有发布成功
                 $scope.popup.hidden()
                 if ($scope.page == 0) {//如果当前在第一页则自动刷新
@@ -185,8 +194,9 @@ state.controller('article', function ($scope, $rootScope, $compile) {
         })
     }
     //修改文章
-    $scope.updateArticle = () => {
-        $scope.upArticle("updateArticle", $scope.editArticle)
+    $scope.updateArticle = (article) => {
+        article.content=editor2.txt.html()
+        $scope.upArticle("updateArticle",article)
         $scope.editSate = false
         $scope.popup.hidden()
     }
@@ -197,11 +207,28 @@ state.controller('article', function ($scope, $rootScope, $compile) {
     }
     // 打开编辑器
     $scope.openEdit = (article) => {
-        if (!confirm("确认修改 《" + article.textname + "》？"))
-            return
-        $scope.editSate = true
-        $scope.editArticle = article
-        $scope.popup.show()
+        if(article==undefined){
+            $scope.editSate = false
+            console.log("展开");
+            $scope.popup.pop.querySelector("#edit1").appendChild(edit1)
+            $scope.popup.show()
+        }else{
+            if (!confirm("确认修改 《" + article.textname + "》？"))
+                return
+            $scope.editSate = true
+            $scope.editArticle = article
+            sss=$scope.popup.pop
+            const ID= setInterval(()=>{//这里是等待angular 的脏检查机制修改dom后再执行
+                if($scope.popup.pop.querySelector("#edit2")!=undefined){
+                    clearInterval(ID)
+                    $scope.popup.show()
+                    console.log($scope.editArticle);
+                    
+                    $scope.popup.pop.querySelector("#edit2").appendChild(edit2)
+                    editor2.txt.html($scope.editArticle.content)
+                }
+            },100)
+        }
     }
     /**
      * 删除文章

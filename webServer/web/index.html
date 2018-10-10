@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="./js/angularJS.js"></script>
+    <script src="./js/angular-sanitize.js"></script>
     <script src="./js/function.js"></script>
+    <!-- wangEditor开源的轻量化编辑器 -->
+    <script src="./js/wangEditor.min.js"></script>
+    <script src="./js/edit.js"></script>
     <script src="./index.js"></script>
     <link rel="stylesheet" href="./style/index.css">
     <link rel="stylesheet" href="./style/test.css">
@@ -27,8 +31,9 @@
             </div>
         </nav>
     </header>
+    <div id="wangEdit"></div>
     <div ng-controller='article' class="articleList" ng-click="show($event)">
-        <button ng-click="popup.show()">编辑文章</button>
+        <button ng-click="openEdit()">编辑文章</button>
         <input type="text" ng-model="serchStr">
         <button ng-click='searchArticle(serchStr)'>搜索</button>
         <button ng-if="isSearch" ng-click='exitSearch()'>返回文章浏览页</button>
@@ -41,7 +46,9 @@
                     <button ng-click="deleteArticle(x.num)">删除</button>
                     <button ng-click="openEdit(x)">修改</button>
                 </details>
-                <pre ng-bind='x.content' ></pre>
+                <!-- 文章内容 -->
+                <!-- <pre  ng-bind='x.content' ></pre> -->
+                <div class="articleContent"  ng-bind-html='x.content' ></div>
                 <div class="commentDiv">
                     <input type="text" name="comment" title="输入评论" ng-model="x.comment">
                     <button title="发布评论" ng-click="addComment(x)">发布评论</button>

@@ -99,7 +99,9 @@ async function deleteArticle(request, response, cookie, sendFiles, postdata) {
  */
 async function updateArticle(request, response, cookie, sendFiles, postdata){
     article=JSON.parse(postdata)
-    const results=null
+    console.log(article);
+    
+    let results=null
     try {
         results=await user.updateArticle(article)
     } catch (error) {

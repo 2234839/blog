@@ -62,7 +62,7 @@ section{
     border-left-width: 14px;
     margin-left: -5px;
     border-color: #a93c00;  
-    height: 300px;
+    height: 350px;
     overflow: auto;
 }
 section h4{
@@ -93,7 +93,7 @@ section details summary{
     margin-right: 20px;
     margin-top: 10px;
 }
-section pre{
+section .articleContent{
     padding: 3px;
     width: 94%;
     height:46px ;
@@ -104,7 +104,7 @@ section pre{
     border: #a93c00 solid 1px;
 }
 /* 获得焦点后展开pre */
-.articleShow pre{
+.articleShow .articleContent{
     overflow: auto;
     text-overflow: clip;
     height:210px;
@@ -127,8 +127,11 @@ section pre{
 .commentList td{
     border-bottom: 1px solid darkgoldenrod;
 }
-.commentList td:nth-child(1){/* 时间 */
+.commentList td:nth-child(1){/* 用户 */
     width: 60px;
+}
+.commentList td:nth-child(2){/* 内容 */
+    /* height: 6px; */
 }
 .commentList td:nth-child(3){/* 时间 */
     width: 70px;

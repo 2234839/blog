@@ -191,4 +191,10 @@ for (let index = 0; index < res.length; index++) {
  * 通过查表提供相应的文件后缀的 content-type
  * @param {string} str 文件的后缀
  */
-exports.query=str=>obj[str]
+exports.query=str=>{
+    if(obj[str]!=undefined)
+        return obj[str]
+    //表里面抄不到就直接切割字符串返回点后面的
+    const arr=str.split(".")
+    return arr[arr.length-1]
+}
