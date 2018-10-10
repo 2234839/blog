@@ -20,7 +20,14 @@ var sqltext =[ `create table user
 				textname varchar(100),
 				des LONGTEXT,
 				content LONGTEXT
-				);`]
+				);`,
+				`CREATE TABLE comment (
+					articleNum int(11) NOT NULL,
+					userName varchar(20) NOT NULL,
+					content text NOT NULL,
+					time datetime NOT NULL
+				  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
+				  ]
 //创建所所有的表
 sqltext.forEach(element => {
 	sql.query(element, function (value) {

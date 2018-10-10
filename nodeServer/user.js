@@ -216,3 +216,11 @@ exports.searchArticle=async (str,isnum,start=0,end=9)=>{
     par.push(end)
     return await sql.query(sqlText+" limit ?,?",par)
 }
+
+/**
+ * 获取文章的评论
+ * @param {int} articleNum 文章编号
+ */
+exports.getComment=async (articleNum)=>{
+    return await sql.query(`select * from comment where articleNUm = ?`,articleNum)
+}

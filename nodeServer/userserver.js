@@ -138,7 +138,27 @@ async function searchArticle(request, response, cookie, sendFiles, postdata){
     }
     sendFiles({num,results,message:"共查询到"+num+"条结果"},response)
 }
-
+/**
+ * 获取文章
+ * post 应含有字段articleNum 指向文章
+ */
+async function getComment(request, response, cookie, sendFiles, postdata) {
+    let post
+    try {
+        post=JSON.parse(postdata)
+    } catch (error) {
+        sendFiles(new Error("提交的信息格式不对"),response)
+        return
+    }
+    let results
+    try {
+        results=await user.getComment(post.articleNum)
+    } catch (error) {
+        sendFiles(error,response)
+        return
+    }
+    sendFiles({message:"返回评论结果",results},response)
+}
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
@@ -146,5 +166,6 @@ exports.function={//还需要在serverConfig 中添加路径
     '/getArticle':getArticle,
     '/deleteArticle':deleteArticle,
     '/updateArticle':updateArticle,
-    '/searchArticle':searchArticle
+    '/searchArticle':searchArticle,
+    '/getComment':getComment,
 }
