@@ -97,6 +97,7 @@ section pre{
     padding: 3px;
     width: 94%;
     height:46px ;
+    margin-bottom: 4px;
     overflow: hidden;
     /* 文本溢出则显示省略号，但只能在横排截断上有用而如果是高度超出则无效 */
     text-overflow:ellipsis;
@@ -106,7 +107,7 @@ section pre{
 section:focus-within pre{
     overflow: auto;
     text-overflow: clip;
-    height:200px;
+    height:210px;
 }
 /* 评论*/
 .comment{
