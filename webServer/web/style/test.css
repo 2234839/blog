@@ -95,8 +95,6 @@ section details summary{
 }
 section pre{
     padding: 3px;
-    position: absolute;
-    margin-top: 40px;
     width: 94%;
     height:46px ;
     overflow: hidden;
@@ -108,9 +106,12 @@ section pre{
 section:focus pre{
     overflow: auto;
     text-overflow: clip;
-    height:81%;
+    height:200px;
 }
-
+/* 评论*/
+.comment{
+    width: 100%;
+}
 /* 滚动条的设置,仅支持谷歌类的浏览器 */
 ::-webkit-scrollbar-track-piece {
     background-color:#f8f8f8;
