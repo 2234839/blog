@@ -291,12 +291,13 @@ state.controller('article', function ($scope, $rootScope, $compile) {
     }
     //TODO:这里的解决方式不够优雅，我本来想用css来解决一切交互的，但兼容性太他妈蛋疼了
     $scope.show=(event)=>{
-        event.path.some((element)=>{
-            if(element.classList.contains("articleSection")){
-                document.querySelectorAll(".articleSection").forEach(element=>{
+        let path = nodePath(event.target)
+        path.some((element)=>{//遍历传播路径
+            if(element.classList.contains("articleSection")){//找到articleSectiom元素
+                document.querySelectorAll(".articleSection").forEach(element=>{//移除所有元素的show
                     element.classList.remove("articleShow")
                 })
-                element.classList.add("articleShow")
+                element.classList.add("articleShow")//为被点击的元素赋予show类
                 return true
             }
         })

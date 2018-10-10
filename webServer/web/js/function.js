@@ -93,3 +93,15 @@ article.prototype.packing = function () {
                 </section>`
     return section;
 }
+/**
+ * 获取一个元素的所有父节点到html为至
+ * @param {node} element 
+ */
+function nodePath(element){
+    let path=[element]
+    while (element.parentNode!=document) {
+        path.push(element.parentNode)
+        element=element.parentNode
+    }
+    return path
+}
