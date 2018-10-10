@@ -41,11 +41,16 @@
                     <button ng-click="openEdit(x)">修改</button>
                 </details>
                 <pre ng-bind='x.content' ></pre>
-                <div class="comment">
-                    <input type="text" name="comment" title="输入评论">
-                    <button title="发布评论" ng-click="">发布评论</button>
+                <div class="commentDiv">
+                    <input type="text" name="comment" title="输入评论" ng-model="x.comment">
+                    <button title="发布评论" ng-click="addComment(x)">发布评论</button>
                     <div class="list">
-                            <div ng-repeat="comment in x.comment" ng-bind="comment.content"></div>
+                        <div class="comment"  ng-repeat="comment in x.commentList">
+                            <button name="name">{{comment.userName}}</button>
+                            <div>{{comment.content}}</div>
+                            <div>{{comment.time}}</div>
+                        </div>
+                            
                     </div>
                 </div>
             </section>

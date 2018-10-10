@@ -224,3 +224,11 @@ exports.searchArticle=async (str,isnum,start=0,end=9)=>{
 exports.getComment=async (articleNum)=>{
     return await sql.query(`select * from comment where articleNUm = ?`,articleNum)
 }
+/**
+ * 提交评论
+ * @param {objiect} comment 评论对象 {articleNum,userName,content,time}
+ */
+exports.addComment=async (comment)=>{
+    const array=[comment.articleNum,comment.userName,comment.content,comment.time]
+    return await sql.query(`INSERT INTO comment (articleNum,userName,content,time) VALUES (?,?,?,?)`,array)
+}

@@ -144,7 +144,9 @@ state.controller('article', function ($scope, $rootScope, $compile) {
     $scope.article = {
         textname: '',
         des: '',
-        content: ''
+        content: '',
+    //  comment: '',
+    //  commentList:null,
     };//因为下面那里使用了立即执行的匿名函数所以需要添加分号
     (() => {//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器，很有必要，目前没有时间所以直接写了两个重复的编辑控件
         $scope.popup.pop.className = "editArticle"
@@ -211,7 +213,7 @@ state.controller('article', function ($scope, $rootScope, $compile) {
         if (isNaN(num))
             throw new Error("文章编号错误")
         var user = JSON.parse(localStorage.getItem('user'))
-        post(JSON.stringify({ user: user, article: { num: num } }), 'deleteArticle', (d) => {
+        article(JSON.stringify({ user: user, article: { num: num } }), 'deleteArticle', (d) => {
             for (let index = 0; index < $scope.articleTable.length; index++) {
                 const element = $scope.articleTable[index];
                 if (element.num == num) {//移除文章数组中的这条数据
@@ -226,13 +228,28 @@ state.controller('article', function ($scope, $rootScope, $compile) {
             alert(d.message)
         })
     }
-    $scope.getComment = (articleNum) => {
+    /**
+     * 获取评论
+     * @param {int} articleNum 文章编号
+     * @param {int} isUpdate 是否更新评论 默认false
+     */
+    $scope.getComment = (articleNum,isUpdate=false) => {
+        let selectArticle
+        $scope.articleTable.some(article => {
+            if (article.num == articleNum) {
+                selectArticle=article
+                return
+            }
+        })
+        if(! isUpdate && (typeof selectArticle.commentList!='undefined')){
+            return
+        }
         post({ articleNum }, 'getComment', (res) => {
             if (res.type == 'results') {
                 $scope.articleTable.some(article => {
                     if (article.num == articleNum) {
                         $scope.$apply(() => {
-                            article.comment = res.results
+                            article.commentList = res.results.reverse()//颠倒数组使后来居上
                             return true
                         })
                     }
@@ -242,5 +259,19 @@ state.controller('article', function ($scope, $rootScope, $compile) {
             }
         })
     }
-    
+    $scope.addComment=(article)=>{
+        let comment={
+            articleNum:article.num,
+            userName:'',//这里服务器会根据cookie获得的
+            content:article.comment
+        }
+        post(comment, 'addComment', (res) => {
+            if (res.type == 'results' && res.results.affectedRows==1) {
+                $scope.getComment(article.num,true)
+                alert('发布评论成功')
+            }else{
+                console.error("发布评论失败",res)
+            }
+        })
+    }
 })

@@ -159,6 +159,30 @@ async function getComment(request, response, cookie, sendFiles, postdata) {
     }
     sendFiles({type:"results",results},response)
 }
+/**
+ * 发布文章
+ * comment 的结构 {articleNum,userName,content,time}
+ */
+async function addComment(request, response, cookie, sendFiles, postdata) {
+    let comment
+    try {
+        //TODO:或许还该检查一下用户是否拥有这个文章的管理权
+        comment=JSON.parse(postdata)
+        comment.userName=userTable[cookie.loginCookie].name//根据cookie设置名字防止假冒
+        comment.time=new Date().toLocaleString()
+    } catch (error) {
+        sendFiles(new Error("提交的信息格式不对"),response)
+        return
+    }
+    let results
+    try {
+        results=await user.addComment(comment)
+    } catch (error) {
+        sendFiles(error,response)
+        return
+    }
+    sendFiles({type:"results",results},response)
+}
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
@@ -168,4 +192,5 @@ exports.function={//还需要在serverConfig 中添加路径
     '/updateArticle':updateArticle,
     '/searchArticle':searchArticle,
     '/getComment':getComment,
+    '/addComment':addComment,
 }
