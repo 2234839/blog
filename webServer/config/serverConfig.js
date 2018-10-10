@@ -57,6 +57,7 @@ var serverConfig = {
         '/searchArticle':userserver['/searchArticle'],//搜索文章
         '/getComment':userserver['/getComment'],//获取文章评论
         '/addComment':userserver['/addComment'],//提交评论
+        '/deleteComment':userserver['/deleteComment'],//删除评论
     }
 };
 exports.config = serverConfig;

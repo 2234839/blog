@@ -183,6 +183,26 @@ async function addComment(request, response, cookie, sendFiles, postdata) {
     }
     sendFiles({type:"results",results},response)
 }
+/**
+ * 删除指定id的文章
+ */
+async function deleteComment(request, response, cookie, sendFiles, postdata){//TODO:尚未做权限验证
+    let id
+    try {
+        id=JSON.parse(postdata).id
+    } catch (error) {
+        sendFiles(new Error("提交的信息格式不对"),response)
+        return
+    }
+    let results
+    try {
+        results=await user.deleteComment(id)
+    } catch (error) {
+        sendFiles(error,response)
+        return
+    }
+    sendFiles({type:"results",results},response)
+}
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
@@ -193,4 +213,5 @@ exports.function={//还需要在serverConfig 中添加路径
     '/searchArticle':searchArticle,
     '/getComment':getComment,
     '/addComment':addComment,
+    '/deleteComment':deleteComment
 }

@@ -232,3 +232,10 @@ exports.addComment=async (comment)=>{
     const array=[comment.articleNum,comment.userName,comment.content,comment.time]
     return await sql.query(`INSERT INTO comment (articleNum,userName,content,time) VALUES (?,?,?,?)`,array)
 }
+/**
+ * 删除指定id的评论
+ * @param {int} id
+ */
+exports.deleteComment=async (id)=>{
+    return await sql.query(`delete from comment where id=?`,id)
+}

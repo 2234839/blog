@@ -22,12 +22,14 @@ var sqltext =[ `create table user
 				content LONGTEXT
 				);`,
 				`CREATE TABLE comment (
-					articleNum int(11) NOT NULL,
+					id int(11) NOT NULL AUTO_INCREMENT,
+					articleNum int(11) NOT NULL COMMENT '文章表的Num',
 					userName varchar(20) NOT NULL,
 					content text NOT NULL,
-					time datetime NOT NULL
-				  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`
-				  ]
+					time datetime NOT NULL,
+					PRIMARY KEY ('id')
+				  ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8`
+]
 //创建所所有的表
 sqltext.forEach(element => {
 	sql.query(element, function (value) {

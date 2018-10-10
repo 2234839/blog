@@ -259,6 +259,9 @@ state.controller('article', function ($scope, $rootScope, $compile) {
             }
         })
     }
+    /**
+     * 添加评论
+     */
     $scope.addComment=(article)=>{
         let comment={
             articleNum:article.num,
@@ -269,8 +272,19 @@ state.controller('article', function ($scope, $rootScope, $compile) {
             if (res.type == 'results' && res.results.affectedRows==1) {
                 $scope.getComment(article.num,true)
                 alert('发布评论成功')
+                article.comment=""//发布成功后清楚该文章暂存的评论
             }else{
                 console.error("发布评论失败",res)
+            }
+        })
+    }
+    $scope.deleteComment=(comment,article)=>{
+        post(comment, 'deleteComment', (res) => {
+            if (res.type == 'results' && res.results.affectedRows==1) {
+                $scope.getComment(article.num,true)
+                alert('删除评论成功')
+            }else{
+                console.error("删除评论失败",res)
             }
         })
     }

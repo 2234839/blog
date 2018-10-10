@@ -46,11 +46,11 @@
                     <button title="发布评论" ng-click="addComment(x)">发布评论</button>
                     <div class="list">
                         <div class="comment"  ng-repeat="comment in x.commentList">
-                            <button name="name">{{comment.userName}}</button>
-                            <div>{{comment.content}}</div>
-                            <div>{{comment.time}}</div>
+                            <button name="name" title="评论发布者">{{comment.userName}}</button>
+                            <div title="评论内容">{{comment.content}}</div>
+                            <div title="评论发布时间">{{comment.time}}</div>
+                            <button ng-if="user.name==comment.userName || user.name==x.name" ng-click="deleteComment(comment,x)" title="删除评论">删除</button>
                         </div>
-                            
                     </div>
                 </div>
             </section>
