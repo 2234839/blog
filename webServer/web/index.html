@@ -48,7 +48,7 @@
                 </details>
                 <!-- 文章内容 -->
                 <!-- <pre  ng-bind='x.content' ></pre> -->
-                <div class="articleContent"  ng-bind-html='x.content' ></div>
+                <div class="articleContent"  ng-bind-html='x.content | to_trusted' ></div>
                 <div class="commentDiv">
                     <input type="text" name="comment" title="输入评论" ng-model="x.comment">
                     <button title="发布评论" ng-click="addComment(x)">发布评论</button>

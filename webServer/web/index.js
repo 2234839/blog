@@ -1,4 +1,9 @@
 var state = angular.module('state', ['ngSanitize']);//
+state.filter('to_trusted', ['$sce', function ($sce) {//这个过滤器用来使bind html 不过滤style
+    return function (text) {
+        return $sce.trustAsHtml(text);
+    };
+}]);
 /**
  * 注册控制器，用来注册？,需要添加一个标签来激活此模块
  */

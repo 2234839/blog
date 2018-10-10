@@ -33,6 +33,7 @@ exports.query = function (sqltext, array) {
 					case 'EHOSTUNREACH':
 						console.error('连接数据库失败',err.message)
 					default:
+						console.log(err);
 						reject(err)
 				}
 			resolve(rows)
