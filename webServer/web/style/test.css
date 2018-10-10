@@ -57,7 +57,7 @@ section{
     box-shadow:9px 10px 0px #443f3f87;
     outline: none;
 }
-section:focus-within{
+.articleShow{
     /* 原本左边的宽度为9px,现在让其边框则应用margin左移相同的距离 */
     border-left-width: 14px;
     margin-left: -5px;
@@ -77,7 +77,7 @@ section h4{
     overflow: hidden;
     text-overflow:ellipsis;
 }
-section:focus-within h4{
+.articleShow h4{
     width: 80%;
     border-color: #ff5a00;
 }
@@ -104,7 +104,7 @@ section pre{
     border: #a93c00 solid 1px;
 }
 /* 获得焦点后展开pre */
-section:focus-within pre{
+.articleShow pre{
     overflow: auto;
     text-overflow: clip;
     height:210px;

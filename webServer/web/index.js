@@ -234,6 +234,7 @@ state.controller('article', function ($scope, $rootScope, $compile) {
      * @param {int} isUpdate 是否更新评论 默认false
      */
     $scope.getComment = (articleNum,isUpdate=false) => {
+
         let selectArticle
         $scope.articleTable.some(article => {
             if (article.num == articleNum) {
@@ -285,6 +286,18 @@ state.controller('article', function ($scope, $rootScope, $compile) {
                 alert('删除评论成功')
             }else{
                 console.error("删除评论失败",res)
+            }
+        })
+    }
+    //TODO:这里的解决方式不够优雅，我本来想用css来解决一切交互的，但兼容性太他妈蛋疼了
+    $scope.show=(event)=>{
+        event.path.some((element)=>{
+            if(element.classList.contains("articleSection")){
+                document.querySelectorAll(".articleSection").forEach(element=>{
+                    element.classList.remove("articleShow")
+                })
+                element.classList.add("articleShow")
+                return true
             }
         })
     }

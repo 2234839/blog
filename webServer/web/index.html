@@ -27,14 +27,15 @@
             </div>
         </nav>
     </header>
-    <div ng-controller='article'>
+    <div ng-controller='article' class="articleList" ng-click="show($event)">
         <button ng-click="popup.show()">编辑文章</button>
         <input type="text" ng-model="serchStr">
         <button ng-click='searchArticle(serchStr)'>搜索</button>
         <button ng-if="isSearch" ng-click='exitSearch()'>返回文章浏览页</button>
         <div title="文章列表" >
-            <section ng-repeat="x in articleTable" tabindex="0" ng-click="getComment(x.num)">
-                <h4 ng-bind='x.textname'></h4>
+                <!-- getComment函数中还调用了展开文章的函数 -->
+            <section ng-repeat="x in articleTable" class="articleSection" ng-click="getComment(x.num)" tabindex="0">
+                <h4>{{x.textname}}</h4>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
