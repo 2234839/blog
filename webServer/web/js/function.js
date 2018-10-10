@@ -18,8 +18,8 @@ var addNode = (element, html, $compile, $scope) => {
 }
 /**
  * 一个简单的post方法
- * @param {strin} data 要提交的数据
- * @param {string}} action 要提交到的地址
+ * @param {strin} data 要提交的数据,如果是对象会自动序列化
+ * @param {string} action 要提交到的地址
  * @param {function} callback 回调函数 返回服务器返回的值如果能够序列化的话就会将其序列化
  */
 var post = (data, action, callback = (user) => { alert(user.message) }) => {

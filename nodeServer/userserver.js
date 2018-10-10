@@ -157,7 +157,7 @@ async function getComment(request, response, cookie, sendFiles, postdata) {
         sendFiles(error,response)
         return
     }
-    sendFiles({message:"返回评论结果",results},response)
+    sendFiles({type:"results",results},response)
 }
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
