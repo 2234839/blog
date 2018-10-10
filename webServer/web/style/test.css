@@ -113,6 +113,31 @@ section pre{
 .comment{
     width: 100%;
 }
+.comment div{
+    display: inline;
+}
+.comment .time{
+    font-size: 2px;
+    color: #08b1ff;
+}
+.commentList{
+    width: 100%;
+    border-collapse: collapse;
+}
+.commentList td{
+    border-bottom: 1px solid darkgoldenrod;
+}
+.commentList td:nth-child(1){/* 时间 */
+    width: 60px;
+}
+.commentList td:nth-child(3){/* 时间 */
+    width: 70px;
+}
+.commentList td:nth-child(4){
+    /* 仅比按钮宽一点点 */
+    width: 50px;
+}
+
 /* 滚动条的设置,仅支持谷歌类的浏览器 */
 ::-webkit-scrollbar-track-piece {
     background-color:#f8f8f8;

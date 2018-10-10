@@ -2,7 +2,7 @@ var state = angular.module('state', []);//, ['ngSanitize']
 /**
  * 注册控制器，用来注册？,需要添加一个标签来激活此模块
  */
-state.controller('user', function ($scope, $compile, ) {
+state.controller('user', function ($scope, $compile) {
     $scope.name = "";
     $scope.password = "";
     $scope.user = JSON.parse(localStorage.getItem('user'))
@@ -234,7 +234,6 @@ state.controller('article', function ($scope, $rootScope, $compile) {
      * @param {int} isUpdate 是否更新评论 默认false
      */
     $scope.getComment = (articleNum,isUpdate=false) => {
-
         let selectArticle
         $scope.articleTable.some(article => {
             if (article.num == articleNum) {
@@ -247,8 +246,11 @@ state.controller('article', function ($scope, $rootScope, $compile) {
         }
         post({ articleNum }, 'getComment', (res) => {
             if (res.type == 'results') {
-                $scope.articleTable.some(article => {
+                $scope.articleTable.some(article => {//找到当前获取评论的文章
                     if (article.num == articleNum) {
+                        res.results.map(comment=>{
+                            comment.time=comment.time.substring(0,10)+" "+comment.time.substring(11,19)
+                        })
                         $scope.$apply(() => {
                             article.commentList = res.results.reverse()//颠倒数组使后来居上
                             return true

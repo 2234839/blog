@@ -9,7 +9,7 @@
  * @param {*} $compile angular的东西
  * @param {*} $scope 在哪个控制器内进行编译
  */
-var addNode = (element, html, $compile, $scope) => {
+function addNode(element, html, $compile, $scope){
     //html不符合规范则这一步可能报错
     var dom = $compile(html)($scope);
     for (let i = 0; i < dom.length; i++) {
