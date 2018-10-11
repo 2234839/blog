@@ -41,10 +41,24 @@
         <input type="text" class="inputSearch inputR" ng-model="serchStr">
         <button ng-click='searchArticle(serchStr)'>搜索</button>
         <button ng-if="isSearch" ng-click='exitSearch()'>返回文章浏览页</button>
+        <!-- <div title="页面切换"> -->
+            <button ng-click="jump(-1)" title="上一页">上一页</button>
+            <button ng-if="page-1 >0 && page<=Math.ceil(num/10)" ng-click="jump(-2)">{{page-1}}</button>
+            <button ng-if="page>0 && page<=Math.ceil(num/10)" ng-click="jump(-1)">{{page}}</button>
+            <select title="选择查看第几页" ng-init="page=0" ng-model="page" ng-options="value as value+1 for value in pageNum">
+                <!-- 自动填充页码选项，另此处的init的初始化会触发getArticle函数自动加载第一页的数据 -->
+            </select>
+            <button ng-if="page+1>0 && page+2<=Math.ceil(num/10)" ng-click="jump(+1)">{{page+2}}</button>
+            <button ng-if="page+2>0 && page+3<=Math.ceil(num/10)" ng-click="jump(+2)">{{page+3}}</button>
+            <button ng-click="jump(1)" title="下一页">下一页</button>
+        <!-- </div> -->
         <div title="文章列表">
             <!-- getComment函数中还调用了展开文章的函数  ng-class="{articleComm:(x.commentList.length<=0)}"-->
             <section ng-repeat="x in articleTable" class="articleSection" tabindex="0">
-                <h4>{{x.textname}}</h4>
+                <header>
+                    <button>{{x.name}}</button>
+                    <h4>{{x.textname}}</h4>
+                </header>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
@@ -72,9 +86,8 @@
                             </td>
                             <td title="{{comment.content}}" class="content">{{comment.content}}</td>
                             <td title="评论发布时间" class="time">{{comment.time}}</td>
-                            <td>
-                                <button ng-if="user.name==comment.userName || user.name==x.name" ng-click="deleteComment(comment,x)"
-                                    title="删除评论">删除</button>
+                            <td ng-if="user.name==comment.userName || user.name==x.name">
+                                <button ng-click="deleteComment(comment,x)" title="删除评论">删除</button>
                             </td>
                         </tr>
                     </table>

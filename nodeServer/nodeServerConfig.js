@@ -5,11 +5,12 @@
 var sql=require('./../../sql').config.mysql
  
 exports.config = {
-    mysql:sql
-    // mysql:{
-    //     host: ip,
-    //     user: 用户名,
-    //     password: 密码,
-    //     database:数据库名
-    // }
+    // mysql:sql 
+    // root@localhost: edxOBGhy.1:.
+    mysql:{
+        host: '127.0.0.1',
+        user: 'root',
+        password: '987456321',
+        database:'Blog'
+    }
 }

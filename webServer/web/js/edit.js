@@ -14,6 +14,8 @@ window.onload=function(){
     editor2.customConfig.uploadImgServer = '/file'
     editor1.create()
     editor2.create()
+    edit1.style.backgroundColor='antiquewhite'
+    edit2.style.backgroundColor='antiquewhite'
     edit1.remove()
     edit2.remove()
 }
