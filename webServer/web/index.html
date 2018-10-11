@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,8 @@
     <title>神行Blog</title>
 </head>
 <!-- TODO:所有标签应当有合适的title来提供描述性信息以便无障碍功能及爬虫的索引 -->
-<body ng-app="state" ng-controller="user" >
+
+<body ng-app="state" ng-controller="user">
     <header title="包含用户基本操作的导航栏">
         <nav>
             <div>
@@ -25,42 +27,54 @@
                     <button ng-click="addLoginNode()">登录</button>
                 </div>
                 <div ng-if="user" title="用户信息">
-                    <button >{{user.name}}</button>
+                    <button>{{user.name}}</button>
                     <button ng-click="cancellation()">注销</button>
                 </div>
             </div>
         </nav>
     </header>
+    <!-- <img src="./image/账号.png" alt="" srcset=""> -->
     <div id="wangEdit"></div>
     <div ng-controller='article' class="articleList" ng-click="show($event)">
         <button ng-click="openEdit()">编辑文章</button>
-        <input type="text" ng-model="serchStr">
+        <img src="./image/搜索.png" class="inputLeftImg">
+        <input type="text" class="inputSearch inputR" ng-model="serchStr">
         <button ng-click='searchArticle(serchStr)'>搜索</button>
         <button ng-if="isSearch" ng-click='exitSearch()'>返回文章浏览页</button>
-        <div title="文章列表" >
-                <!-- getComment函数中还调用了展开文章的函数 -->
-            <section ng-repeat="x in articleTable" class="articleSection" ng-click="getComment(x.num)" tabindex="0">
+        <div title="文章列表">
+            <!-- getComment函数中还调用了展开文章的函数  ng-class="{articleComm:(x.commentList.length<=0)}"-->
+            <section ng-repeat="x in articleTable" class="articleSection" tabindex="0">
                 <h4>{{x.textname}}</h4>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
                     <button ng-click="openEdit(x)">修改</button>
                 </details>
+                <br>
                 <!-- 文章内容 -->
                 <!-- <pre  ng-bind='x.content' ></pre> -->
-                <div class="articleContent"  ng-bind-html='x.content | to_trusted' ></div>
+                <div class="articleContent" ng-bind-html='x.content | to_trusted'></div>
                 <div class="commentDiv">
                     <input type="text" name="comment" title="输入评论" ng-model="x.comment">
                     <button title="发布评论" ng-click="addComment(x)">发布评论</button>
+                    <!-- 初始化加载评论 -->
+                    <button ng-init="getComment(x.num)" title="加载评论" ng-click="getComment(x.num,true)">刷新评论</button>
                     <table class="commentList">
-                        <tr class="comment"  ng-repeat="comment in x.commentList">
+                        <tr ng-if="x.commentList<=0">
+                            <td></td>
+                            <td><span style="color:#797575">这里还没有评论.....</span> </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="comment" ng-repeat="comment in x.commentList">
                             <td>
                                 <button name="name" title="评论发布者">{{comment.userName}}</button>
                             </td>
                             <td title="评论内容" class="content">{{comment.content}}</td>
                             <td title="评论发布时间" class="time">{{comment.time}}</td>
                             <td>
-                                <button ng-if="user.name==comment.userName || user.name==x.name" ng-click="deleteComment(comment,x)" title="删除评论">删除</button>
+                                <button ng-if="user.name==comment.userName || user.name==x.name" ng-click="deleteComment(comment,x)"
+                                    title="删除评论">删除</button>
                             </td>
                         </tr>
                     </table>
@@ -80,4 +94,5 @@
         </div>
     </div>
 </body>
+
 </html>

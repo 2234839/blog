@@ -11,8 +11,8 @@ state.controller('user', function ($scope, $compile) {
     $scope.name = "";
     $scope.password = "";
     $scope.user = JSON.parse(localStorage.getItem('user'))
-    var inputHtml = ` <input type="text" ng-model="name"><br/>
-                    <input type="password" ng-model="password"><br/>`
+    var inputHtml = `   <img src="./image/账号.png" class="inputLeftImg"/><input class="inputR" type="text" ng-model="name"><br/>
+                        <img src="./image/密码.png" class="inputLeftImg"/><input class="inputR" type="password" ng-model="password"><br/>`
     //注册
     $scope.register = () => {
         post(`name=${$scope.name}&password=${$scope.password}`, 'register', (user) => {
@@ -245,7 +245,7 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
         if (isNaN(num))
             throw new Error("文章编号错误")
         var user = JSON.parse(localStorage.getItem('user'))
-        article(JSON.stringify({ user: user, article: { num: num } }), 'deleteArticle', (d) => {
+        post(JSON.stringify({ user: user, article: { num: num } }), 'deleteArticle', (d) => {
             for (let index = 0; index < $scope.articleTable.length; index++) {
                 const element = $scope.articleTable[index];
                 if (element.num == num) {//移除文章数组中的这条数据
@@ -278,10 +278,12 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
         }
         post({ articleNum }, 'getComment', (res) => {
             if (res.type == 'results') {
+                if(res.results.length>0)
+                    console.table(res.results)
                 $scope.articleTable.some(article => {//找到当前获取评论的文章
                     if (article.num == articleNum) {
                         res.results.map(comment=>{
-                            comment.time=comment.time.substring(0,10)+" "+comment.time.substring(11,19)
+                            comment.time=new Date(comment.time).toLocaleString()
                         })
                         $scope.$apply(() => {
                             article.commentList = res.results.reverse()//颠倒数组使后来居上
@@ -313,7 +315,11 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
             }
         })
     }
+    /**
+     * 删除评论
+     */
     $scope.deleteComment=(comment,article)=>{
+        console.log(comment,article);
         post(comment, 'deleteComment', (res) => {
             if (res.type == 'results' && res.results.affectedRows==1) {
                 $scope.getComment(article.num,true)

@@ -10,6 +10,8 @@ window.onload=function(){
     document.body.appendChild(edit2)
     editor1 = new E(edit1)
     editor2 = new E(edit2)
+    editor1.customConfig.uploadImgServer = '/file'
+    editor2.customConfig.uploadImgServer = '/file'
     editor1.create()
     editor2.create()
     edit1.remove()

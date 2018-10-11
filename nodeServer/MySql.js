@@ -32,8 +32,9 @@ exports.query = function (sqltext, array) {
 				switch (err.errno) {
 					case 'EHOSTUNREACH':
 						console.error('连接数据库失败',err.message)
+					case '1366':
+						console.error('插入数据编码与数据库字段字符集不一致',err.message)
 					default:
-						console.log(err);
 						reject(err)
 				}
 			resolve(rows)
