@@ -300,6 +300,10 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
      * 添加评论
      */
     $scope.addComment=(article)=>{
+        if(!article.hasOwnProperty("comment") || article.comment.length<1){
+            alert("请输入有意义的评论")
+            return
+        }
         let comment={
             articleNum:article.num,
             userName:'',//这里服务器会根据cookie获得的

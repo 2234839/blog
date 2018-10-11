@@ -190,12 +190,21 @@ section .articleContent{
     font-size: 2px;
     color: #08b1ff;
 }
-.commentList{
+.commentList,.commentList tbody{
     width: 100%;
     border: 0px;
+    display: inline-block;
     border-collapse: collapse;
 }
+.commentList tr{
+    display: inline-block;
+    width: 100%;
+}
 .commentList td{
+    box-sizing: border-box;/*让元素不被padding影响*/
+    /* 因为td不能比内容小 所以要设置为block使其能够比内容小 */
+    display: inline-block;
+    vertical-align: middle;/*垂直居中*/
     height: 40px;
     border: 0px;
     border-bottom: 1px solid darkgoldenrod;
@@ -204,17 +213,18 @@ section .articleContent{
     width: 60px;
 }
 .commentList td:nth-child(2){/* 评论*/
+    padding-top: 5px;
     overflow: hidden;
-    width: 50%;
+    width: 70%;
     text-overflow:ellipsis;
     white-space: nowrap;   
 }
 .commentList td:nth-child(3){/* 时间 */
-    width: 80px;
+    width: 90px;
 }
 .commentList td:nth-child(4){
     /* 仅比按钮宽一点点 */
-    width: 50px;
+    width: 60px;
 }
 
 /* 滚动条的设置,仅支持谷歌类的浏览器 */
