@@ -11,8 +11,14 @@ state.controller('user', function ($scope, $compile) {
     $scope.name = "";
     $scope.password = "";
     $scope.user = JSON.parse(localStorage.getItem('user'))
-    var inputHtml = `   <img src="./image/账号.png" class="inputLeftImg"/><input class="inputR" type="text" ng-model="name"><br/>
-                        <img src="./image/密码.png" class="inputLeftImg"/><input class="inputR" type="password" ng-model="password"><br/>`
+    var inputHtml = `<div>
+            <img src="./image/账号.png" class="inputLeftImg"/>
+            <input class="inputR" type="text" ng-model="name" placeholder="请在这里输入您的账号"><br/>
+        </div>
+        <div>
+            <img src="./image/密码.png" class="inputLeftImg"/>
+            <input class="inputR" type="password" ng-model="password" placeholder="请在这里输入您的密码"><br/>
+        </div>`
     //注册
     $scope.register = () => {
         post(`name=${$scope.name}&password=${$scope.password}`, 'register', (user) => {

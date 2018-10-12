@@ -2,9 +2,11 @@
  * 参数要成对输入，前者为后者的描述
  */
 let j=0
+
 exports.log = function () {
     colorLog.apply(null,arguments)
 }
+global.log=exports.log 
 function colorLog(){//一种特定格式的打印方法
     let c={//颜色表
         //前景色            背景色                  其他  这个好像没用

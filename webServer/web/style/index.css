@@ -8,6 +8,7 @@
     background-color:rgba(112, 92, 76, 0.808);
     line-height:100%;
 }
+/* 中心弹窗 */
 .popupPop{
     width: 250px;
     height: 300px;
@@ -19,6 +20,20 @@
     left: 0;
     right: 0;
     bottom: 0;
+    text-align: center;
+}
+/* 主要写给登录样式的 */
+.popupPop div{
+    margin-top: 10px;
+}
+.popupPop div input{
+    margin-left: -10px;
+}
+.popupPop div:nth-child(1){
+    margin-top: 60px;
+}
+.popupPop button{
+    margin-top: 10px;
 }
 /* 关闭浮层的按钮的样式 */
 .popupMask .popupOff{
