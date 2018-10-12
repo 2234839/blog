@@ -42,19 +42,23 @@ var serverConfig = {
                 // data 是一个数组，返回若干图片的线上地址
                 data: []
             }
+            function ranStr() {
+                return Math.random().toString(36).substring(2)+Math.random().toString(36).substring(2)+Math.random().toString(36).substring(2)
+            }
             //保存文件
             const files=fun.formFile(entireData)//解析二进制的数据
             for (let i = 0; i < files.length; i++) {
                 const element = files[i];
                 let path=await (new Promise((resolve,reject)=>{
+                    const tempPatn=ranStr()+"_"+element.describe.filename
                         //TODO:这里的目录应该要再初始化模块中初始化
                         //TODO:理论上来说如果有人构造恶意数据这里的filename直接拼接是一个严重的漏洞 比如将name 构造为 ../之类的
-                        fs.writeFile(process.cwd()+"/webServer/web/file/"+element.describe.filename, entireData.slice(element.start,element.end), 'binary', (err)=>{
+                        fs.writeFile(process.cwd()+"/webServer/web/file/"+tempPatn, entireData.slice(element.start,element.end), 'binary', (err)=>{
                             if(err)
                             reject(err)
                             else{
                                 //这个路径是基于web目录的TODO:应该按照config来配置
-                                resolve("./file/"+element.describe.filename)
+                                resolve("./file/"+tempPatn)
                             }
                         });
                     }))
