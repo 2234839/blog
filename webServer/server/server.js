@@ -110,7 +110,6 @@ function sendFiles(sPath, response) {//TODO:应该增加一个浏览器缓存机
                 'Server': 'nodejs-v10.8.0_Blog_webserver',
                 'Location': encodeURI(sPath),//这里必须转码，否则路径为中文时_http_server会报错
                 'charset': 'utf-8',
-
             });
             //将文件存入内存  ！！！此处应该加上一个判断该文件是否热门的机制
             //TODO:目前处于调试阶段故关闭此功能 

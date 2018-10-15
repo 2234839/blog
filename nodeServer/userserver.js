@@ -9,7 +9,11 @@ var user=require('./user')
 //最下方有一个服务监听路径的对象
 var userTable={}
 exports.userTable=userTable
+async function getUser(request, response, cookie, sendFiles, postdata) {
+    
+}
 /**
+ * 注册功能
  * @param {object} postdata post提交的数据
  */
 function register(request, response, cookie, sendFiles, postdata){
@@ -141,7 +145,7 @@ async function searchArticle(request, response, cookie, sendFiles, postdata){
     sendFiles({num,results,message:"共查询到"+num+"条结果"},response)
 }
 /**
- * 获取文章
+ * 获取评论
  * post 应含有字段articleNum 指向文章
  */
 async function getComment(request, response, cookie, sendFiles, postdata) {
@@ -162,7 +166,7 @@ async function getComment(request, response, cookie, sendFiles, postdata) {
     sendFiles({type:"results",results},response)
 }
 /**
- * 发布文章
+ * 发布评论
  * comment 的结构 {articleNum,userName,content,time}
  */
 async function addComment(request, response, cookie, sendFiles, postdata) {

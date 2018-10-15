@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "2fa": "^0.1.2",
     "mysql": "latest",
     "package.json": "^2.0.1"
   }

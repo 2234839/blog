@@ -27,15 +27,19 @@
                     <button ng-click="addLoginNode()">登录</button>
                 </div>
                 <div ng-if="user" title="用户信息">
-                    <button>{{user.name}}</button>
+                    <button ng-click="showUser(user.name)">{{user.name}}</button>
                     <button ng-click="cancellation()">注销</button>
                 </div>
             </div>
         </nav>
     </header>
-    <aside title="展示用户信息">
-
-    </aside>
+    <!-- <aside class="showUser" title="展示用户信息">
+        <table>
+            <tr>
+                <td>用户名</td>     <td>{{user_Show}}</td>
+            </tr>
+        </table>
+    </aside> -->
     <main ng-controller='article' class="articleList" ng-click="show($event)">
         <button ng-click="openEdit()">编辑文章</button>
         <img src="./image/搜索.png" class="inputLeftImg">
@@ -57,7 +61,7 @@
             <!-- getComment函数中还调用了展开文章的函数  ng-class="{articleComm:(x.commentList.length<=0)}"-->
             <section ng-repeat="x in articleTable" class="articleSection" tabindex="0">
                 <header>
-                    <button>{{x.name}}</button>
+                    <button ng-click="showUser(x.name)">{{x.name}}</button>
                     <h4>{{x.textname}}</h4>
                 </header>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
@@ -83,7 +87,7 @@
                         </tr>
                         <tr class="comment" ng-repeat="comment in x.commentList">
                             <td>
-                                <button name="name" title="评论发布者">{{comment.userName}}</button>
+                                <button name="name" title="评论发布者"  ng-click="showUser(comment.userName)">{{comment.userName}}</button>
                             </td>
                             <td title="{{comment.content}}" class="content">{{comment.content}}</td>
                             <td title="评论发布时间" class="time">{{comment.time}}</td>
@@ -108,8 +112,7 @@
         </div>
     </main>
     <address>
-        如果你看到任何bug，请联系<a href="mailto:2234839456@qq.com">管理员</a>.<br>
+        如果你看到任何bug，请联系<a href="mailto:2234839456@qq.com">管理员</a>
     </address>
 </body>
-
 </html>

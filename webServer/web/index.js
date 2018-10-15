@@ -11,6 +11,19 @@ state.controller('user', function ($scope, $compile) {
     $scope.name = "";
     $scope.password = "";
     $scope.user = JSON.parse(localStorage.getItem('user'))
+    $scope.user_Show=$scope.user//用来展示用户的信息
+    $scope.showUser=(name)=>{
+        post({name}, "getUser", (res) => {
+            if (res.type == 'results') {
+                if(res.results.length>0)
+                    console.table(res.results)
+                    
+            }else{
+                console.error(res)
+                
+            }
+        })
+    }
     var inputHtml = `<div>
             <img src="./image/账号.png" class="inputLeftImg"/>
             <input class="inputR" type="text" ng-model="name" placeholder="请在这里输入您的账号"><br/>
