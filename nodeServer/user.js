@@ -198,8 +198,8 @@ exports.searchArticle=async (str,isnum,start=0,end=9)=>{
  * 获取文章的评论
  * @param {int} articleNum 文章编号
  */
-exports.getComment=async (articleNum)=>{
-    return await sql.query(`select * from comment where articleNUm = ?`,articleNum)
+exports.getComment=async (articleNum)=>{//联合查询添加了头像字段
+    return await sql.query('select comment.*,`user`.avatar from comment,user where articleNum = ? and `comment`.userName=`user`.`name` ;',articleNum)
 }
 /**
  * 提交评论

@@ -88,7 +88,7 @@
                         </tr>
                         <tr class="comment" ng-repeat="comment in x.commentList">
                             <td>
-                                <button name="name" title="评论发布者"  ng-click="showUser(comment.userName)">{{comment.userName}}</button>
+                                <button ng-click="showUser(comment.name)" class="userName" title="{{comment.name}}"  style="background-image: url({{comment.avatar?comment.avatar:'./image/用户.png'}})"></button>
                             </td>
                             <td title="{{comment.content}}" class="content">{{comment.content}}</td>
                             <td title="评论发布时间" class="time">{{comment.time}}</td>

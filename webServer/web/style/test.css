@@ -234,6 +234,7 @@ section .articleContent{
     text-align: center;  
 }
 .commentList td:nth-child(1){/* 用户 */
+    overflow: hidden;
     margin: 0px;/*第一个td无需消除间隙*/
     width: 60px;
 }
