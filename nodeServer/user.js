@@ -3,29 +3,6 @@
  * 对用户的一些操作 如增删改查之类的
  */
 var sql = require('./MySql');
-exports.user = user
-/**
- * user对象的构造函数
- * @param {int} id id
- * @param {string} name 用户名
- * @param {string} password 密码
- * @param {object} data data
- * @param {object} msg msg
- */
-function user(id = NaN, name = null, password = null, data = {}, msg = {}, cookies = Math.random().toString(36).substr(2)) {
-    this.id = id
-    this.name = name
-    this.password = password
-    this.data = data
-    this.msg = msg
-    this.cookies = cookies
-}
-function article(id = 0, textname = "", des = "", content = "") {
-    this.id = id
-    this.des = des
-    this.content = content
-    this.textname = textname
-}
 /**
  * 添加一个用户到数据库中，异步函数
  * @param {object} user 包含基本信息的user对象
@@ -34,7 +11,7 @@ function article(id = 0, textname = "", des = "", content = "") {
 exports.addUser = function (user) {
     return new Promise((resolve,reject)=>{
         //模块会将json对象直接转为 “a=0” 这种形式的 ，所以需要将他们序列化一下
-        var results=sql.query('INSERT INTO user VALUES (?,?,?,?,?,?)', [0, user.name, user.password, JSON.stringify(user.data), JSON.stringify(user.msg), user.cookies])
+        var results=sql.query('INSERT INTO user set ?', user)
         results.then((results)=>{
             results.message="注册成功。"
             resolve(results)

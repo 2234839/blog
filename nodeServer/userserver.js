@@ -19,7 +19,7 @@ async function getUser(request, response, cookie, sendFiles, postdata) {
  */
 function register(request, response, cookie, sendFiles, postdata){
     var obj=fun.stringParse(postdata.toString())
-    var use=new user.user(obj.id,obj.name,obj.password,obj.data,obj.msg)
+    var use=new sqlObj.user(obj.id,obj.name,obj.password,obj.data,obj.msg)
     user.addUser(use).then((results)=>{
         sendFiles(results,response)
     })
@@ -33,7 +33,7 @@ function register(request, response, cookie, sendFiles, postdata){
  */
 function login(request, response, cookie, sendFiles, postdata){
     var obj=fun.stringParse(postdata.toString())
-    var use=new user.user(obj.id,obj.name,obj.password,obj.data,obj.msg,cookie.loginCookie)
+    var use=new sqlObj.user(obj.id,obj.name,obj.password,obj.data,obj.msg,cookie.loginCookie)
     user.login(use).then((results)=>{//TODO:这里是保持登录状态的cookie持续时间不该设置的这么长
         results.message+="\n嗨！ 欢迎"+results.name+"来到神行"
         response.setHeader('Set-Cookie', "loginCookie="+results.cookies+"; expires= Fri, 31 Dec 9999 23:59:59 GMT;");
