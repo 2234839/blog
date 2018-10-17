@@ -3,7 +3,7 @@
  */
 const fs = require('fs');
 const fun = require('../../nodeServer/function')
-const userserver = require('./../../nodeServer/userserver').function
+const userserver = require('../../nodeServer/userserver').function
 var serverConfig = {
     port: "80",
     web_root: "./webServer/web",//根据主要运行的js文件 index.js 来确定从哪里开始的,而不是webserver服务的server.js 的文件位置
@@ -27,7 +27,7 @@ var serverConfig = {
             response.writeHead(303, {
                 'Content-Type': 'text/html',
                 'Server': 'nodejs-v10.8.0_gs-webserver',
-                'Location': path
+                'Location': this.config.index_page  //直接跳到首页
             })
             response.end()
         },

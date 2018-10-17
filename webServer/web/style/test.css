@@ -98,6 +98,14 @@ button,select{
     padding: 5px 10px;
     border: #ff5a00 1px solid;
 }
+.userName{
+    height: 40px;width: 40px;
+    border-radius: 40px;
+    font-size: 40px;
+    padding-top: -10px;
+    border: 0px;
+    background-image: url('../image/用户.png');
+}
 select{
     height: 27px;
     padding: 5px 4px;
@@ -141,7 +149,7 @@ section header{
     padding: 0px;
     margin: 10px;
     width: 60%;
-    height: 35px;
+    height: 50px;
     /* 设置标题的下划线的样式 */
     border: 0px #1f5bff solid;
     border-bottom-width: 3px;
@@ -150,9 +158,14 @@ section header{
     overflow: hidden;
     text-overflow:ellipsis;
 }
+/* 文章的一些信息 */
 section header button,h4{
     margin: 5px;
     display: inline-block;
+}
+section header div{
+    display: inline;
+    
 }
 
 .articleShow header{
@@ -182,6 +195,7 @@ section .articleContent{
     max-height: 480px;
     /* height:46px ; */
     margin-bottom: 4px;
+    margin-top: -15px;
     /* 文本溢出则显示省略号，但只能在横排截断上有用而如果是高度超出则无效 */
     text-overflow:ellipsis;
     border: #a93c00 solid 1px;

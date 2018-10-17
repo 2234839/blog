@@ -1,4 +1,4 @@
-var serverConfig = require("../config/serverConfig.js");
+var serverConfig = require("./serverConfig");
 var http = require("http");
 var url = require("url");
 var fs = require("fs");
@@ -7,7 +7,6 @@ const fun = require('../../nodeServer/function')
 var contentType = require("./ContentType")
 var userTable = require('../../nodeServer/userserver').userTable//输出信息的调试用
 const log=require('./log').log//打印日志
-
 
 var sRoot = serverConfig.config.web_root;
 //路由表

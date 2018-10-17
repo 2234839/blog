@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +15,6 @@
     <link rel="stylesheet" href="./style/test.css">
     <title>神行Blog</title>
 </head>
-<!-- TODO:所有标签应当有合适的title来提供描述性信息以便无障碍功能及爬虫的索引 -->
-
 <body ng-app="state" ng-controller="user">
     <header title="包含用户基本操作的导航栏">
         <nav>
@@ -27,7 +24,7 @@
                     <button ng-click="addLoginNode()">登录</button>
                 </div>
                 <div ng-if="user" title="用户信息">
-                    <button ng-click="showUser(user.name)">{{user.name}}</button>
+                    <button ng-click="showUser(user.name)" class="userName"></button>
                     <button ng-click="cancellation()">注销</button>
                 </div>
             </div>
@@ -61,8 +58,13 @@
             <!-- getComment函数中还调用了展开文章的函数  ng-class="{articleComm:(x.commentList.length<=0)}"-->
             <section ng-repeat="x in articleTable" class="articleSection" tabindex="0">
                 <header>
-                    <button ng-click="showUser(x.name)">{{x.name}}</button>
+                    <!-- 显示用户头像以及文章标题 -->
+                    <button ng-click="showUser(x.name)" class="userName" title="{{x.name}}"></button>
                     <h4>{{x.textname}}</h4>
+                    <div>
+                        <div title="作者">{{x.name}}</div>
+                        <div title="发布时间">2017年10月17日</div>
+                    </div>
                 </header>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
@@ -71,7 +73,6 @@
                 </details>
                 <br>
                 <!-- 文章内容 -->
-                <!-- <pre  ng-bind='x.content' ></pre> -->
                 <div class="articleContent" ng-bind-html='x.content | to_trusted'></div>
                 <div class="commentDiv">
                     <input type="text" name="comment" title="输入评论" ng-model="x.comment">
