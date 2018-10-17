@@ -24,7 +24,7 @@
                     <button ng-click="addLoginNode()">登录</button>
                 </div>
                 <div ng-if="user" title="用户信息">
-                    <button ng-click="showUser(user.name)" class="userName"></button>
+                    <button ng-click="showUser(user.name)" class="userName" style="background-image: url({{user.avatar?user.avatar:'./image/用户.png'}})"></button>
                     <button ng-click="cancellation()">注销</button>
                 </div>
             </div>
@@ -59,7 +59,7 @@
             <section ng-repeat="x in articleTable" class="articleSection" tabindex="0">
                 <header>
                     <!-- 显示用户头像以及文章标题 -->
-                    <button ng-click="showUser(x.name)" class="userName" title="{{x.name}}"></button>
+                    <button ng-click="showUser(x.name)" class="userName" title="{{x.name}}"  style="background-image: url({{user.avatar?user.avatar:'./image/用户.png'}})"></button>
                     <h4>{{x.textname}}</h4>
                     <div>
                         <div title="作者">{{x.name}}</div>

@@ -104,7 +104,6 @@ button,select{
     font-size: 40px;
     padding-top: -10px;
     border: 0px;
-    background-image: url('../image/用户.png');
 }
 select{
     height: 27px;
