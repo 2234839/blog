@@ -36,7 +36,7 @@ var server = http.createServer(function (request, response) {
                     '时间',new Date().toLocaleString( ),
                     '路径',path)
             } else {
-                sendFiles(new Error("您请求的路径没有服务在监听,请检查路径或者联系管理员添加监听服务"), response);
+                sendFiles(new Error(`您请求的路径[[${path}]]没有服务在监听,请检查路径或者联系管理员添加监听服务`), response);
             }
         });
     } else {//这里基本上就是get请求
