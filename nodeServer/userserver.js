@@ -214,11 +214,13 @@ async function deleteComment(request, response, cookie, sendFiles, postdata){//T
     }
     sendFiles({type:"results",results},response)
 }
-
+/**
+ * 注销   无需提交参数,直接根据cookie注销
+ */
 function cancellation(request, response, cookie, sendFiles, postdata){
     delete userTable[cookie.loginCookie]
     //通过设置时间过期使浏览器删除登录的cookie
-    response.setHeader('Set-Cookie', "loginCookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;");
+    response.setHeader('Set-Cookie', "loginCookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;")
     response.end("注销成功")
 }
 exports.function={//还需要在serverConfig 中添加路径

@@ -13,21 +13,20 @@ class article{
     }
 }
 class user{
-    constructor(id = 0, name = null, password = null, data = {}, msg = {}, cookies = Math.random().toString(36).substr(2)){
+    constructor(id = 0, name = null, password = null, data = {}, msg = {}, cookies = Math.random().toString(36).substr(2),avatar="./image/用户.png"){
         if(arguments.length==1 &&(typeof arguments[0]=='object')){//只有一个参数且它是对象 
             this.id=arguments[0].id
             this.name=arguments[0].name
             this.password=arguments[0].password
-            this.data=arguments[0].data
-            this.msg=arguments[0].msg
             this.cookies=arguments[0].cookies
+            this.avatar=arguments[0].avatar
+            
         }else{
             this.id = id
             this.name = name
             this.password = password
-            this.data = data
-            this.msg = msg
             this.cookies = cookies
+            this.avatar=avatar
         }
     }
 }

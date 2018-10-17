@@ -121,7 +121,8 @@ exports.article = function (article) {
 exports.getArticle =async function (start = 0, end = 10) {
     var num=await exports.getTableNum("article")
     // ORDER BY num desc 降序排列来从后面开始取
-    var results=results=await sql.query(`select * from article ORDER BY num desc limit ?,?`, [start, end])
+    //联合查询 添加上用户头像的路径 `user`.avatar
+    var results=results=await sql.query('select article.*,`user`.avatar from article,`user` WHERE article.`name`=`user`.`name` ORDER BY article.num desc limit ?,?;', [start, end])
     return {results,num}
 }
 /**
