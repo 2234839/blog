@@ -172,6 +172,10 @@ async function getComment(request, response, cookie, sendFiles, postdata) {
  */
 async function addComment(request, response, cookie, sendFiles, postdata) {
     let comment
+    if(!userTable.hasOwnProperty(cookie.loginCookie)){
+        sendFiles(new Error("请登录后再尝试"),response)
+        return
+    }
     try {
         //TODO:或许还该检查一下用户是否拥有这个文章的管理权
         comment=JSON.parse(postdata)
@@ -210,6 +214,13 @@ async function deleteComment(request, response, cookie, sendFiles, postdata){//T
     }
     sendFiles({type:"results",results},response)
 }
+
+function cancellation(request, response, cookie, sendFiles, postdata){
+    delete userTable[cookie.loginCookie]
+    //通过设置时间过期使浏览器删除登录的cookie
+    response.setHeader('Set-Cookie', "loginCookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;");
+    response.end("注销成功")
+}
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
@@ -220,5 +231,6 @@ exports.function={//还需要在serverConfig 中添加路径
     '/searchArticle':searchArticle,
     '/getComment':getComment,
     '/addComment':addComment,
-    '/deleteComment':deleteComment
+    '/deleteComment':deleteComment,
+    '/cancellation':cancellation,
 }

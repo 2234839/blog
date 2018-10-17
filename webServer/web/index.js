@@ -10,7 +10,8 @@ state.filter('to_trusted', ['$sce', function ($sce) {//这个过滤器用来使b
 state.controller('user', function ($scope, $compile) {
     $scope.name = "";
     $scope.password = "";
-    $scope.user = JSON.parse(localStorage.getItem('user'))
+    if(localStorage.getItem('user')!="{}")
+        $scope.user = JSON.parse(localStorage.getItem('user'))
     $scope.user_Show=$scope.user//用来展示用户的信息
     $scope.showUser=(name)=>{
         post({name}, "getUser", (res) => {
@@ -70,6 +71,11 @@ state.controller('user', function ($scope, $compile) {
      */
     $scope.cancellation = () => {
         $scope.user = false
+        localStorage.setItem("user",JSON.stringify({}))
+        post({}, 'cancellation', (res) => {
+            alert(res)
+            console.log(res);
+        })
     }
     $scope.addNode = (html) => {
         var loginHtml = inputHtml + html
@@ -236,7 +242,6 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
     $scope.openEdit = (article) => {
         if(article==undefined){
             $scope.editSate = false
-            console.log("展开");
             $scope.popup.pop.querySelector("#edit1").appendChild(edit1)
             $scope.popup.show()
         }else{
@@ -337,6 +342,7 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
                 alert('发布评论成功')
                 article.comment=""//发布成功后清楚该文章暂存的评论
             }else{
+                alert(res.message)
                 console.error("发布评论失败",res)
             }
         })

@@ -77,6 +77,7 @@ var serverConfig = {
         '/getComment': userserver['/getComment'],     //获取文章评论
         '/addComment': userserver['/addComment'],     //提交评论
         '/deleteComment': userserver['/deleteComment'],  //删除评论
+        '/cancellation':userserver['/cancellation'],//注销账号
         '/qr': function(request, response, cookie, sendFiles, data) {//get方法，返回一个qr码
             var tfa = require('2fa');
             tfa.generateKey(31, function (err, key) {
