@@ -123,16 +123,19 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
     $scope.getArticle = (pageChange = 0, path = 'getArticle', data = {}) => {
         data.start = pageChange * 10
         data.end = (pageChange + 1) * 10
-        post(data, path, (d) => {//获取文章
-            if (d.type == "Error" || !(d instanceof Object)) {//错误处理
-                console.log(d);
-                alert(d.message)
+        post(data, path, (res) => {//获取文章
+            if (res.type == "Error" || !(res instanceof Object)) {//错误处理
+                console.log(res);
+                alert(res.message)
                 return
             }
-            console.table(d.results)
+            res.results.map(comment=>{
+                comment.time=new Date(comment.time).toLocaleString()
+            })
+            console.table(res.results)
             $scope.$apply(() => {
-                $scope.articleTable = d.results
-                $scope.num = d.num;
+                $scope.articleTable = res.results
+                $scope.num = res.num;
                 var pageCount = Math.ceil($scope.num / 10)
                 for (let index = 0; index < pageCount; index++) {
                     if ($scope.pageNum[index] == undefined)

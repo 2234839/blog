@@ -3,6 +3,7 @@
  */
 var fun=require('./function')
 var user=require('./user')
+const sqlObj=require('./sqlObj')
 // var routeTable=require('./../webServer/config/serverConfig').config.routeTable
 // routeTable["/register"]=register
 // routeTable["/login"]=login
@@ -54,14 +55,16 @@ function isLogin(cookies){
 /**
  * 提交文章
  */
-async function article(request, response, cookie, sendFiles, postdata) {
+async function upArticle(request, response, cookie, sendFiles, postdata) {
     if(!isLogin(cookie.loginCookie)){
         sendFiles(new Error("请登录后再尝试发送"),response)//请登录后在尝试发送
         return;
     }
     use=userTable[cookie.loginCookie]
-    var article=JSON.parse(postdata.toString())
-    sendFiles(await user.article(article,use),response)
+    let article=new sqlObj.article(JSON.parse(postdata))
+    article.id=use.id
+    article.name=use.name
+    sendFiles(await user.article(article),response)
 }
 /**
  * 获取文章
@@ -102,9 +105,7 @@ async function deleteArticle(request, response, cookie, sendFiles, postdata) {
  * 修改文章的功能函数，要求postdata是article格式的json，TODO:此处未进行验证，存在安全隐患,权限验证不够完善
  */
 async function updateArticle(request, response, cookie, sendFiles, postdata){
-    article=JSON.parse(postdata)
-    console.log(article);
-    
+    let article=new sqlObj.article(JSON.parse(postdata))
     let results=null
     try {
         results=await user.updateArticle(article)
@@ -212,7 +213,7 @@ async function deleteComment(request, response, cookie, sendFiles, postdata){//T
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
-    "/article":article,
+    "/article":upArticle,
     '/getArticle':getArticle,
     '/deleteArticle':deleteArticle,
     '/updateArticle':updateArticle,

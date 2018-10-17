@@ -123,9 +123,9 @@ exports.getUser = function (id, callback) {
  * @param {object} user 用户模型
  * @returns {Promise} Promise对象
  */
-exports.article = function (article, user) {
+exports.article = function (article) {
     return new Promise((resolve,reject)=>{
-        sql.query('INSERT INTO article VALUES (0,?,?,?,?,?)', [user.id, user.name, article.textname, article.des, article.content])
+        sql.query('INSERT INTO article set ?',article)
         .then((results) => {
             if(results.insertId!=0){
                 resolve({
@@ -180,8 +180,7 @@ exports.deleteArticle =async function (num) {
  * @param {object} article 文章对象
  */
 exports.updateArticle=async (article)=>{
-    return await sql.query('UPDATE article SET num=?,id=?,name=?,textname=?,des=?,content=? where num=?',
-        [article.num,article.id,article.name,article.textname,article.des,article.content,article.num])
+    return await sql.query('UPDATE article SET ? where num=?',[article,article.num])
 }
 /**
  * 模糊搜索article表的textname des content字段
