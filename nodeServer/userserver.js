@@ -62,7 +62,6 @@ async function upArticle(request, response, cookie, sendFiles, postdata) {
     }
     use=userTable[cookie.loginCookie]
     let article=new sqlObj.article(JSON.parse(postdata))
-    article.id=use.id
     article.name=use.name
     sendFiles(await user.article(article),response)
 }
@@ -222,6 +221,12 @@ function cancellation(request, response, cookie, sendFiles, postdata){
     //通过设置时间过期使浏览器删除登录的cookie
     response.setHeader('Set-Cookie', "loginCookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;")
     response.end("注销成功")
+}
+/**
+ * 获取用户信息
+ */
+function getUser(request, response, cookie, sendFiles, postdata) {
+    
 }
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,

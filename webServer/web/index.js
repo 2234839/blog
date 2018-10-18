@@ -294,14 +294,14 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
      */
     $scope.getComment = (articleNum,isUpdate=false) => {
         let selectArticle
-        $scope.articleTable.some(article => {
+        $scope.articleTable.some(article => {//找到这篇文章
             if (article.num == articleNum) {
                 selectArticle=article
                 return
             }
         })
-        if(! isUpdate && (typeof selectArticle.commentList!='undefined')){
-            return
+        if((! isUpdate && (typeof selectArticle.commentList!='undefined') )|| selectArticle.commentSum==0){
+            return// 不是更新评论且评论数组未初始化                                 没有评论
         }
         post({ articleNum }, 'getComment', (res) => {
             if (res.type == 'results') {

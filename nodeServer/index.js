@@ -9,9 +9,8 @@ var log = console.log
 // },1000)
 
 async function test() {
-    //post.serchStr,false,post.start,post.end)
-    // res= await userServer.function['/searchArticle'](0, 0, 0, 0, JSON.stringify({serchStr:"广",end:3}))
-    // console.log(res)
+    res= await user.getUser("szl")
+    console.log(res)
 
 }
 test()

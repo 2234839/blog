@@ -21,8 +21,6 @@ exports.escape = function (sqltext) {
  * @param {sqltext} sqltext sql语句
  * @param {array} array sql语句中的参数数组
  * @returns {Promise} Promise对象
- * //这里不可以直接将connection传过去给其他程序使用，
- * //貌似是因为它内部的一些this的指向有些问题，所以最好在这里直接处理，由其他函数传参数
  */
 exports.query = function (sqltext, array) {
 	return new Promise((resolve, reject) => {
@@ -31,11 +29,11 @@ exports.query = function (sqltext, array) {
 			if (err)
 				switch (err.errno) {
 					case 'EHOSTUNREACH':
-						console.error('连接数据库失败',err.message)
+						console.error('连接数据库失败', err.message)
 					case '1366':
-						console.error('插入数据编码与数据库字段字符集不一致',err.message)
+						console.error('插入数据编码与数据库字段字符集不一致', err.message)
 					case 'ECONNREFUSED':
-						console.error('连接数据库失败',err.message)
+						console.error('连接数据库失败', err.message)
 					default:
 						console.log(err, rows, fields);
 						reject(err)
@@ -55,11 +53,7 @@ exports.query = function (sqltext, array) {
 		// 		});
 		// 	}
 		// })
-		//原先只是用一个连接的时候使用的方法
-		// connection.query(sqltext,array,function(err, results) {
-		//   if(err)
-		//     reject(err)
-		//   resolve(results)
-		// });
+
 	})
 }
+
