@@ -15,14 +15,8 @@ state.controller('user', function ($scope, $compile) {
     $scope.user_Show=$scope.user//用来展示用户的信息
     $scope.showUser=(name)=>{
         post({name}, "getUser", (res) => {
-            if (res.type == 'results') {
-                if(res.results.length>0)
-                    console.table(res.results)
-                    
-            }else{
-                console.error(res)
-                
-            }
+            console.log(res);
+            
         })
     }
     var inputHtml = `<div>

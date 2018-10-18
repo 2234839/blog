@@ -9,9 +9,8 @@ var log = console.log
 // },1000)
 
 async function test() {
-    res= await user.getUser("szl")
+    res= await user.getUser(16)
     console.log(res)
-
 }
 test()
 

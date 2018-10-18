@@ -83,12 +83,11 @@ exports.queryUser = function (name) {
 }
 /**
  * 返回这个用户的数据对象
- * @param {number} id 要查询用户的id
+ * @param {int} id 要查询用户的id
  * @returns {Promise} Promise对象
  */
 exports.getUser =async function (name) {
-    
-    
+    return (await sql.query("SELECT * FROM `用户` WHERE `用户`.name=?",name))[0]
 }
 /**
  * 发布文章的函数

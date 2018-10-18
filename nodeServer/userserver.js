@@ -225,8 +225,16 @@ function cancellation(request, response, cookie, sendFiles, postdata){
 /**
  * 获取用户信息
  */
-function getUser(request, response, cookie, sendFiles, postdata) {
-    
+async function getUser(request, response, cookie, sendFiles, postdata) {
+    let post=JSON.parse(postdata)
+    let res
+    try {
+        res= await user.getUser(post.name)
+    } catch (error) {
+        sendFiles(error,response)
+        return
+    }
+    sendFiles(res,response)
 }
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
@@ -240,4 +248,5 @@ exports.function={//还需要在serverConfig 中添加路径
     '/addComment':addComment,
     '/deleteComment':deleteComment,
     '/cancellation':cancellation,
+    '/getUser':getUser,
 }
