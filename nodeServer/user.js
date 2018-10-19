@@ -186,9 +186,8 @@ exports.searchArticle=async (str,isnum,start=0,end=9)=>{
     }//返回结果集
     par.push(start)
     par.push(end)
-    return await sql.query(sqlText+" limit ?,?",par)
+    return await sql.query(sqlText+"ORDER BY `num` DESC limit ?,?",par)
 }
-
 /**
  * 获取文章的评论
  * @param {int} articleNum 文章编号
