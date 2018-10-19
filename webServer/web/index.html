@@ -30,13 +30,16 @@
             </div>
         </nav>
     </header>
-    <!-- <aside class="showUser" title="展示用户信息">
+    <aside class="showUser" title="展示用户信息">
         <table>
             <tr>
-                <td>用户名</td>     <td>{{user_Show}}</td>
+                <td>用户名</td>     <td>{{user_Show.name}}</td>
+                <td>头像  </td>     <td>{{user_Show.avatar}}</td>
+                <td>文章数</td>     <td>{{user_Show.articleSum}}</td>
+                <td>评论数</td>     <td>{{user_Show.commentSum}}</td>
             </tr>
         </table>
-    </aside> -->
+    </aside>
     <main ng-controller='article' class="articleList" ng-click="show($event)">
         <button ng-click="openEdit()">编辑文章</button>
         <img src="./image/搜索.png" class="inputLeftImg">

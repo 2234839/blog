@@ -32,6 +32,7 @@ var post = (data, action, callback = (user) => { alert(user.message) }) => {
         } catch (error) {
             res=xhr.response
         }
+        console.log(action,res);
         callback(res)
     }
     xhr.send(typeof data=="string"?data:JSON.stringify(data));

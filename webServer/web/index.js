@@ -13,13 +13,15 @@ state.controller('user', function ($scope, $compile) {
     if(localStorage.getItem('user')!="{}")
         $scope.user = JSON.parse(localStorage.getItem('user'))
     $scope.user_Show=$scope.user//用来展示用户的信息
+    //获取用户信息并显示，用于头像
     $scope.showUser=(name)=>{
         post({name}, "getUser", (res) => {
-            console.log(res);
-            
+            $scope.$apply(()=>{
+                $scope.user_Show=res
+            })
         })
     }
-    var inputHtml = `<div>
+    let inputHtml = `<div>
             <img src="./image/账号.png" class="inputLeftImg"/>
             <input class="inputR" type="text" ng-model="name" placeholder="请在这里输入您的账号"><br/>
         </div>
@@ -53,7 +55,6 @@ state.controller('user', function ($scope, $compile) {
                     //保存用户的基本信息到本地
                 });
                 localStorage.setItem('user', JSON.stringify($scope.user))
-                console.log("登录成功", user);
             }
         })
     }
