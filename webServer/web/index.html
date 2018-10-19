@@ -7,6 +7,7 @@
     <script src="./js/angularJS.js"></script>
     <script src="./js/angular-sanitize.js"></script>
     <script src="./js/function.js"></script>
+    <script src="./js/compatible.js"></script>
     <!-- wangEditor开源的轻量化编辑器 -->
     <script src="./js/wangEditor.min.js"></script>
     <script src="./js/edit.js"></script>
@@ -24,7 +25,7 @@
                     <button ng-click="addLoginNode()">登录</button>
                 </div>
                 <div ng-if="user" title="用户信息">
-                    <button ng-click="showUser(user.name)" class="userName" style="background-image: url({{user.avatar?user.avatar:'./image/用户.png'}})"></button>
+                    <button ng-click="showUser(user.name,$event)" class="userName" style="background-image: url({{user.avatar?user.avatar:'./image/用户.png'}})"></button>
                     <button ng-click="cancellation()">注销</button>
                 </div>
             </div>
@@ -43,8 +44,8 @@
     <main ng-controller='article' class="articleList" ng-click="show($event)">
         <button ng-click="openEdit()">编辑文章</button>
         <img src="./image/搜索.png" class="inputLeftImg">
-        <input type="text" class="inputSearch inputR" ng-model="serchStr">
-        <button ng-click='searchArticle(serchStr)'>搜索</button>
+        <input type="text" class="inputSearch inputR" ng-model="serchStr" title="输入您想要搜索的关键词">
+        <button ng-click='searchArticle(serchStr)' title="搜索文章的内容、标题以及描述，支持多关键字">搜索</button>
         <button ng-if="isSearch" ng-click='exitSearch()'>返回文章浏览页</button>
         <!-- <div title="页面切换"> -->
         <button ng-click="jump(-1)" title="上一页">上一页</button>
@@ -62,7 +63,7 @@
             <section ng-repeat="x in articleTable" class="articleSection" tabindex="0">
                 <header>
                     <!-- 显示用户头像以及文章标题 -->
-                    <button ng-click="showUser(x.name)" class="userName" title="{{x.name}}"  style="background-image: url({{x.avatar?x.avatar:'./image/用户.png'}})"></button>
+                    <button ng-click="showUser(x.name,$event)" class="userName" title="{{x.name}}"  style="background-image: url({{x.avatar?x.avatar:'./image/用户.png'}})"></button>
                     <h4>{{x.textname}}</h4>
                     <div>
                         <div title="作者">{{x.name}}</div>
@@ -91,7 +92,7 @@
                         </tr>
                         <tr class="comment" ng-repeat="comment in x.commentList">
                             <td>
-                                <button ng-click="showUser(comment.name)" class="userName" title="{{comment.name}}"  style="background-image: url({{comment.avatar?comment.avatar:'./image/用户.png'}})"></button>
+                                <button ng-click="showUser(comment.name,$event)" class="userName" title="{{comment.name}}"  style="background-image: url({{comment.avatar?comment.avatar:'./image/用户.png'}})"></button>
                             </td>
                             <td title="{{comment.content}}" class="content">{{comment.content}}</td>
                             <td title="评论发布时间" class="time">{{comment.time}}</td>

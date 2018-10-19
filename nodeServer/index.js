@@ -8,10 +8,10 @@ var log = console.log
 //     '/deleteArticle'
 // },1000)
 
-async function test() {
-    res= await user.getUser(16)
-    console.log(res)
-}
-test()
+// async function test() {
+//     res= await user.getUser(16)
+//     console.log(res)
+// }
+// test()
 
 

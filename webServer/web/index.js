@@ -14,11 +14,18 @@ state.controller('user', function ($scope, $compile) {
         $scope.user = JSON.parse(localStorage.getItem('user'))
     $scope.user_Show=$scope.user//用来展示用户的信息
     //获取用户信息并显示，用于头像
-    $scope.showUser=(name)=>{
+    $scope.showUser=(name,event)=>{
         post({name}, "getUser", (res) => {
             $scope.$apply(()=>{
                 $scope.user_Show=res
             })
+            //显示用户信息bing
+            window.addEventListener('scroll',scroll)
+            const location=event.target.getBoundingClientRect()
+            const element=document.querySelector('.showUser')
+            element.style.display="inline"
+            element.style.left=location.x+42+'px'
+            element.style.top=location.y+42+'px'
         })
     }
     let inputHtml = `<div>

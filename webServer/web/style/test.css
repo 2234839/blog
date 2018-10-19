@@ -231,7 +231,6 @@ section .articleContent{
     height: 40px;
     border: 0px;
     border-bottom: 1px solid darkgoldenrod;
-
     vertical-align: middle;/*垂直居中*/
     text-align: center;  
 }
@@ -255,6 +254,13 @@ section .articleContent{
     margin-left: 5px;
     /* 仅比按钮宽一点点 */
     width: 60px;
+}
+/* 展示用户信息的面板 */
+.showUser{
+    display: none;
+    position:fixed;
+    z-index: 10;
+    background-color: #f0f0f0;
 }
 /* 勉强解决宽度过窄时的布局错乱，将错就错 */
 @media (max-width: 765px) {

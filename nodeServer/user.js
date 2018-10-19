@@ -156,7 +156,7 @@ exports.updateArticle=async (article)=>{
     return await sql.query('UPDATE article SET ? where num=?',[article,article.num])
 }
 /**
- * 模糊搜索article表的textname des content字段
+ * 模糊搜索article表的textname des content字段 返回num降序排列的数组
  * @param {string} str 要查询的关键字 可以用空格隔开
  * @param {boolen} isnum 如果为true则函数返回符合条件的文章数量，否则返回查询结果集
  * @param {int} start 分页的开始
