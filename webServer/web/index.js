@@ -19,13 +19,8 @@ state.controller('user', function ($scope, $compile) {
             $scope.$apply(()=>{
                 $scope.user_Show=res
             })
-            //显示用户信息bing
-            window.addEventListener('scroll',scroll)
-            const location=event.target.getBoundingClientRect()
-            const element=document.querySelector('.showUser')
-            element.style.display="inline"
-            element.style.left=location.x+42+'px'
-            element.style.top=location.y+42+'px'
+            //显示用户信息并修改它的位置
+            c_showUser(event)
         })
     }
     let inputHtml = `<div>
@@ -303,6 +298,7 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
             }
         })
         if((! isUpdate && (typeof selectArticle.commentList!='undefined') )|| selectArticle.commentSum==0){
+            selectArticle.commentSum=1//当再次运行此函数的时候强制刷新，无视一开始获得的commentSum
             return// 不是更新评论且评论数组未初始化                                 没有评论
         }
         post({ articleNum }, 'getComment', (res) => {

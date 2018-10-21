@@ -39,12 +39,12 @@ var server = http.createServer(function (request, response) {
                 sendFiles(new Error(`您请求的路径[[${path}]]没有服务在监听,请检查路径或者联系管理员添加监听服务`), response);
             }
         });
-    } else {//这里基本上就是get请求
+    } else {//这里是get请求
         log('用户',userTable.hasOwnProperty(cookie.loginCookie) ? userTable[cookie.loginCookie].name : '__游客__',
                     '方法',"GET",
                     '时间',new Date().toLocaleString( ),
                     '路径',path)
-        if (routeTable.hasOwnProperty(path)) {
+        if (routeTable.hasOwnProperty(path)) {//这个路径上是否存在一个函数监听
             switch (typeof routeTable[path]) {
                 case "string"://这个存在的目的是使路由表可以指定纯粹的字符串路径
                     path = routeTable[path];
