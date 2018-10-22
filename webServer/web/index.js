@@ -132,12 +132,15 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
                 alert(res.message)
                 return
             }
-            res.results.map(comment=>{
-                comment.time=new Date(comment.time).toLocaleString()
+            $scope.articleTable = res.results
+            $scope.articleTable.map(article=>{
+                article.time=new Date(article.time).toLocaleString()
+                if(article.commentSum>0){
+                    $scope.getComment(article.num,true)
+                }
             })
             console.table(res.results)
             $scope.$apply(() => {
-                $scope.articleTable = res.results
                 $scope.num = res.num;
                 var pageCount = Math.ceil($scope.num / 10)
                 for (let index = 0; index < pageCount; index++) {
@@ -297,10 +300,12 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
                 return
             }
         })
-        if((! isUpdate && (typeof selectArticle.commentList!='undefined') )|| selectArticle.commentSum==0){
+        console.log(selectArticle);
+        
+        if(!isUpdate || selectArticle.commentSum==0){
             selectArticle.commentSum=1//当再次运行此函数的时候强制刷新，无视一开始获得的commentSum
             return// 不是更新评论且评论数组未初始化                                 没有评论
-        }
+        } 
         post({ articleNum }, 'getComment', (res) => {
             if (res.type == 'results') {
                 if(res.results.length>0)
@@ -320,6 +325,7 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
                 console.error("获取评论失败",res)
             }
         })
+        return 1
     }
     /**
      * 添加评论

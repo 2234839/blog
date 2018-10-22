@@ -52,7 +52,7 @@
         <button ng-if="page-1 >0 && page<=Math.ceil(num/10)" ng-click="jump(-2)">{{page-1}}</button>
         <button ng-if="page>0 && page<=Math.ceil(num/10)" ng-click="jump(-1)">{{page}}</button>
         <select title="选择查看第几页" ng-init="page=0" ng-model="page" ng-options="value as value+1 for value in pageNum">
-            <!-- 自动填充页码选项，另此处的init的初始化会触发getArticle函数自动加载第一页的数据 -->
+            <!-- 自动填充页码选项，另此处的init的初始化会触发getArticle函数自动加载第一页的数据 TODO:有两个导致会加载两次.....好难受，找了好久的错误-->
         </select>
         <button ng-if="page+1>0 && page+2<=Math.ceil(num/10)" ng-click="jump(+1)">{{page+2}}</button>
         <button ng-if="page+2>0 && page+3<=Math.ceil(num/10)" ng-click="jump(+2)">{{page+3}}</button>
@@ -82,7 +82,7 @@
                     <input type="text" name="comment" title="输入评论" ng-model="x.comment">
                     <button title="发布评论" ng-click="addComment(x)">发布评论</button>
                     <!-- 初始化加载评论 -->
-                    <button ng-init="getComment(x.num)" title="加载评论" ng-click="getComment(x.num,true)">刷新评论</button>
+                    <button title="加载评论" ng-click="getComment(x.num,true)">刷新评论</button>
                     <table class="commentList">
                         <tr ng-if="x.commentList<=0">
                             <td></td>
@@ -108,7 +108,7 @@
             <button ng-click="jump(-1)" title="上一页">上一页</button>
             <button ng-if="page-1 >0 && page<=Math.ceil(num/10)" ng-click="jump(-2)">{{page-1}}</button>
             <button ng-if="page>0 && page<=Math.ceil(num/10)" ng-click="jump(-1)">{{page}}</button>
-            <select title="选择查看第几页" ng-init="page=0" ng-model="page" ng-options="value as value+1 for value in pageNum">
+            <select title="选择查看第几页" ng-model="page" ng-options="value as value+1 for value in pageNum">
                 <!-- 自动填充页码选项，另此处的init的初始化会触发getArticle函数自动加载第一页的数据 -->
             </select>
             <button ng-if="page+1>0 && page+2<=Math.ceil(num/10)" ng-click="jump(+1)">{{page+2}}</button>

@@ -1,6 +1,7 @@
 /**
  * 对user.js 的功能的一些封装
  */
+const fs = require('fs');
 var fun=require('./function')
 var user=require('./user')
 const sqlObj=require('./sqlObj')
@@ -10,9 +11,6 @@ const sqlObj=require('./sqlObj')
 //最下方有一个服务监听路径的对象
 var userTable={}
 exports.userTable=userTable
-async function getUser(request, response, cookie, sendFiles, postdata) {
-    
-}
 /**
  * 注册功能
  * @param {object} postdata post提交的数据
@@ -236,6 +234,68 @@ async function getUser(request, response, cookie, sendFiles, postdata) {
     }
     sendFiles(res,response)
 }
+/**
+ * 上传文件，支持wangEdit的返回
+ */
+async function file(request, response, cookie, sendFiles, entireData){
+    let res = {//wangEdit要求的数据回传格式
+        // errno 即错误代码，0 表示没有错误。
+        //       如果有错误，errno != 0，可通过下文中的监听函数 fail 拿到该错误码进行自定义处理
+        errno: 0,
+        // data 是一个数组，返回若干图片的线上地址
+        data: []
+    }
+    function ranStr() {
+        return Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+    }
+    //保存文件
+    const files = fun.formFile(entireData)//解析二进制的数据
+    for (let i = 0; i < files.length; i++) {
+        const element = files[i];
+        let path = await (new Promise((resolve, reject) => {
+            const tempPatn = ranStr() + "_" + element.describe.filename
+            //TODO:这里的目录应该要再初始化模块中初始化
+            //TODO:理论上来说如果有人构造恶意数据这里的filename直接拼接是一个严重的漏洞 比如将name 构造为 ../之类的
+            fs.writeFile(process.cwd() + "/webServer/web/file/" + tempPatn, entireData.slice(element.start, element.end), 'binary', (err) => {
+                if (err)
+                    reject(err)
+                else {
+                    //这个路径是基于web目录的TODO:应该按照config来配置
+                    resolve("./file/" + tempPatn)
+                }
+            });
+        }))
+        res.data.push(path)
+    }
+    sendFiles(res, response);
+}
+/**
+ * 跳转到首页的函数
+ */
+function index(req, response, cookie, sendFiles){//对直接访问地址的处理
+    var path = ""
+    // if (cookie.init) {
+    //     path = this.config.index_page;
+    // } else {
+    //     path = this.config.welcome_page;
+    //     //此处cookie的设置详见   https://blog.csdn.net/helloliuhai/article/details/18351439 https://www.cnblogs.com/ajianbeyourself/p/4900140.html
+    //     //设置cookie有效期到世界末日,不允许js读取cookie
+    //     response.setHeader('Set-Cookie', "init=true; expires= Fri, 31 Dec 9999 23:59:59 GMT;");
+    // }
+    //重定向
+    response.writeHead(303, {
+        'Content-Type': 'text/html',
+        'Server': 'nodejs-v10.8.0_gs-webserver',
+        'Location': './index.html'  //直接跳到首页
+    })
+    response.end()
+}
+/**
+ * 获取当前登录用户状态
+ */
+function getLoginUser(request, response, cookie, sendFiles, postdata){
+    sendFiles(userTable,response)
+}
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
@@ -249,4 +309,7 @@ exports.function={//还需要在serverConfig 中添加路径
     '/deleteComment':deleteComment,
     '/cancellation':cancellation,
     '/getUser':getUser,
+    '/file':file,
+    '/index':index,
+    '/getLoginUser':getLoginUser
 }

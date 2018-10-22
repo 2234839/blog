@@ -20,6 +20,8 @@ var server = http.createServer(function (request, response) {
     */
     //转换url编码
     let path = decodeURI(request.url);
+    if(userTable.hasOwnProperty(cookie.loginCookie))
+        userTable[cookie.loginCookie].path=path
     //收集客户端发来的数据
     var postdata = [];
     if (request.method === "POST") {
