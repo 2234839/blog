@@ -97,9 +97,8 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
     $scope._page = 0//保存当前是第几页
     Object.defineProperty($scope, "page", { //强化page的功能，设置page则直接跳转
         set: (x) => {
-            //console.log("page",x)
             $scope._page = x
-            $scope.getArticle($scope._page)
+            $scope.getArticle($scope._page)//这种操作好容易坑到自己啊
         },
         get: () => { return $scope._page }
     });

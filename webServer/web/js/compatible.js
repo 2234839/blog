@@ -21,3 +21,8 @@ function c_showUser(event) {
     element.style.left=location.x+42+'px'
     element.style.top=location.y+42+'px'
 }
+
+
+post({},"getLoginUser" , (res) => {
+    console.table(res)
+})
