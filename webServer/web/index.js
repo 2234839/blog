@@ -4,6 +4,7 @@ state.filter('to_trusted', ['$sce', function ($sce) {//这个过滤器用来使b
         return $sce.trustAsHtml(text);
     };
 }]);
+//TODO:将一些信息存入indexDB提高速度减低对服务器的访问
 /**
  * 注册控制器，用来注册？,需要添加一个标签来激活此模块
  */
