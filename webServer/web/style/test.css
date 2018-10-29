@@ -6,6 +6,11 @@
     /* 显示元素轮廓，调试用 */
     /* outline:1px solid white; */
 }
+#bgcanvas{
+    position:fixed;
+    margin: -8px -8px;
+    padding: 0;
+}
 /* table 样式 */
 table {
     border-top: 1px solid #a93c00;
@@ -123,14 +128,14 @@ section{
     /* 主要是用来滚动查看评论的 */
     position: relative;
     /* overflow-x: hidden; */
-    position: relative;
     max-height: 610px;
     /* height: 100px; */
     width: 96%;
+    height: 350px;
     overflow: hidden;
     padding-left: 10px;
-    border: 0px #1f5bff solid;
-    border-left-width: 9px;
+    /* border: 0px #1f5bff solid;
+    border-left-width: 9px; */
     margin-bottom: 18px;
     background-color: antiquewhite;
     box-shadow:9px 10px 0px #443f3f87;
@@ -144,6 +149,10 @@ section{
     border-color: #a93c00;  
     overflow: auto;
     /* height: 350px; */
+    z-index: 5;
+    top: 0px;
+    left: 0px;
+    height: 100%;
 }
 /* 文章头 */
 section header{

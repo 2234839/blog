@@ -50,7 +50,7 @@ state.controller('user', function ($scope, $compile) {
     $scope.login = (userLogin = `name=${$scope.name}&password=${$scope.password}`) => {
         post(userLogin, 'login', (user) => {
             alert(user.message)
-            if (!user.hasOwnProperty("type")) {
+            if (!user.hasOwnProperty("type")) {//存在type时是错误对象
                 if ($scope.addNode.hasOwnProperty('pop'))//当存在遮罩层的时候影藏遮罩层，若不存在则这是一次纯粹的登录（如自动登录不涉及用户操作）
                     $scope.addNode.pop.hidden()
                 $scope.$apply(() => {//angular的数据监听对于回调函数中的数据改变是存在问题的，所以我们需要自己调用apply
@@ -58,6 +58,8 @@ state.controller('user', function ($scope, $compile) {
                     //保存用户的基本信息到本地
                 });
                 localStorage.setItem('user', JSON.stringify($scope.user))
+            }else{
+                $scope.user = false
             }
         })
     }
@@ -65,7 +67,7 @@ state.controller('user', function ($scope, $compile) {
         $scope.addNode(`<button ng-click="login()">登录</button> <button ng-click="addRegisterNode()">去注册</button>`)
     }
     /**
-     * 注销当前账号TODO:还没有和服务器对接
+     * 注销当前账号
      */
     $scope.cancellation = () => {
         $scope.user = false
@@ -82,7 +84,21 @@ state.controller('user', function ($scope, $compile) {
         addNode(element, loginHtml, $compile, $scope)
         $scope.addNode.pop.show()
     }
-    $scope.log = console.log
+    //临时存储修改的信息
+    console.log($scope.user);
+    
+    if($scope.user!=undefined)
+        $scope.updateUserTemp={
+            id:$scope.user.id,
+            name:$scope.user.name,
+            avatar:$scope.user.avatar,
+            cookies:$scope.user.cookies
+        }
+    $scope.updateUser=(name,avatar)=>{
+        post({user:$scope.updateUserTemp},"updateUser" , (res) => {
+            console.log(res);
+        })
+    }
     //自动登录
     if ($scope.user && $scope.user.hasOwnProperty('name'))//由于浏览器会自动提供cookies故此处只需要提供name
         $scope.login("name=" + $scope.user.name)
@@ -370,10 +386,27 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
         let path = nodePath(event.target)
         document.querySelectorAll(".articleSection").forEach(element=>{//移除所有元素的show
             element.classList.remove("articleShow")
+            element.style.position="relative"
+            element.style.top='0px'
+            element.style.left='0px'
         })
         path.some((element)=>{//遍历传播路径
             if(element.classList.contains("articleSection")){//找到articleSectiom元素
                 element.classList.add("articleShow")//为被点击的元素赋予show类
+                var location=element.getBoundingClientRect()
+                ggg=element
+                console.log(location);
+                //保持切换postion后位置不变
+                element.style.transition="0s"
+                element.style.position="fixed"
+                element.style.top=location.y+'px'
+                element.style.left=location.x+'px'
+                //彻底展开
+                setTimeout(()=>{//不延时一下没有动画效果
+                    element.style.transition="1.5s"
+                    element.style.top='0px'
+                    element.style.left='0px'
+                },200)
                 return true
             }
         })

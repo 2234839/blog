@@ -31,6 +31,7 @@ var serverConfig = {
         '/cancellation':userserver['/cancellation'],//注销账号
         '/getUser':userserver['/getUser'],//获取用户信息
         '/getLoginUser':userserver['/getLoginUser'],//获取当前登录用户信息
+        '/updateUser':userserver['/updateUser'],//修改用户信息
         '/qr': function(request, response, cookie, sendFiles, data) {//get方法，返回一个qr码
             var tfa = require('2fa');
             tfa.generateKey(31, function (err, key) {

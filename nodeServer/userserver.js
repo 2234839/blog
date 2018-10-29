@@ -296,6 +296,19 @@ function index(req, response, cookie, sendFiles){//对直接访问地址的处�
 function getLoginUser(request, response, cookie, sendFiles, postdata){
     sendFiles(userTable,response)
 }
+async function updateUser(request, response, cookie, sendFiles, postdata){
+    let use=JSON.parse(postdata).user
+    let res;
+    user.updateUser(use).then((e)=>{
+        sendFiles({message:e},response)
+    }).catch((e)=>{
+        if(e instanceof Error && e.errno==1062)
+            sendFiles(new Error("该用户名已存在"),response)
+        else
+            console.log(e);
+    })
+    
+}
 exports.function={//还需要在serverConfig 中添加路径
     "/register":register,
     "/login":login,
@@ -311,5 +324,6 @@ exports.function={//还需要在serverConfig 中添加路径
     '/getUser':getUser,
     '/file':file,
     '/index':index,
-    '/getLoginUser':getLoginUser
+    '/getLoginUser':getLoginUser,
+    '/updateUser':updateUser,
 }

@@ -60,11 +60,13 @@ exports.removeUser = function (id) {
  */
 exports.updateUser = function (user) {
     return new Promise((resolve,reject)=>{
-        sql.query('UPDATE user SET name=?,password=?,data=?,msg=? where id=?', [user.name, user.password, JSON.stringify(user.data), JSON.stringify(user.msg), user.id])
+        sql.query('UPDATE user SET ? where id=?', [user,user.id])
         .then((results) => {
             if(results.affectedRows==1)
                 resolve("修改成功")
             reject("修改失败")
+        }).catch((e)=>{
+            reject(e)
         })
     })
 }
