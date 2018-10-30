@@ -6,6 +6,9 @@
     /* 显示元素轮廓，调试用 */
     /* outline:1px solid white; */
 }
+.hidden{
+    display: node;
+}
 #bgcanvas{
     position:fixed;
     margin: -8px -8px;
