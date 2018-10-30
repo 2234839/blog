@@ -94,6 +94,8 @@ state.controller('user', function ($scope, $compile) {
             avatar:$scope.user.avatar,
             cookies:$scope.user.cookies
         }
+    //好难受，刚才这一块的代码git 切来切去的有一块代码不见了。。。。。。。
+    $scope.updateUser
     $scope.updateUser=(name,avatar)=>{
         post({user:$scope.updateUserTemp},"updateUser" , (res) => {
             console.log(res);
