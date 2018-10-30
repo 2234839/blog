@@ -20,8 +20,7 @@
     <title>神行Blog</title>
 </head>
 <body ng-app="state" ng-controller="user">
-    <canvas id=bgcanvas></canvas>   
-    
+    <!-- <canvas id=bgcanvas></canvas>    -->
     <header title="包含用户基本操作的导航栏">
         <nav>
             <div>
@@ -44,7 +43,13 @@
             </tr>
             <tr>
                 <td>头像 </td>
-                <td><img  class="userName" src="{{user_Show.avatar}}"> </td><td ng-if="user.name==user_Show.name"><input  ng-model="updateUserTemp.avatar" type="text"></td>
+                <td><img  class="userName" src="{{user_Show.avatar}}"></td>
+                <td ng-if="user.name==user_Show.name">
+                    <form class="" name="file" enctype="multipart/form-data" action="file" method="post">
+                        <input type="file" name="img" accept = 'image/*'/>
+                        <button type="submit">提交</button>
+                    </form>
+                </td>
             </tr>
             <tr>
                 <td>文章数</td>
@@ -53,12 +58,7 @@
             <tr>
                 <td>评论数</td>
                 <td>{{user_Show.commentSum}}</td>
-                <td>
-                    <form name="file"  action="" method="post">
-                            <input type="file" name="img" accept = 'image/*'/>
-                    </form>
-                    
-                </td>
+                <td></td>
             </tr>
         </table>
     </aside>

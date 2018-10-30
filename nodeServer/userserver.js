@@ -250,6 +250,7 @@ async function file(request, response, cookie, sendFiles, entireData){
     }
     //保存文件
     const files = fun.formFile(entireData)//解析二进制的数据
+    console.log(files);
     for (let i = 0; i < files.length; i++) {
         const element = files[i];
         let path = await (new Promise((resolve, reject) => {
