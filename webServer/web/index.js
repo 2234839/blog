@@ -11,14 +11,14 @@ state.filter('to_trusted', ['$sce', function ($sce) {//这个过滤器用来使b
 state.controller('user', function ($scope, $compile) {
     $scope.name = "";
     $scope.password = "";
-    if(localStorage.getItem('user')!="{}")
+    if (localStorage.getItem('user') != "{}")
         $scope.user = JSON.parse(localStorage.getItem('user'))
-    $scope.user_Show=$scope.user//用来展示用户的信息
+    $scope.user_Show = $scope.user//用来展示用户的信息
     //获取用户信息并显示，用于头像
-    $scope.showUser=(name,event)=>{
-        post({name}, "getUser", (res) => {
-            $scope.$apply(()=>{
-                $scope.user_Show=res
+    $scope.showUser = (name, event) => {
+        post({ name }, "getUser", (res) => {
+            $scope.$apply(() => {
+                $scope.user_Show = res
             })
             //显示用户信息并修改它的位置
             c_showUser(event)
@@ -58,7 +58,7 @@ state.controller('user', function ($scope, $compile) {
                     //保存用户的基本信息到本地
                 });
                 localStorage.setItem('user', JSON.stringify($scope.user))
-            }else{
+            } else {
                 $scope.user = false
             }
         })
@@ -71,7 +71,7 @@ state.controller('user', function ($scope, $compile) {
      */
     $scope.cancellation = () => {
         $scope.user = false
-        localStorage.setItem("user",JSON.stringify({}))
+        localStorage.setItem("user", JSON.stringify({}))
         post({}, 'cancellation', (res) => {
             alert(res)
             console.log(res);
@@ -86,19 +86,23 @@ state.controller('user', function ($scope, $compile) {
     }
     //临时存储修改的信息
     console.log($scope.user);
-    
-    if($scope.user!=undefined)
-        $scope.updateUserTemp={
-            id:$scope.user.id,
-            name:$scope.user.name,
-            avatar:$scope.user.avatar,
-            cookies:$scope.user.cookies
+
+    if ($scope.user != undefined)
+        $scope.updateUserTemp = {
+            id: $scope.user.id,
+            name: $scope.user.name,
+            avatar: $scope.user.avatar,
+            cookies: $scope.user.cookies
         }
     //好难受，刚才这一块的代码 git切来切去的有一块代码不见了。。。。。。。
-    $scope.updateUser=(name,avatar)=>{
-        post({user:$scope.updateUserTemp},"updateUser" , (res) => {
-            console.log(res);
-        })
+    $scope.updateUser = (name, avatar) => {
+        var formElement = document.forms['file']
+        var request = new XMLHttpRequest();
+        request.open("POST", "file");
+        request.send(new FormData(formElement));
+        request.onload=x=>{
+            console.log(JSON.parse(request.response));
+        }
     }
     //自动登录
     if ($scope.user && $scope.user.hasOwnProperty('name'))//由于浏览器会自动提供cookies故此处只需要提供name
@@ -107,7 +111,7 @@ state.controller('user', function ($scope, $compile) {
 /**
  * 关于文章的一些操作
  */
-state.controller('article', function ($scope, $rootScope, $compile,) {
+state.controller('article', function ($scope, $rootScope, $compile, ) {
     $scope.articleTable = []//存储获得的文章对象
     $scope.Math = Math//为了在angular表达式中使用Math对象
     $scope.num = 0//总共有多少篇文章
@@ -150,10 +154,10 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
                 return
             }
             $scope.articleTable = res.results
-            $scope.articleTable.map(article=>{
-                article.time=new Date(article.time).toLocaleString()
-                if(article.commentSum>0){
-                    $scope.getComment(article.num,true)
+            $scope.articleTable.map(article => {
+                article.time = new Date(article.time).toLocaleString()
+                if (article.commentSum > 0) {
+                    $scope.getComment(article.num, true)
                 }
             })
             console.table(res.results)
@@ -190,13 +194,13 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
     //编辑文章
     $scope.popup = new popup();
     $scope.editSate = false//是否处于修改文章的状态
-    $scope.editArticle={}//保存暂时被修改的
+    $scope.editArticle = {}//保存暂时被修改的
     $scope.article = {
         textname: '',
         des: '',
         content: '',
-    //  comment: '',
-    //  commentList:null,
+        //  comment: '',
+        //  commentList:null,
     };//因为下面那里使用了立即执行的匿名函数所以需要添加分号
     //TODO:死也不要动下面的代码
     (() => {//创建文章编辑控件附加到popup上,TODO:或许可以创建一个函数继承popup来使得可以打开多个编辑器，很有必要，目前没有时间所以直接写了两个重复的编辑控件
@@ -229,12 +233,12 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
      * @param {article} article 文章对象
      */
     $scope.upArticle = (path = 'article', article = $scope.article) => {
-        if(path =='article'){//修改文章有 updateArticle 函数从编辑器获取内容，而直接发布文章就需要再这里获取一下
-            article.content=editor1.txt.html()
+        if (path == 'article') {//修改文章有 updateArticle 函数从编辑器获取内容，而直接发布文章就需要再这里获取一下
+            article.content = editor1.txt.html()
         }
         post(JSON.stringify(article), path, (d) => {
             alert(d.message)//打印返回的消息
-            console.log(d,path);
+            console.log(d, path);
             if (d.hasOwnProperty('id')) {//没有id属性说明没有发布成功
                 $scope.popup.hidden()
                 if ($scope.page == 0) {//如果当前在第一页则自动刷新
@@ -245,8 +249,8 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
     }
     //修改文章
     $scope.updateArticle = (article) => {
-        article.content=editor2.txt.html()
-        $scope.upArticle("updateArticle",article)
+        article.content = editor2.txt.html()
+        $scope.upArticle("updateArticle", article)
         $scope.editSate = false
         $scope.popup.hidden()
     }
@@ -257,26 +261,26 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
     }
     // 打开编辑器
     $scope.openEdit = (article) => {
-        if(article==undefined){
+        if (article == undefined) {
             $scope.editSate = false
             $scope.popup.pop.querySelector("#edit1").appendChild(edit1)
             $scope.popup.show()
-        }else{
+        } else {
             if (!confirm("确认修改 《" + article.textname + "》？"))
                 return
             $scope.editSate = true
             $scope.editArticle = article
-            sss=$scope.popup.pop
-            const ID= setInterval(()=>{//这里是等待angular 的脏检查机制修改dom后再执行
-                if($scope.popup.pop.querySelector("#edit2")!=undefined){
+            sss = $scope.popup.pop
+            const ID = setInterval(() => {//这里是等待angular 的脏检查机制修改dom后再执行
+                if ($scope.popup.pop.querySelector("#edit2") != undefined) {
                     clearInterval(ID)
                     $scope.popup.show()
                     console.log($scope.editArticle);
-                    
+
                     $scope.popup.pop.querySelector("#edit2").appendChild(edit2)
                     editor2.txt.html($scope.editArticle.content)
                 }
-            },100)
+            }, 100)
         }
     }
     /**
@@ -309,28 +313,28 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
      * @param {int} articleNum 文章编号
      * @param {int} isUpdate 是否更新评论 默认false
      */
-    $scope.getComment = (articleNum,isUpdate=false) => {
+    $scope.getComment = (articleNum, isUpdate = false) => {
         let selectArticle
         $scope.articleTable.some(article => {//找到这篇文章
             if (article.num == articleNum) {
-                selectArticle=article
+                selectArticle = article
                 return
             }
         })
         console.log(selectArticle);
-        
-        if(!isUpdate || selectArticle.commentSum==0){
-            selectArticle.commentSum=1//当再次运行此函数的时候强制刷新，无视一开始获得的commentSum
+
+        if (!isUpdate || selectArticle.commentSum == 0) {
+            selectArticle.commentSum = 1//当再次运行此函数的时候强制刷新，无视一开始获得的commentSum
             return// 不是更新评论且评论数组未初始化                                 没有评论
-        } 
+        }
         post({ articleNum }, 'getComment', (res) => {
             if (res.type == 'results') {
-                if(res.results.length>0)
+                if (res.results.length > 0)
                     console.table(res.results)
                 $scope.articleTable.some(article => {//找到当前获取评论的文章
                     if (article.num == articleNum) {
-                        res.results.map(comment=>{
-                            comment.time=new Date(comment.time).toLocaleString()
+                        res.results.map(comment => {
+                            comment.time = new Date(comment.time).toLocaleString()
                         })
                         $scope.$apply(() => {
                             article.commentList = res.results.reverse()//颠倒数组使后来居上
@@ -338,8 +342,8 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
                         })
                     }
                 })
-            }else{
-                console.error("获取评论失败",res)
+            } else {
+                console.error("获取评论失败", res)
             }
         })
         return 1
@@ -347,67 +351,67 @@ state.controller('article', function ($scope, $rootScope, $compile,) {
     /**
      * 添加评论
      */
-    $scope.addComment=(article)=>{
-        if(!article.hasOwnProperty("comment") || article.comment.length<1){
+    $scope.addComment = (article) => {
+        if (!article.hasOwnProperty("comment") || article.comment.length < 1) {
             alert("请输入有意义的评论")
             return
         }
-        let comment={
-            articleNum:article.num,
-            userName:'',//这里服务器会根据cookie获得的
-            content:article.comment
+        let comment = {
+            articleNum: article.num,
+            userName: '',//这里服务器会根据cookie获得的
+            content: article.comment
         }
         post(comment, 'addComment', (res) => {
-            if (res.type == 'results' && res.results.affectedRows==1) {
-                $scope.getComment(article.num,true)
+            if (res.type == 'results' && res.results.affectedRows == 1) {
+                $scope.getComment(article.num, true)
                 alert('发布评论成功')
-                article.comment=""//发布成功后清楚该文章暂存的评论
-            }else{
+                article.comment = ""//发布成功后清楚该文章暂存的评论
+            } else {
                 alert(res.message)
-                console.error("发布评论失败",res)
+                console.error("发布评论失败", res)
             }
         })
     }
     /**
      * 删除评论
      */
-    $scope.deleteComment=(comment,article)=>{
-        console.log(comment,article);
+    $scope.deleteComment = (comment, article) => {
+        console.log(comment, article);
         post(comment, 'deleteComment', (res) => {
-            if (res.type == 'results' && res.results.affectedRows==1) {
-                $scope.getComment(article.num,true)
+            if (res.type == 'results' && res.results.affectedRows == 1) {
+                $scope.getComment(article.num, true)
                 alert('删除评论成功')
-            }else{
-                console.error("删除评论失败",res)
+            } else {
+                console.error("删除评论失败", res)
             }
         })
     }
     //TODO:这里的解决方式不够优雅，我本来想用css来解决一切交互的，但兼容性太他妈蛋疼了
-    $scope.show=(event)=>{
+    $scope.show = (event) => {
         let path = nodePath(event.target)
-        document.querySelectorAll(".articleSection").forEach(element=>{//移除所有元素的show
+        document.querySelectorAll(".articleSection").forEach(element => {//移除所有元素的show
             element.classList.remove("articleShow")
-            element.style.position="relative"
-            element.style.top='0px'
-            element.style.left='0px'
+            element.style.position = "relative"
+            element.style.top = '0px'
+            element.style.left = '0px'
         })
-        path.some((element)=>{//遍历传播路径
-            if(element.classList.contains("articleSection")){//找到articleSectiom元素
+        path.some((element) => {//遍历传播路径
+            if (element.classList.contains("articleSection")) {//找到articleSectiom元素
                 element.classList.add("articleShow")//为被点击的元素赋予show类
-                var location=element.getBoundingClientRect()
-                ggg=element
+                var location = element.getBoundingClientRect()
+                ggg = element
                 console.log(location);
                 //保持切换postion后位置不变
-                element.style.transition="0s"
-                element.style.position="fixed"
-                element.style.top=location.y+'px'
-                element.style.left=location.x+'px'
+                element.style.transition = "0s"
+                element.style.position = "fixed"
+                element.style.top = location.y + 'px'
+                element.style.left = location.x + 'px'
                 //彻底展开
-                setTimeout(()=>{//不延时一下没有动画效果
-                    element.style.transition="1.5s"
-                    element.style.top='0px'
-                    element.style.left='0px'
-                },200)
+                setTimeout(() => {//不延时一下没有动画效果
+                    element.style.transition = "1.5s"
+                    element.style.top = '0px'
+                    element.style.left = '0px'
+                }, 200)
                 return true
             }
         })
