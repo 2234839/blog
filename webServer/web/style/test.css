@@ -74,7 +74,7 @@ input{
 body{
     background-color: #ec7c30;
 }
-button,input,textarea,select,.nameImg{
+button,input,textarea,select,.nameImg,summary{
     vertical-align: middle;/*行内元素垂直居中*/
     border: #1f5bff 1px solid;
     margin-top: 5px;
@@ -101,7 +101,7 @@ button,input,textarea,select,.nameImg{
 .inputSearch {
     margin-left: -10px;
 }
-button,select{
+button,select,summary{
     background: #ffffff;
     padding: 5px 10px;
     border: #ff5a00 1px solid;
@@ -186,12 +186,25 @@ section header div{
     border-color: #ff5a00;
 }
 /* 管理面板 */
-section details{
+section details ,section > button{
     position: absolute;
     z-index: 2;
-    top: 10px;
-    right: 10px;
+    top: 0px;
+    right: 0px;
     display: inline;
+}
+section details{
+    width: 80px;
+    height: 200px;
+}
+section summary{
+    width: 50px;
+}
+section > button{
+    top: 40px;
+    right: 20px;
+    width: 71px;
+    padding-left: 0px;padding-right: 0px;
 }
 /* 管理按钮的css */
 section details summary{

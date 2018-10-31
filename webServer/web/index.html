@@ -63,7 +63,7 @@
             </tr>
         </table>
     </aside>
-    <main ng-controller='article' class="articleList" ng-click="show($event)">
+    <main ng-controller='article' class="articleList">
         <div class="controlhead">
             <button ng-click="openEdit()">编辑文章</button>
             <img src="./image/搜索.png" class="inputLeftImg">
@@ -94,6 +94,7 @@
                         <div title="发布时间">{{x.time}}</div>
                     </div>
                 </header>
+                <button ng-click="show($event)">展开文章</button>
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
