@@ -250,7 +250,6 @@ async function file(request, response, cookie, sendFiles, entireData){
     }
     //保存文件
     const files = fun.formFile(entireData)//解析二进制的数据
-    console.log(files);
     for (let i = 0; i < files.length; i++) {
         const element = files[i];
         let path = await (new Promise((resolve, reject) => {
@@ -298,13 +297,14 @@ function getLoginUser(request, response, cookie, sendFiles, postdata){
     sendFiles(userTable,response)
 }
 async function updateUser(request, response, cookie, sendFiles, postdata){
-    let use=JSON.parse(postdata).user
+    let use=JSON.parse(postdata)
+    use.id=userTable[cookie.loginCookie].id
     let res;
     user.updateUser(use).then((e)=>{
         sendFiles({message:e},response)
     }).catch((e)=>{
         if(e instanceof Error && e.errno==1062)
-            sendFiles(new Error("该用户名已存在"),response)
+            sendFiles(new Error(e),response)
         else
             console.log(e);
     })

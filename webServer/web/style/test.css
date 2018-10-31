@@ -7,7 +7,7 @@
     /* outline:1px solid white; */
 }
 .hidden{
-    display: node;
+    display: none;
 }
 #bgcanvas{
     position:fixed;

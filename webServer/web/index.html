@@ -45,7 +45,8 @@
                 <td>头像 </td>
                 <td><img  class="userName" src="{{user_Show.avatar}}"></td>
                 <td ng-if="user.name==user_Show.name">
-                    <form class="" name="file" enctype="multipart/form-data" action="file" method="post">
+                    <button ng-click="selectImg()">选择图片</button>
+                    <form class="hidden" name="file" enctype="multipart/form-data" action="file" method="post">
                         <input type="file" name="img" accept = 'image/*'/>
                         <button type="submit">提交</button>
                     </form>

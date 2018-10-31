@@ -94,14 +94,36 @@ state.controller('user', function ($scope, $compile) {
             avatar: $scope.user.avatar,
             cookies: $scope.user.cookies
         }
+    //选择头像图片
+    $scope.selectImg=()=>{
+        document.forms['file'].img.click()
+        // let imgurl=window.URL.createObjectURL(document.forms['file'].img.files[0])
+        // $scope.user_Show.avatar=imgurl
+    }
     //好难受，刚才这一块的代码 git切来切去的有一块代码不见了。。。。。。。
     $scope.updateUser = (name, avatar) => {
         var formElement = document.forms['file']
-        var request = new XMLHttpRequest();
-        request.open("POST", "file");
-        request.send(new FormData(formElement));
-        request.onload=x=>{
-            console.log(JSON.parse(request.response));
+        if(formElement.img.files.length>0){//如果用户选择了图片就上传图片
+            let request = new XMLHttpRequest();
+            request.open("POST", "file");
+            request.send(new FormData(formElement));
+            request.onload=x=>{
+                let avatar=JSON.parse(request.response).data[0]
+                up(avatar)
+            }
+        }else
+            up()
+        function up(url=$scope.updateUserTemp.avatar) {
+            let user_temp={
+                name:$scope.updateUserTemp.name,
+                avatar:url,
+            }
+            post(user_temp,'updateUser', (res) => {
+                if(res.message="修改成功"){
+                    alert("修改成功，请刷新页面重新登录以查看新的头像及名称")
+                    
+                }
+            })
         }
     }
     //自动登录

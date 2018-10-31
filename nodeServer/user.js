@@ -59,9 +59,11 @@ exports.removeUser = function (id) {
  * @returns {Promise} Promise对象
  */
 exports.updateUser = function (user) {
-    return new Promise((resolve,reject)=>{
-        sql.query('UPDATE user SET ? where id=?', [user,user.id])
+    return new Promise((resolve,reject)=>{//这里的参数不能自动调整不太好
+        sql.query('UPDATE user SET name=?,avatar=? where id=?', [user.name,user.avatar,user.id])
         .then((results) => {
+            console.log(results,user);
+            
             if(results.affectedRows==1)
                 resolve("修改成功")
             reject("修改失败")
