@@ -411,31 +411,34 @@ state.controller('article', function ($scope, $rootScope, $compile, ) {
     //TODO:这里的解决方式不够优雅，我本来想用css来解决一切交互的，但兼容性太他妈蛋疼了
     $scope.show = (event) => {
         let path = nodePath(event.target)
-        document.querySelectorAll(".articleSection").forEach(element => {//移除所有元素的show
-            element.classList.remove("articleShow")
-            element.style.position = "relative"
-            element.style.top = '0px'
-            element.style.left = '0px'
-        })
-        path.some((element) => {//遍历传播路径
-            if (element.classList.contains("articleSection")) {//找到articleSectiom元素
-                element.classList.add("articleShow")//为被点击的元素赋予show类
-                var location = element.getBoundingClientRect()
-                ggg = element
-                console.log(location);
-                //保持切换postion后位置不变
-                element.style.transition = "0s"
-                element.style.position = "fixed"
-                element.style.top = location.y + 'px'
-                element.style.left = location.x + 'px'
-                //彻底展开
-                setTimeout(() => {//不延时一下没有动画效果
-                    element.style.transition = "1.5s"
-                    element.style.top = '0px'
-                    element.style.left = '0px'
-                }, 200)
-                return true
-            }
-        })
+        let button=event.target
+        let section=button.parentNode
+        ggg=section;
+        console.log(button,section);
+        
+        if(button.innerText=="展开文章"){
+            button.innerText="收缩文章"
+            section.classList.add("articleShow")//为被点击的元素赋予show类
+            var location = section.getBoundingClientRect()
+            console.log(location);
+            //下面是动画
+            //保持切换postion后位置不变
+            section.style.transition = "0s"
+            section.style.position = "fixed"
+            section.style.top = location.y + 'px'
+            section.style.left = location.x + 'px'
+            //彻底展开
+            setTimeout(() => {//不延时一下没有动画效果
+                section.style.transition = "1.5s"
+                section.style.top = '0px'
+                section.style.left = '0px'
+            }, 200)
+        }else{
+            button.innerText="展开文章"
+            section.classList.remove("articleShow")
+            section.style.position = "relative"
+            section.style.top = '0px'
+            section.style.left = '0px'
+        }
     }
 })

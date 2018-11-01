@@ -131,7 +131,7 @@ section{
     /* 主要是用来滚动查看评论的 */
     position: relative;
     /* overflow-x: hidden; */
-    max-height: 610px;
+    /* max-height: 610px; */    /*最大高度*/
     /* height: 100px; */
     width: 96%;
     height: 350px;
@@ -146,16 +146,15 @@ section{
 }
 /* 展开文章 */
 .articleShow{
-    /* 原本左边的宽度为9px,现在让其边框则应用margin左移相同的距离 */
-    /* border-left-width: 14px; 变化宽度容易卡
-    margin-left: -5px; */
+    height: 100%;  
+    width: 100%;  
     border-color: #a93c00;  
     overflow: auto;
-    /* height: 350px; */
     z-index: 5;
     top: 0px;
     left: 0px;
-    height: 100%;
+    /* height: 100%; */
+    bottom: 0px;
 }
 /* 文章头 */
 section header{
@@ -194,7 +193,11 @@ section details ,section > button{
     display: inline;
 }
 section details{
-    width: 80px;
+    width: 100px;
+    height: 44px;
+    overflow: hidden;
+}
+section details:hover{
     height: 200px;
 }
 section summary{

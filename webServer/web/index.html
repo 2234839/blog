@@ -94,7 +94,7 @@
                         <div title="发布时间">{{x.time}}</div>
                     </div>
                 </header>
-                <button ng-click="show($event)">展开文章</button>
+                <button ng-click="show($event)" style="{{x.name!=user.name?'top:15px;':''}}">展开文章</button><!--当没有管理按钮时让展开文章按钮上去一点点-->
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
