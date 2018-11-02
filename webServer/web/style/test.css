@@ -127,6 +127,7 @@ header nav { /*导航栏*/
     border-left-width: 6px;
     background-color: antiquewhite;
 }
+/* 单个文章卡片 */
 section{
     /* 主要是用来滚动查看评论的 */
     position: relative;
@@ -140,9 +141,16 @@ section{
     /* border: 0px #1f5bff solid;
     border-left-width: 9px; */
     margin-bottom: 18px;
-    background-color: antiquewhite;
+    background-color: rgb(255, 255, 255);
     box-shadow:9px 10px 0px #443f3f87;
     outline: none;
+    /* 卡片效果 */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+/* 文章列表 */
+.articleTable{
+
 }
 /* 展开文章 */
 .articleShow{
@@ -304,10 +312,9 @@ section .articleContent{
         margin-top: 6px;
     }
 }
-
 @media (min-width: 766px) {
     main{
-        width: 760px;
+        width: 680px;
         margin: 0 auto;
     }
 }
