@@ -409,7 +409,9 @@ state.controller('article', function ($scope, $rootScope, $compile, ) {
         })
     }
     //TODO:这里的解决方式不够优雅，我本来想用css来解决一切交互的，但兼容性太他妈蛋疼了
-    $scope.show = (event) => {
+    $scope.show = (event,node) => {
+        console.log(node);
+        
         let path = nodePath(event.target)
         let button=event.target
         let section=button.parentNode
@@ -440,5 +442,11 @@ state.controller('article', function ($scope, $rootScope, $compile, ) {
             section.style.top = '0px'
             section.style.left = '0px'
         }
+    }
+    //返回文章元素是否溢出
+    $scope.articleInit=(x)=>{
+        const i=$scope.articleTable.indexOf(x)+1
+        let article= document.querySelector(`.articleSection:nth-child(${i})`)
+        x.article=article//这里将文章dom挂载到了文章对象中
     }
 })

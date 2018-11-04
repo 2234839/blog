@@ -18,6 +18,7 @@ var server = http.createServer(function (request, response) {
     init:true
     loginCookie:""
     */
+    /*** 路由模块 ***/
     //转换url编码
     let path = decodeURI(request.url);
     if(userTable.hasOwnProperty(cookie.loginCookie))
@@ -55,7 +56,7 @@ var server = http.createServer(function (request, response) {
                 case "function"://这里一般是各种服务的路径
                     //客户端发来的get 请求的数据
                     var data = url.parse(request.url, true).query
-                    try { //这里的报错现在是由于有些服务只支持post但这里却调用了它导致的错误
+                    try { 
                         routeTable[path](request, response, cookie, sendFiles, data);
                     } catch (error) {
                         console.error(error)

@@ -14,7 +14,7 @@ const pool = mysql.createPool(config.mysql)
  * @param {string} sqltext 要进行编码的sql语句
  */
 exports.escape = function (sqltext) {
-	return mysql.escape(sqltext)
+    return mysql.escape(sqltext)
 }
 /**
  * 基础的sql查询方法
@@ -23,37 +23,37 @@ exports.escape = function (sqltext) {
  * @returns {Promise} Promise对象
  */
 exports.query = function (sqltext, array) {
-	return new Promise((resolve, reject) => {
-		//方便 但每次随机取connection
-		pool.query(sqltext, array, function (err, rows, fields) {
-			if (err)
-				switch (err.errno) {
-					case 'EHOSTUNREACH':
-						console.error('连接数据库失败', err.message)
-					case '1366':
-						console.error('插入数据编码与数据库字段字符集不一致', err.message)
-					case 'ECONNREFUSED':
-						console.error('连接数据库失败', err.message)
-					default:
-						console.log(err, rows, fields);
-						reject(err)
-				}
-			resolve(rows)
-		});
-		//下面这种方法如果愿意的话 可以让查询在同一conn中执行
-		// pool.getConnection((err, conn) => {
-		// 	if (err) {
-		// 		throw err
-		// 	} else {
-		// 		conn.query(sqltext, array, function (err, results) {
-		// 			conn.release(); //释放连接
-		// 			if (err)
-		// 				reject(err)
-		// 			resolve(results)
-		// 		});
-		// 	}
-		// })
+    return new Promise((resolve, reject) => {
+        //方便 但每次随机取connection
+        pool.query(sqltext, array, function (err, rows, fields) {
+            if (err)
+                switch (err.errno) {
+                    case 'EHOSTUNREACH':
+                        console.error('连接数据库失败', err.message)
+                    case '1366':
+                        console.error('插入数据编码与数据库字段字符集不一致', err.message)
+                    case 'ECONNREFUSED':
+                        console.error('连接数据库失败', err.message)
+                    default:
+                        console.log(err, rows, fields);
+                        reject(err)
+                }
+            resolve(rows)
+        });
+        //下面这种方法如果愿意的话 可以让查询在同一conn中执行
+        // pool.getConnection((err, conn) => {
+        // 	if (err) {
+        // 		throw err
+        // 	} else {
+        // 		conn.query(sqltext, array, function (err, results) {
+        // 			conn.release(); //释放连接
+        // 			if (err)
+        // 				reject(err)
+        // 			resolve(results)
+        // 		});
+        // 	}
+        // })
 
-	})
+    })
 }
 

@@ -84,7 +84,7 @@
         <!-- </div> -->
         <div title="文章列表" class="articleTable">
             <!-- getComment函数中还调用了展开文章的函数  ng-class="{articleComm:(x.commentList.length<=0)}"-->
-            <section ng-repeat="x in articleTable" class="articleSection" tabindex="0">
+            <section ng-repeat="x in articleTable" ng-init="articleInit(x)" class="articleSection" tabindex="0">
                 <header>
                     <!-- 显示用户头像以及文章标题 -->
                     <button ng-click="showUser(x.name,$event)" class="userName" title="{{x.name}}" style="background-image: url({{x.avatar?x.avatar:'./image/用户.png'}})"></button>
@@ -127,7 +127,10 @@
                             </td>
                         </tr>
                     </table>
+                
                 </div>
+                <!-- 这个显示的方式还是有些漏洞，当文章内容有图片之类的异步加载的东西的时候，他不会更新到加载之后的高度 -->
+                <div ng-if="x.article.scrollHeight>350" ng-click="show($event,x)" class="showArticleDiv">展开文章</div>
             </section>
         </div>
         <div title="页面切换">
