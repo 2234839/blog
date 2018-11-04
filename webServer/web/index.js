@@ -343,9 +343,8 @@ state.controller('article', function ($scope, $rootScope, $compile, ) {
                 return
             }
         })
-        console.log(selectArticle);
-
-        if (!isUpdate || selectArticle.commentSum == 0) {
+        console.log();
+        if (!isUpdate && selectArticle.commentSum == 0) {
             selectArticle.commentSum = 1//当再次运行此函数的时候强制刷新，无视一开始获得的commentSum
             return// 不是更新评论且评论数组未初始化                                 没有评论
         }
@@ -409,20 +408,13 @@ state.controller('article', function ($scope, $rootScope, $compile, ) {
         })
     }
     //TODO:这里的解决方式不够优雅，我本来想用css来解决一切交互的，但兼容性太他妈蛋疼了
-    $scope.show = (event,node) => {
-        console.log(node);
-        
-        let path = nodePath(event.target)
+    $scope.show = (event,article) => {
         let button=event.target
         let section=button.parentNode
-        ggg=section;
-        console.log(button,section);
-        
-        if(button.innerText=="展开文章"){
-            button.innerText="收缩文章"
+        if(article.showButtonName=="展开文章"){
+            article.showButtonName="收缩文章"
             section.classList.add("articleShow")//为被点击的元素赋予show类
             var location = section.getBoundingClientRect()
-            console.log(location);
             //下面是动画
             //保持切换postion后位置不变
             section.style.transition = "0s"
@@ -436,7 +428,7 @@ state.controller('article', function ($scope, $rootScope, $compile, ) {
                 section.style.left = '0px'
             }, 200)
         }else{
-            button.innerText="展开文章"
+            article.showButtonName="展开文章"
             section.classList.remove("articleShow")
             section.style.position = "relative"
             section.style.top = '0px'

@@ -94,7 +94,7 @@
                         <div title="发布时间">{{x.time}}</div>
                     </div>
                 </header>
-                <button ng-click="show($event)" style="{{x.name!=user.name?'top:15px;':''}}">展开文章</button><!--当没有管理按钮时让展开文章按钮上去一点点-->
+                <button ng-init="x.showButtonName='展开文章'" ng-click="show($event,x)" style="{{x.name!=user.name?'top:15px;':''}}">{{x.showButtonName}}</button><!--当没有管理按钮时让展开文章按钮上去一点点-->
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
@@ -130,7 +130,7 @@
                 
                 </div>
                 <!-- 这个显示的方式还是有些漏洞，当文章内容有图片之类的异步加载的东西的时候，他不会更新到加载之后的高度 -->
-                <div ng-if="x.article.scrollHeight>350" ng-click="show($event,x)" class="showArticleDiv">展开文章</div>
+                <div ng-show="x.article.scrollHeight>350 && x.showButtonName!='收缩文章'" ng-click="show($event,x)" class="showArticleDiv">{{x.showButtonName}}</div>
             </section>
         </div>
         <div title="页面切换">
