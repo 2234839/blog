@@ -19,42 +19,32 @@
     <link rel="stylesheet" href="./style/test.css">
     <title>神行Blog</title>
 </head>
+
 <body ng-app="state" ng-controller="user">
     <!-- <canvas id=bgcanvas></canvas>    -->
-    <header title="包含用户基本操作的导航栏">
-        <nav>
-            <div>
-                <div ng-if="!user" title="提供注册与登录">
-                    <button ng-click="addRegisterNode()">注册</button>
-                    <button ng-click="addLoginNode()">登录</button>
-                </div>
-                <div ng-if="user" title="用户信息">
-                    <button ng-click="showUser(user.name,$event)" class="userName" style="background-image: url({{user.avatar?user.avatar:'./image/用户.png'}})"></button>
-                    <button ng-click="cancellation()">注销</button>
-                </div>
-            </div>
-        </nav>
-    </header>
+
     <aside class="showUser" title="展示用户信息">
         <table>
             <tr>
                 <td>用户名</td>
-                <td>{{user_Show.name}}</td><td ng-if="user.name==user_Show.name"><input ng-model="updateUserTemp.name" type="text"></td>
+                <td>{{user_Show.name}}</td>
+                <td ng-if="user.name==user_Show.name"><input ng-model="updateUserTemp.name" type="text"></td>
             </tr>
             <tr>
                 <td>头像 </td>
-                <td><img  class="userName" src="{{user_Show.avatar}}"></td>
+                <td><img class="userName" src="{{user_Show.avatar}}"></td>
                 <td ng-if="user.name==user_Show.name">
                     <button ng-click="selectImg()">选择图片</button>
                     <form class="hidden" name="file" enctype="multipart/form-data" action="file" method="post">
-                        <input type="file" name="img" accept = 'image/*'/>
+                        <input type="file" name="img" accept='image/*' />
                         <button type="submit">提交</button>
                     </form>
                 </td>
             </tr>
             <tr>
                 <td>文章数</td>
-                <td>{{user_Show.articleSum}}</td><td ng-if="user.name==user_Show.name"><button ng-click="updateUser()">修改个人信息</button></td>
+                <td>{{user_Show.articleSum}}</td>
+                <td ng-if="user.name==user_Show.name"><button ng-click="updateUser()">修改个人信息</button></td>
             </tr>
             <tr>
                 <td>评论数</td>
@@ -64,6 +54,20 @@
         </table>
     </aside>
     <main ng-controller='article' class="articleList">
+        <header title="包含用户基本操作的导航栏">
+            <nav>
+                <div>
+                    <div ng-if="!user" title="提供注册与登录">
+                        <button ng-click="addRegisterNode()">注册</button>
+                        <button ng-click="addLoginNode()">登录</button>
+                    </div>
+                    <div ng-if="user" title="用户信息">
+                        <button ng-click="showUser(user.name,$event)" class="userName" style="background-image: url({{user.avatar?user.avatar:'./image/用户.png'}})"></button>
+                        <button ng-click="cancellation()">注销</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
         <div class="controlhead">
             <button ng-click="openEdit()">编辑文章</button>
             <img src="./image/搜索.png" class="inputLeftImg">
@@ -94,7 +98,8 @@
                         <div title="发布时间">{{x.time}}</div>
                     </div>
                 </header>
-                <button ng-init="x.showButtonName='展开文章'" ng-click="show($event,x)" style="{{x.name!=user.name?'top:15px;':''}}">{{x.showButtonName}}</button><!--当没有管理按钮时让展开文章按钮上去一点点-->
+                <button ng-init="x.showButtonName='展开文章'" ng-click="show($event,x)" style="{{x.name!=user.name?'top:15px;':''}}">{{x.showButtonName}}</button>
+                <!--当没有管理按钮时让展开文章按钮上去一点点-->
                 <details ng-if="x.name==user.name" title="管理这篇文章">
                     <summary>管理</summary>
                     <button ng-click="deleteArticle(x.num)">删除</button>
@@ -127,7 +132,7 @@
                             </td>
                         </tr>
                     </table>
-                
+
                 </div>
                 <!-- 这个显示的方式还是有些漏洞，当文章内容有图片之类的异步加载的东西的时候，他不会更新到加载之后的高度 -->
                 <div ng-show="x.article.scrollHeight>350 && x.showButtonName!='收缩文章'" ng-click="show($event,x)" class="showArticleDiv">{{x.showButtonName}}</div>
@@ -146,7 +151,8 @@
         </div>
     </main>
     <address>
-        如果你看到任何bug，请联系<a href="mailto:2234839456@qq.com">管理员</a>
+        如果你看到任何bug，请联系<a href="mailto:2234839456@qq.com">管理员</a> <br>
+        <a href="http://www.miitbeian.gov.cn/">湘ICP备18021783号</a> 
     </address>
 </body>
 

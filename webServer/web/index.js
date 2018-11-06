@@ -424,7 +424,7 @@ state.controller('article', function ($scope, $rootScope, $compile, ) {
             //彻底展开
             setTimeout(() => {//不延时一下没有动画效果
                 section.style.transition = "1.5s"
-                section.style.top = '0px'
+                section.style.top = '-20px'//?????TODO: 
                 section.style.left = '0px'
             }, 200)
         }else{

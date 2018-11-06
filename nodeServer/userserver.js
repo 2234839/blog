@@ -238,6 +238,7 @@ async function getUser(request, response, cookie, sendFiles, postdata) {
  * 上传文件，支持wangEdit的返回
  */
 async function file(request, response, cookie, sendFiles, entireData){
+    
     let res = {//wangEdit要求的数据回传格式
         // errno 即错误代码，0 表示没有错误。
         //       如果有错误，errno != 0，可通过下文中的监听函数 fail 拿到该错误码进行自定义处理
@@ -273,6 +274,7 @@ async function file(request, response, cookie, sendFiles, entireData){
  * 跳转到首页的函数
  */
 function index(req, response, cookie, sendFiles){//对直接访问地址的处理
+
     var path = ""
     // if (cookie.init) {
     //     path = this.config.index_page;

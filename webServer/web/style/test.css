@@ -126,12 +126,11 @@ select{
     padding: 5px 4px;
 }
 header nav { /*导航栏*/
-    margin-left: 0px;
-    padding-left: 10px;
     border: 1px #f12c2c solid;
-    border-top-width: 2px;
-    border-left-width: 6px;
-    background-color: antiquewhite;
+    background-color: white;
+    width: 97%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
 }
 /* 单个文章卡片 */
 section{
@@ -144,12 +143,15 @@ section{
     height: 350px;
     overflow: hidden;
     padding-left: 10px;
-    margin-bottom: 18px;
+    margin-top: 18px;
     background-color: rgb(255, 255, 255);
     outline: none;
     /* 卡片效果 */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 5px;
+}
+section:nth-child(1){
+    margin-top: 8px;
 }
 /* 文章列表 */
 .articleTable{
@@ -195,6 +197,7 @@ section header div{
 }
 /* 管理面板 */
 section details ,section > button{
+    transition: 0.5s;
     position: absolute;
     z-index: 2;
     top: 0px;
